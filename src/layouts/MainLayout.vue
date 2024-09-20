@@ -16,7 +16,7 @@
               <i class="fas fa-comment left-panel-icon"></i>
             </q-item-section>
             <q-item-section v-if="expanded">
-              <q-item-label>Chats</q-item-label>
+              <q-item-label class="left-panel-text">Chats</q-item-label>
             </q-item-section>
           </q-item>
           <q-item clickable v-ripple>
@@ -24,7 +24,7 @@
               <i class="fas fa-users left-panel-icon"></i>
             </q-item-section>
             <q-item-section v-if="expanded">
-              <q-item-label>Channels</q-item-label>
+              <q-item-label class="left-panel-text">Channels</q-item-label>
             </q-item-section>
           </q-item>
           <q-item clickable v-ripple>
@@ -32,7 +32,7 @@
               <i class="fas fa-comment-dots left-panel-icon"></i>
             </q-item-section>
             <q-item-section v-if="expanded">
-              <q-item-label>Requests</q-item-label>
+              <q-item-label class="left-panel-text">Requests</q-item-label>
             </q-item-section>
           </q-item>
           <q-item clickable v-ripple>
@@ -40,7 +40,7 @@
               <i class="fas fa-archive left-panel-icon"></i>
             </q-item-section>
             <q-item-section v-if="expanded">
-              <q-item-label>Archive</q-item-label>
+              <q-item-label class="left-panel-text">Archive</q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
@@ -50,7 +50,7 @@
             <i class="fas fa-table-columns left-panel-icon"></i>
           </q-item-section>
           <q-item-section v-if="expanded">
-            <q-item-label>Collapse</q-item-label>
+            <q-item-label class="left-panel-text">Collapse</q-item-label>
           </q-item-section>
         </q-item>
       </div>
@@ -89,6 +89,7 @@ function toggleExpand() {
   display: flex;
   flex-direction: column;
   height: 100%;
+  background-color: $primary-darker-30;
 }
 
 .drawer-list {
@@ -98,5 +99,15 @@ function toggleExpand() {
 .left-panel-icon {
   font-size: 24px;
   color: $font;
+}
+
+.left-panel-text {
+  font-size: 16px;
+  color: $font;
+  font-weight: bold;
+}
+
+.q-page-container {
+  background-color: $primary;
 }
 </style>
