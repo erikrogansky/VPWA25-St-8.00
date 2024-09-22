@@ -4,7 +4,7 @@
       v-model="leftDrawerOpen"
       :mini="!expanded"
       :mini-width="56"
-      :width="200"
+      :width="250"
       show-if-above
       side="left"
       class="left-panel"
@@ -45,14 +45,24 @@
           </q-item>
         </q-list>
         <q-space />
-        <q-item clickable v-ripple @click="toggleExpand" class="q-pa-md">
-          <q-item-section avatar>
-            <i class="fas fa-table-columns left-panel-icon"></i>
-          </q-item-section>
-          <q-item-section v-if="expanded">
-            <q-item-label class="left-panel-text">Collapse</q-item-label>
-          </q-item-section>
-        </q-item>
+        <div :class="['bottom-section', { 'collapsed': !expanded }]">
+          <q-item clickable v-ripple class="user-item">
+            <q-item-section avatar>
+              <i class="fas fa-circle-user left-panel-icon-user"></i>
+            </q-item-section>
+            <q-item-section v-if="expanded">
+              <q-item-label class="left-panel-text">User name</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item clickable v-ripple @click="toggleExpand" class="expand-item">
+            <q-item-section avatar class="expand-colapse">
+              <i class="fas fa-table-columns left-panel-icon"></i>
+            </q-item-section>
+          </q-item>
+        </div>
+
+
       </div>
     </q-drawer>
 
