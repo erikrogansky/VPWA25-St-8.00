@@ -8,6 +8,7 @@
       show-if-above
       side="left"
       class="left-panel"
+      id="left-panel"
     >
       <div class="left-panel-content">
         <q-list class="left-panel-list">
@@ -21,7 +22,7 @@
           </q-item>
           <q-item clickable v-ripple>
             <q-item-section avatar>
-              <i class="fas fa-users left-panel-icon-channel"></i>
+              <i class="fas fa-users left-panel-icon channel"></i>
             </q-item-section>
             <q-item-section v-if="expanded">
               <q-item-label class="left-panel-text">Channels</q-item-label>
@@ -48,7 +49,7 @@
         <div :class="['bottom-section', { 'collapsed': !expanded }]">
           <q-item clickable v-ripple class="user-item">
             <q-item-section avatar>
-              <i class="fas fa-circle-user left-panel-icon-user"></i>
+              <i class="fas fa-circle-user left-panel-icon user"></i>
             </q-item-section>
             <q-item-section v-if="expanded">
               <q-item-label class="left-panel-text">User name</q-item-label>

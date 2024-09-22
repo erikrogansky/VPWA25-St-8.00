@@ -21,12 +21,12 @@
   color: $font;
 }
 
-.left-panel-icon-channel {
-  font-size: 19.20px;
+.left-panel-icon.channel {
+  font-size: 19.2px;
   color: $font;
 }
 
-.left-panel-icon-user {
+.left-panel-icon.user {
   font-size: 28px;
   color: $font;
 }
@@ -45,7 +45,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px; /* Adjust padding if necessary */
 }
 
 .collapsed {
@@ -62,14 +61,23 @@
   align-items: center;
 }
 
-
-
 .q-item__section--avatar {
   padding-right: 18px;
   min-width: auto;
 }
 
-.q-item__section--avatar.expand-colapse{
+#left-panel .q-item__section--avatar.expand-colapse {
   padding-right: 0;
   min-width: auto;
+}
+
+#left-panel .q-item .q-focus-helper {
+  display: none;
+}
+
+#left-panel .q-item:hover .left-panel-icon,
+#left-panel .q-item:hover .left-panel-text,
+#left-panel .q-item:focus .left-panel-icon,
+#left-panel .q-item:focus .left-panel-text {
+  color: $font-hover;
 }
