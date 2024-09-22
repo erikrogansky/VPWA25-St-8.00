@@ -7,10 +7,10 @@
       :width="200"
       show-if-above
       side="left"
-      class="bg-grey-8"
+      class="left-panel"
     >
-      <div class="drawer-content">
-        <q-list class="drawer-list">
+      <div class="left-panel-content">
+        <q-list class="left-panel-list">
           <q-item clickable v-ripple>
             <q-item-section avatar>
               <i class="fas fa-comment left-panel-icon"></i>
@@ -21,7 +21,7 @@
           </q-item>
           <q-item clickable v-ripple>
             <q-item-section avatar>
-              <i class="fas fa-users left-panel-icon"></i>
+              <i class="fas fa-users left-panel-icon-channel"></i>
             </q-item-section>
             <q-item-section v-if="expanded">
               <q-item-label class="left-panel-text">Channels</q-item-label>
@@ -76,38 +76,3 @@ function toggleExpand() {
   expanded.value = !expanded.value;
 }
 </script>
-
-<style lang="scss" scoped>
-.q-drawer {
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.drawer-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  background-color: $primary-darker-30;
-}
-
-.drawer-list {
-  flex-grow: 1;
-}
-
-.left-panel-icon {
-  font-size: 24px;
-  color: $font;
-}
-
-.left-panel-text {
-  font-size: 16px;
-  color: $font;
-  font-weight: bold;
-}
-
-.q-page-container {
-  background-color: $primary;
-}
-</style>

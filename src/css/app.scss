@@ -1,1 +1,38 @@
-// app global css in SCSS form
+.left-panel {
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.left-panel-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: $primary-darker-30;
+}
+
+.left-panel-list {
+  flex-grow: 1;
+}
+
+.left-panel-icon {
+  font-size: 24px;
+  color: $font;
+}
+
+.left-panel-icon-channel {
+  font-size: 19.20px;
+  color: $font;
+}
+
+
+.left-panel-text {
+  font-size: 16px;
+  color: $font;
+  font-weight: bold;
+}
+
+.q-page-container {
+  background-color: $primary;
+}
