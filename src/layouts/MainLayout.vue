@@ -6,6 +6,7 @@
       :mini-width="56"
       :width="250"
       show-if-above
+      :breakpoint="0"
       side="left"
       class="left-panel"
       id="left-panel"
@@ -46,7 +47,29 @@
           </q-item>
         </q-list>
         <q-space />
-        <div :class="['bottom-section', { 'collapsed': !expanded }]">
+        <template v-if="isWideScreen">
+          <div :class="['bottom-section', { collapsed: !expanded }]">
+            <q-item clickable v-ripple class="user-item">
+              <q-item-section avatar>
+                <i class="fas fa-circle-user left-panel-icon user"></i>
+              </q-item-section>
+              <q-item-section v-if="expanded">
+                <q-item-label class="left-panel-text">User name</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item
+              clickable
+              v-ripple
+              @click="toggleExpand"
+              class="expand-item"
+            >
+              <q-item-section avatar class="expand-colapse">
+                <i class="fas fa-table-columns left-panel-icon"></i>
+              </q-item-section>
+            </q-item>
+          </div>
+        </template>
+        <template v-else>
           <q-item clickable v-ripple class="user-item">
             <q-item-section avatar>
               <i class="fas fa-circle-user left-panel-icon user"></i>
@@ -55,29 +78,42 @@
               <q-item-label class="left-panel-text">User name</q-item-label>
             </q-item-section>
           </q-item>
-
-          <q-item clickable v-ripple @click="toggleExpand" class="expand-item">
-            <q-item-section avatar class="expand-colapse">
-              <i class="fas fa-table-columns left-panel-icon"></i>
-            </q-item-section>
-          </q-item>
-        </div>
-
-
+        </template>
       </div>
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <q-page>
+        <router-view />
+      </q-page>
     </q-page-container>
   </q-layout>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 defineOptions({
   name: 'MainLayout',
+});
+
+const isWideScreen = ref(window.innerWidth > 800);
+
+const updateScreenWidth = () => {
+  isWideScreen.value = window.innerWidth > 800;
+  if (isWideScreen.value == false) {
+    expanded.value = false;
+  }
+};
+
+// Set up event listeners for window resize
+onMounted(() => {
+  window.addEventListener('resize', updateScreenWidth);
+});
+
+// Clean up the event listener
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateScreenWidth);
 });
 
 const leftDrawerOpen = ref(false);
