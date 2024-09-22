@@ -83,8 +83,91 @@
     </q-drawer>
 
     <q-page-container>
-      <q-page>
-        <router-view />
+      <q-page id="list">
+        <div class="chat-list-title">
+            <q-item-label class="chat-panel-text">Chats</q-item-label>
+            <q-item clickable v-ripple>
+              <i class="fas fa-edit chat-panel-icon edit"></i>
+            </q-item>
+        </div>
+        <q-input rounded standout bottom-slots v-model="search" label="Search" dense>
+          <template v-slot:append>
+            <q-icon name="search" @click="search = ''" class="cursor-pointer" />
+          </template>
+        </q-input>
+
+
+        <q-item class="chat-item">
+          <q-item-section avatar>
+            <i class="fas fa-circle-user"></i>
+          </q-item-section>
+          <q-item-section>
+            <div>
+              <q-item-label class="chat-name">Chat name</q-item-label>
+            </div>
+            <div>
+              <q-item-label class="chat-message">Last message</q-item-label>
+            </div>
+          </q-item-section>
+          <div class="hover-icon">
+            <i class="fas fa-ellipsis"></i>
+          </div>
+        </q-item>
+
+        <q-item class="chat-item">
+          <q-item-section avatar>
+            <i class="fas fa-circle-user"></i>
+          </q-item-section>
+          <q-item-section>
+            <div>
+              <q-item-label class="chat-name">Chat name</q-item-label>
+            </div>
+            <div>
+              <q-item-label class="chat-message">Last message</q-item-label>
+            </div>
+          </q-item-section>
+          <div class="hover-icon">
+            <i class="fas fa-ellipsis"></i>
+          </div>
+        </q-item>
+
+        <q-item class="chat-item">
+          <q-item-section avatar>
+            <i class="fas fa-circle-user"></i>
+          </q-item-section>
+          <q-item-section>
+            <div>
+              <q-item-label class="chat-name">Chat name</q-item-label>
+            </div>
+            <div>
+              <q-item-label class="chat-message">Last message</q-item-label>
+            </div>
+          </q-item-section>
+          <div class="hover-icon">
+            <i class="fas fa-ellipsis"></i>
+          </div>
+        </q-item>
+
+        <q-item class="chat-item">
+          <q-item-section avatar>
+            <i class="fas fa-circle-user"></i>
+          </q-item-section>
+          <q-item-section>
+            <div>
+              <q-item-label class="chat-name">Chat name</q-item-label>
+            </div>
+            <div>
+              <q-item-label class="chat-message">Last message</q-item-label>
+            </div>
+          </q-item-section>
+          <div class="hover-icon">
+            <i class="fas fa-ellipsis"></i>
+          </div>
+        </q-item>
+      </q-page>
+
+      <q-page id="chat-page">
+
       </q-page>
     </q-page-container>
   </q-layout>
@@ -93,25 +176,25 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 
+const search = ref<string>('')
+
 defineOptions({
   name: 'MainLayout',
 });
 
-const isWideScreen = ref(window.innerWidth > 800);
+const isWideScreen = ref(window.innerWidth > 1100);
 
 const updateScreenWidth = () => {
-  isWideScreen.value = window.innerWidth > 800;
+  isWideScreen.value = window.innerWidth > 1100;
   if (isWideScreen.value == false) {
     expanded.value = false;
   }
 };
 
-// Set up event listeners for window resize
 onMounted(() => {
   window.addEventListener('resize', updateScreenWidth);
 });
 
-// Clean up the event listener
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateScreenWidth);
 });

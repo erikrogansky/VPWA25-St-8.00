@@ -10,6 +10,7 @@
   flex-direction: column;
   height: 100%;
   background-color: $primary-darker-30;
+  padding-top: 6px;
 }
 
 .left-panel-list {
@@ -35,10 +36,6 @@
   font-size: 16px;
   color: $font;
   font-weight: bold;
-}
-
-.q-page-container {
-  background-color: $primary;
 }
 
 .bottom-section {
@@ -82,6 +79,114 @@
   color: $font-hover;
 }
 
+.q-page-container {
+  display: flex;
+  flex-direction: row;
+}
+
+#list.q-page {
+  background-color: $primary-darker-15;
+  min-width: 350px;
+}
+
+#chat-page.q-page {
+  background-color: $primary;
+  width: 100%;
+}
+
+.q-input {
+  * {
+    color: $font !important;
+  }
+
+  .q-field__control {
+    background-color: $primary-lighter;
+  }
+
+  &:focus-within .q-field__control {
+    background-color: $primary-lighter;
+    box-shadow: none;
+  }
+
+  i {
+    font-size: 20px;
+  }
+}
+
+#list {
+  padding: 8px 16px;
+}
+
+.chat-list-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 6px 14px 6px;
+
+  .q-item {
+    padding: 0;
+
+    min-height: 0;
+  }
+
+  #left-panel .q-item .q-focus-helper {
+    display: none;
+  }
+
+  .q-item:hover .chat-panel-icon,
+  .q-item:focus .chat-panel-icon {
+    color: $font-hover;
+  }
+}
+
+.chat-panel-icon.edit {
+  font-size: 20px;
+  color: $font;
+}
+
+.chat-panel-text {
+  font-size: 22px;
+  color: $font;
+  font-weight: bold;
+}
 
 
+.chat-item {
+  padding: 6px 6px 14px 6px;
 
+  * {
+    color: $font;
+  }
+
+  i {
+    font-size: 38px;
+  }
+
+  .chat-name {
+    font-weight: bold;
+    padding-bottom: 5px;
+  }
+
+  .chat-message {
+    font-weight: regular;
+    font-size: 12px;
+  }
+
+  .hover-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .hover-icon i {
+    font-size: 18px;
+  }
+}
+
+.chat-item:hover .hover-icon {
+  opacity: 1;
+}
