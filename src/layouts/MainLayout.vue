@@ -173,7 +173,7 @@
   </q-layout>
 </template>
 
-<script setup lang="ts">
+<script scoped setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 const search = ref<string>('')
