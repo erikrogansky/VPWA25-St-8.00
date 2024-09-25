@@ -167,7 +167,41 @@
       </q-page>
 
       <q-page id="chat-page">
+        <div class="chat-container">
+          <div class="chat-header">
+            <q-item class="chat-header-info">
+              <q-item-section avatar>
+                <i class="fas fa-circle-user"></i>
+              </q-item-section>
+              <q-item-section>
+                <div>
+                  <q-item-label class="chat-header-chat-name">Chat name</q-item-label>
+                </div>
+                <div>
+                  <q-item-label class="chat-header-active-status">Active</q-item-label>
+                </div>
+              </q-item-section>
+            </q-item>
+          </div>
 
+          <div class="chat-content">
+            sdfgb
+          </div>
+
+          <div class="chat-footer">
+            <q-item class="photos">
+              <q-item-section>
+                <i class="far fa-image"></i>
+              </q-item-section>
+            </q-item>
+            <q-input rounded standout dense v-model="text" placeholder="Aa" class="text-bar" />
+            <q-item v-if="text.length > 0" class="send">
+              <q-item-section>
+                <i class="fas fa-paper-plane"></i>
+              </q-item-section>
+            </q-item>
+          </div>
+        </div>
       </q-page>
     </q-page-container>
   </q-layout>
@@ -177,10 +211,7 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 const search = ref<string>('')
-
-defineOptions({
-  name: 'MainLayout',
-});
+const text = ref<string>('')
 
 const isWideScreen = ref(window.innerWidth > 1100);
 

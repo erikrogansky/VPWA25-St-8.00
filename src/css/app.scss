@@ -190,3 +190,64 @@
 .chat-item:hover .hover-icon {
   opacity: 1;
 }
+
+
+.chat-container {
+  height: 100%;
+  width: auto;
+  color: $font;
+}
+
+.chat-header {
+  height: 65px;
+  width: 100%;
+  background-color: $primary-darker-10;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .chat-header-info {
+    i {
+      font-size: 38px;
+    }
+
+    .chat-header-active-status  {
+      font-size: 12px;
+    }
+
+    .chat-header-chat-name {
+      font-weight: bold;
+    }
+  }
+}
+
+.chat-content {
+  height: calc(100% - 130px);
+  width: 100%;
+}
+
+.chat-footer {
+  height: 65px;
+  width: 100%;
+  background-color: $primary-darker-10;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  padding: 0 18px;
+
+  .text-bar {
+    height: 40px;
+    width: 100%;
+  }
+
+  .photos {
+    font-size: 26px;
+    padding: 0 18px 0 0;
+  }
+
+  .send {
+    font-size: 26px;
+    padding: 0 6px 0 18px;
+  }
+}
