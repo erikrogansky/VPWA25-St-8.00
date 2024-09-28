@@ -13,6 +13,11 @@
 // Tip: Use the "Theme Builder" on Quasar's documentation website.
 
 $primary   : #0F0E29;
+$primary-darker-15: #0D0C23;
+$primary-darker-30: #0B0A1E;
+$primary-darker-10: #0e0d25;
+$primary-lighter: #252439;
+
 $secondary : #26A69A;
 $accent    : #9C27B0;
 
@@ -30,11 +35,7 @@ $font-hover   : #bab9ce;
 $chat-bubble-incoming: #1F1D44;
 $chat-bubble-outgoing: linear-gradient(-80deg, #717AED, #C134F8);
 
-
-$primary-darker-15: #0D0C23;
-$primary-darker-30: #0B0A1E;
-$primary-darker-10: #0e0d25;
-$primary-lighter: #252439;
+$title: linear-gradient(-64deg, #00DBDE 40%, #FC00FF);
 
 
 
