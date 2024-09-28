@@ -185,7 +185,26 @@
           </div>
 
           <div class="chat-content">
-            sdfgb
+            <div class="chat-bubble-row incoming">
+              <q-bubble class="bubble">
+                This is an incoming message!
+              </q-bubble>
+              <q-bubble class="bubble">
+                This is an incoming message! This is an incoming message! This is an incoming message!
+              </q-bubble>
+            </div>
+
+            <div class="chat-bubble-row outgoing">
+              <q-bubble class="bubble">
+                This is an outgoing message!
+              </q-bubble>
+              <q-bubble class="bubble">
+                This is an outgoing message!
+              </q-bubble>
+              <q-bubble class="bubble">
+                This is an outgoing message! This is an outgoing message! This is an outgoing message! This is an outgoing message! This is an outgoing message!
+              </q-bubble>
+            </div>
           </div>
 
           <div class="chat-footer">
@@ -195,11 +214,13 @@
               </q-item-section>
             </q-item>
             <q-input rounded standout dense v-model="text" placeholder="Aa" class="text-bar" />
+            <transition name="fade" appear>
             <q-item v-if="text.length > 0" class="send">
               <q-item-section>
                 <i class="fas fa-paper-plane"></i>
               </q-item-section>
             </q-item>
+          </transition>
           </div>
         </div>
       </q-page>
