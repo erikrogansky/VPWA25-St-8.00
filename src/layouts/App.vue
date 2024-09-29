@@ -49,7 +49,7 @@
         <q-space />
         <template v-if="isWideScreen">
           <div :class="['bottom-section', { collapsed: !expanded }]">
-            <q-item clickable v-ripple class="user-item">
+            <q-item clickable v-ripple class="user-item" to="/">
               <q-item-section avatar>
                 <i class="fas fa-circle-user left-panel-icon user"></i>
               </q-item-section>

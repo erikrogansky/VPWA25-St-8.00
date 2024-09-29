@@ -1,6 +1,12 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <q-header>
+      <img src="../assets/logo.png" alt="Convo's logo">
+      <div class="header-links">
+        <q-label>About us</q-label>
+        <q-label>About us</q-label>
+        <q-label>Contact us</q-label>
+      </div>
     </q-header>
 
     <q-page-container>
@@ -12,17 +18,22 @@
           Discover a new way to chat and share moments with friends and family—effortless, engaging, and always at your fingertips.
         </q-paragraph>
         <div class="buttons">
-          <q-btn unelevated rounded label="Join now" />
-          <q-btn flat rounded label="Log in (access app through here)" to="/app" />
+          <q-btn unelevated rounded label="Join now" to="/app" no-caps class="join-btn" />
+          <q-btn flat rounded label="Log in" to="/app" no-caps class="log-btn" />
         </div>
       </div>
       <div class="right-container">
-        perojgwropvj
+        <img src="../assets/chat.svg" alt="Graphics">
       </div>
     </q-page-container>
 
     <q-footer>
-
+      <q-label>Convo © 2024 Erik Roganský, Peter Sartoris. All rights reserved.</q-label>
+      <div class="footer-links">
+        <q-label>Cookie Policy</q-label>
+        <q-label>Privacy Policy</q-label>
+        <q-label>Terms & Conditions</q-label>
+      </div>
     </q-footer>
 
   </q-layout>
@@ -41,9 +52,38 @@
 
 .q-header {
   height: 75px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 75px 0 75px;
+
+  img {
+    height: 60px;
+  }
+
+  .header-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 250px;
+  }
 }
+
 .q-footer {
   height: 75px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 75px;
+
+  .footer-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 375px;
+  }
 }
 
 .q-page-container {
@@ -63,9 +103,9 @@
     .title {
       font-size: 56px;
       font-weight: bolder;
-      background: $title; /* Replace with your gradient colors */
-      -webkit-background-clip: text; /* Clip the background to the text */
-      -webkit-text-fill-color: transparent; /* Make the text fill transparent */
+      background: $title;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       line-height: 1.3;
       padding-bottom: 30px;
     }
@@ -82,11 +122,28 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding: 150px 125px;
   }
 
   .buttons {
     display: flex;
     flex-direction: row;
+
+    * {
+      font-size: 15px;
+      font-weight: 400;
+    }
+
+    .join-btn {
+      background: $chat-bubble-outgoing;
+      margin-right: 10px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    .log-btn {
+      text-decoration: underline;
+    }
   }
 }
 </style>
