@@ -3,9 +3,9 @@
     <q-header>
       <img src="../assets/logo.png" alt="Convo's logo">
       <div class="header-links">
-        <q-label>About us</q-label>
-        <q-label>About us</q-label>
-        <q-label>Contact us</q-label>
+        <a href="#">About us</a>
+        <a href="#">About us</a>
+        <a href="#">Contact us</a>
       </div>
     </q-header>
 
@@ -30,9 +30,9 @@
     <q-footer>
       <q-label>Convo © 2024 Erik Roganský, Peter Sartoris. All rights reserved.</q-label>
       <div class="footer-links">
-        <q-label>Cookie Policy</q-label>
-        <q-label>Privacy Policy</q-label>
-        <q-label>Terms & Conditions</q-label>
+        <a href="/cookie-policy">Cookie Policy</a>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/terms-and-conditions">Terms & Conditions</a>
       </div>
     </q-footer>
 
@@ -67,6 +67,10 @@
     flex-direction: row;
     justify-content: space-between;
     width: 250px;
+
+    a {
+      text-decoration: none;
+    }
   }
 }
 
