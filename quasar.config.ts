@@ -5,9 +5,9 @@
 
 
 import { configure } from 'quasar/wrappers';
+import { fileURLToPath } from 'node:url';
 
-
-export default configure((/* ctx */) => {
+export default configure((ctx) => {
   return {
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
     // preFetch: true,
@@ -16,8 +16,8 @@ export default configure((/* ctx */) => {
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
     boot: [
-
-
+      'i18n',
+      'axios',
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
@@ -35,6 +35,7 @@ export default configure((/* ctx */) => {
       // 'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
+      'roboto-font', // optional, you are not bound to it
       'material-icons', // optional, you are not bound to it
     ],
 
@@ -65,6 +66,19 @@ export default configure((/* ctx */) => {
       // viteVuePluginOptions: {},
 
       vitePlugins: [
+        ['@intlify/unplugin-vue-i18n/vite', {
+          // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`
+          // compositionOnly: false,
+
+          // if you want to use named tokens in your Vue I18n messages, such as 'Hello {name}',
+          // you need to set `runtimeOnly: false`
+          // runtimeOnly: false,
+
+          ssr: ctx.modeName === 'ssr',
+
+          // you need to set i18n resource including paths !
+          include: [ fileURLToPath(new URL('./src/i18n', import.meta.url)) ],
+        }],
         ['vite-plugin-checker', {
           vueTsc: {
             tsconfigPath: 'tsconfig.vue-tsc.json'
@@ -197,7 +211,7 @@ export default configure((/* ctx */) => {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'vpwa'
+        appId: 'convo'
       }
     },
 

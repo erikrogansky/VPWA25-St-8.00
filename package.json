@@ -1,5 +1,5 @@
 {
-  "name": "vpwa",
+  "name": "convo",
   "version": "0.0.1",
   "description": "VPWA project",
   "productName": "Convo",
@@ -16,11 +16,15 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.6.0",
     "@quasar/extras": "^1.16.4",
+    "axios": "^1.2.1",
+    "pinia": "^2.0.11",
     "quasar": "^2.16.0",
     "vue": "^3.4.18",
+    "vue-i18n": "^9.2.2",
     "vue-router": "^4.0.12"
   },
   "devDependencies": {
+    "@intlify/unplugin-vue-i18n": "^2.0.0",
     "@quasar/app-vite": "^2.0.0-beta.12",
     "@types/node": "^20.5.9",
     "@typescript-eslint/eslint-plugin": "^7.16.0",
