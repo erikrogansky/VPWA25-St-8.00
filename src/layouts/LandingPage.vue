@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh lpR fFf">
+  <q-layout view="hHh lpr fFf">
     <q-header>
       <img src="../assets/logo.png" alt="Convo's logo">
       <div class="header-links">
@@ -89,15 +89,22 @@
   }
 }
 
+.q-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .q-page-container {
   background-color: $primary;
   display: flex;
   flex-direction: row;
-  height: 100%;
+  flex-grow: 1;
+  align-items: center;
 
   .left-container {
     width: 720px;
-    height: 80vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
