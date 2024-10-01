@@ -23,7 +23,6 @@
         </div>
       </div>
       <div class="right-container">
-        <img src="../assets/chat.svg" alt="Graphics">
       </div>
     </q-page-container>
 
@@ -97,12 +96,13 @@
   height: 100%;
 
   .left-container {
-    width: 50%;
-    height: 100%;
+    width: 720px;
+    height: 80vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 150px 125px;
+    align-content: center;
+    padding: 0 125px;
 
     .title {
       font-size: 56px;
@@ -121,12 +121,11 @@
   }
 
   .right-container {
-    width: 50%;
+    width: auto;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 150px 125px;
   }
 
   .buttons {
