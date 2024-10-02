@@ -3,7 +3,7 @@
     <q-header>
       <img src="../assets/logo.png" alt="Convo's logo">
       <div class="header-links">
-        <a href="#">About us</a>
+        <a href="#">What's new</a>
         <a href="#">About us</a>
         <a href="#">Contact us</a>
       </div>

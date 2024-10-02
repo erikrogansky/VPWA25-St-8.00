@@ -3,7 +3,7 @@ import { RouteRecordRaw } from 'vue-router';
 const routes: RouteRecordRaw[] = [
   {
     path: '/app',
-    component: () => import('layouts/App.vue'),
+    component: () => import('layouts/ChatInterface.vue'),
     children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
   },
 
