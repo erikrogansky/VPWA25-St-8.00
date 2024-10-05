@@ -1,7 +1,7 @@
 <template>
   <q-page id="list">
     <div class="chat-list-title">
-        <q-item-label class="chat-panel-text">Chats</q-item-label>
+        <q-item-label class="chat-panel-text">Channels</q-item-label>
         <q-item clickable v-ripple>
           <i class="fas fa-edit chat-panel-icon edit"></i>
         </q-item>

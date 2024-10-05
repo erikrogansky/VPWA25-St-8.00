@@ -13,7 +13,7 @@
     >
       <div class="left-panel-content">
         <q-list class="left-panel-list">
-          <q-item clickable v-ripple>
+          <q-item clickable v-ripple @click="setActivePanel('chats')">
             <q-item-section avatar>
               <i class="fas fa-comment left-panel-icon"></i>
             </q-item-section>
@@ -21,7 +21,7 @@
               <q-item-label class="left-panel-text">Chats</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable v-ripple>
+          <q-item clickable v-ripple @click="setActivePanel('channels')">
             <q-item-section avatar>
               <i class="fas fa-users left-panel-icon channel"></i>
             </q-item-section>
@@ -29,7 +29,7 @@
               <q-item-label class="left-panel-text">Channels</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable v-ripple>
+          <q-item clickable v-ripple @click="setActivePanel('requests')">
             <q-item-section avatar>
               <i class="fas fa-comment-dots left-panel-icon"></i>
             </q-item-section>
@@ -37,7 +37,7 @@
               <q-item-label class="left-panel-text">Requests</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable v-ripple>
+          <q-item clickable v-ripple @click="setActivePanel('archive')">
             <q-item-section avatar>
               <i class="fas fa-archive left-panel-icon"></i>
             </q-item-section>
@@ -84,7 +84,10 @@
 
     <q-page-container>
 
-      <ChatList />
+      <ChatList v-if="activePanel === 'chats'" />
+      <ChannelList v-if="activePanel === 'channels'" />
+      <RequestList v-if="activePanel === 'requests'" />
+      <ArchiveList v-if="activePanel === 'archive'" />
 
       <q-page id="chat-page">
         <div class="chat-container">
@@ -149,6 +152,9 @@
 </template>
 
 <script scoped setup lang="ts">
+import ArchiveList from 'src/components/ArchiveList.vue';
+import RequestList from 'src/components/RequestList.vue';
+import ChannelList from 'src/components/ChannelList.vue';
 import ChatList from 'src/components/ChatList.vue';
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 
@@ -176,5 +182,11 @@ const expanded = ref(false);
 
 function toggleExpand() {
   expanded.value = !expanded.value;
+}
+
+const activePanel = ref<'chats' | 'channels' | 'requests' | 'archive'>('chats');
+
+function setActivePanel(panel: 'chats' | 'channels' | 'requests' | 'archive') {
+  activePanel.value = panel;
 }
 </script>
