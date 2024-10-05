@@ -13,7 +13,7 @@
     >
       <div class="left-panel-content">
         <q-list class="left-panel-list">
-          <q-item clickable v-ripple @click="setActivePanel('chats')">
+          <q-item clickable v-ripple @click="setActivePanel('chats')" :class="{'active-button': activePanel === 'chats'}">
             <q-item-section avatar>
               <i class="fas fa-comment left-panel-icon"></i>
             </q-item-section>
@@ -21,7 +21,7 @@
               <q-item-label class="left-panel-text">Chats</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable v-ripple @click="setActivePanel('channels')">
+          <q-item clickable v-ripple @click="setActivePanel('channels')" :class="{'active-button': activePanel === 'channels'}">
             <q-item-section avatar>
               <i class="fas fa-users left-panel-icon channel"></i>
             </q-item-section>
@@ -29,7 +29,7 @@
               <q-item-label class="left-panel-text">Channels</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable v-ripple @click="setActivePanel('requests')">
+          <q-item clickable v-ripple @click="setActivePanel('requests')" :class="{'active-button': activePanel === 'requests'}">
             <q-item-section avatar>
               <i class="fas fa-comment-dots left-panel-icon"></i>
             </q-item-section>
@@ -37,7 +37,7 @@
               <q-item-label class="left-panel-text">Requests</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable v-ripple @click="setActivePanel('archive')">
+          <q-item clickable v-ripple @click="setActivePanel('archive')" :class="{'active-button': activePanel === 'archive'}">
             <q-item-section avatar>
               <i class="fas fa-archive left-panel-icon"></i>
             </q-item-section>

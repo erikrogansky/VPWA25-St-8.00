@@ -49,7 +49,7 @@ body {
 }
 
 .collapsed {
-  flex-direction: column; /* Stack items vertically when collapsed */
+  flex-direction: column;
 }
 
 .user-item {
@@ -78,8 +78,8 @@ body {
 
 #left-panel .q-item:hover .left-panel-icon,
 #left-panel .q-item:hover .left-panel-text,
-#left-panel .q-item:focus .left-panel-icon,
-#left-panel .q-item:focus .left-panel-text {
+#left-panel .active-button .left-panel-icon,
+#left-panel .active-button .left-panel-text{
   color: $font-hover;
 }
 
