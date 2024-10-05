@@ -158,6 +158,8 @@ body {
 
 .chat-item {
   padding: 6px 6px 14px 6px;
+  display: flex;
+  align-items: center;
 
   * {
     color: $font;
@@ -165,6 +167,10 @@ body {
 
   i {
     font-size: 38px;
+  }
+
+  .chat-item-content{
+    width: auto;
   }
 
   .chat-name {
@@ -178,23 +184,16 @@ body {
   }
 
   .hover-icon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 0;
-    transition: opacity 0.3s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   }
 
   .hover-icon i {
     font-size: 18px;
   }
 }
-
-.chat-item:hover .hover-icon {
-  opacity: 1;
-}
-
 
 .chat-container {
   height: 100%;
