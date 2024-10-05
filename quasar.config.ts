@@ -6,8 +6,16 @@
 
 import { configure } from 'quasar/wrappers';
 import { fileURLToPath } from 'node:url';
+import { tunnelmole } from 'tunnelmole';
 
-export default configure((ctx) => {
+
+export default configure(async (ctx) => {
+  setTimeout(() => {
+    tunnelmole({
+      port: 9000,
+    });
+  }, 4000);
+
   return {
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
     // preFetch: true,

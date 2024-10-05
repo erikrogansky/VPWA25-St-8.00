@@ -97,7 +97,7 @@ body {
 #left-panel .q-item:hover .left-panel-icon,
 #left-panel .q-item:hover .left-panel-text,
 #left-panel .active-button .left-panel-icon,
-#left-panel .active-button .left-panel-text{
+#left-panel .active-button .left-panel-text {
   color: $font-hover;
 }
 
@@ -173,7 +173,6 @@ body {
   font-weight: bold;
 }
 
-
 .chat-item {
   padding: 6px 6px 14px 6px;
   display: flex;
@@ -187,7 +186,7 @@ body {
     font-size: 38px;
   }
 
-  .chat-item-content{
+  .chat-item-content {
     width: auto;
   }
 
@@ -232,7 +231,7 @@ body {
       font-size: 38px;
     }
 
-    .chat-header-active-status  {
+    .chat-header-active-status {
       font-size: 12px;
     }
 
@@ -290,11 +289,6 @@ body {
   }
 }
 
-
-
-
-
-
 .chat-footer {
   height: 65px;
   width: 100%;
@@ -320,13 +314,15 @@ body {
   }
 }
 
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.3s ease;
 }
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
-.fade-enter-to, .fade-leave-from {
+.fade-enter-to,
+.fade-leave-from {
   opacity: 1;
 }
-
