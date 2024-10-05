@@ -13,17 +13,18 @@
     </q-input>
 
 
-    <ChatItem />
-    <ChatItem />
-    <ChatItem />
-    <ChatItem />
-    <ChatItem />
+    <ChatListItem />
+    <ChatListItem />
+    <ChatListItem />
+    <ChatListItem />
+    <ChatListItem />
 
   </q-page>
 </template>
 
 <script setup scoped lang="ts">
 import { ref } from 'vue';
-import ChatItem from './ChatItem.vue';
+import ChatListItem from './ChatListItem.vue';
   const search = ref<string>('')
 </script>
+
