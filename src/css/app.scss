@@ -57,6 +57,24 @@ body {
   align-items: center;
 }
 
+.user-popup {
+  background-color: $popup;
+  color: $font;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: bold;
+
+  i {
+    font-size: 18px;
+  }
+
+  .q-separator {
+    background-color: $popup-separator;
+    margin: 0 12px;
+  }
+}
+
 .expand-item {
   display: flex;
   align-items: center;
