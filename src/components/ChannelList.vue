@@ -14,17 +14,17 @@
 
 
 
-    <ChatListItem />
-    <ChatListItem />
-    <ChatListItem />
-    <ChatListItem />
-    <ChatListItem />
+    <ChannelListItem />
+    <ChannelListItem />
+    <ChannelListItem />
+    <ChannelListItem />
+    <ChannelListItem />
 
   </q-page>
 </template>
 
 <script setup scoped lang="ts">
 import { ref } from 'vue';
-import ChatListItem from './ChatListItem.vue';
+import ChannelListItem from './ChannelListItem.vue';
   const search = ref<string>('')
 </script>
