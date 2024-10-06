@@ -19,7 +19,7 @@
         </q-paragraph>
         <div class="buttons">
           <q-btn unelevated rounded label="Join now" to="/app" no-caps class="join-btn" />
-          <q-btn flat rounded label="Log in" to="/app" no-caps class="log-btn" />
+          <q-btn flat rounded label="Log in" to="/login" no-caps class="log-btn" />
         </div>
       </div>
       <div class="right-container">
