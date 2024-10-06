@@ -5,7 +5,7 @@
     </q-item-section>
     <q-item-section>
       <div class="chat-item-content">
-        <q-item-label class="chat-name">Chat name</q-item-label>
+        <q-item-label class="chat-name">Channel name</q-item-label>
         <q-item-label class="chat-message">Last message</q-item-label>
       </div>
     </q-item-section>
@@ -25,11 +25,11 @@
             <q-separator />
             <q-item clickable @click="onMenuItemClick" v-close-popup>
               <q-item-section avatar><i class="fas fa-box-archive"></i></q-item-section>
-              <q-item-section>Archive chat</q-item-section>
+              <q-item-section>Archive channel</q-item-section>
             </q-item>
             <q-item clickable @click="onMenuItemClick" v-close-popup>
-              <q-item-section avatar><i class="fas fa-trash"></i></q-item-section>
-              <q-item-section>Delete chat</q-item-section>
+              <q-item-section avatar><i class="fas fa-right-from-bracket"></i></q-item-section>
+              <q-item-section>Leave channel</q-item-section>
             </q-item>
           </q-list>
         </q-menu>

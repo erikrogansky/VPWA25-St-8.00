@@ -2,9 +2,6 @@
   <q-page id="list">
     <div class="chat-list-title">
         <q-item-label class="chat-panel-text">Archive</q-item-label>
-        <q-item clickable v-ripple>
-          <i class="fas fa-edit chat-panel-icon edit"></i>
-        </q-item>
     </div>
     <q-input rounded standout bottom-slots v-model="search" label="Search" dense>
       <template v-slot:append>
