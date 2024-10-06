@@ -1,13 +1,7 @@
 <template>
   <q-layout view="hHh lpr fFf">
-    <q-header>
-      <img src="../assets/logo.png" alt="Convo's logo">
-      <div class="header-links">
-        <a href="#">What's new</a>
-        <a href="#">About us</a>
-        <a href="#">Contact us</a>
-      </div>
-    </q-header>
+
+    <HeaderLayout/>
 
     <q-page-container>
       <div class="left-container">
@@ -26,20 +20,15 @@
       </div>
     </q-page-container>
 
-    <q-footer>
-      <q-label>Convo © 2024 Erik Roganský, Peter Sartoris. All rights reserved.</q-label>
-      <div class="footer-links">
-        <a href="/cookie-policy">Cookie Policy</a>
-        <a href="/privacy-policy">Privacy Policy</a>
-        <a href="/terms-and-conditions">Terms & Conditions</a>
-      </div>
-    </q-footer>
+    <FooterLayout/>
 
   </q-layout>
 </template>
 
 <script scoped setup lang="ts">
 
+import HeaderLayout from 'src/components/HeaderLayout.vue';
+import FooterLayout from 'src/components/FooterLayout.vue';
 
 </script>
 
@@ -47,46 +36,6 @@
 <style scoped lang="scss">
 * {
   color: $font;
-}
-
-.q-header {
-  height: 75px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 75px 0 75px;
-
-  img {
-    height: 60px;
-  }
-
-  .header-links {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 250px;
-
-    a {
-      text-decoration: none;
-    }
-  }
-}
-
-.q-footer {
-  height: 75px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 75px;
-
-  .footer-links {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 375px;
-  }
 }
 
 .q-layout {
