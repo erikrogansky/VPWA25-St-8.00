@@ -12,7 +12,7 @@
           Discover a new way to chat and share moments with friends and family—effortless, engaging, and always at your fingertips.
         </q-paragraph>
         <div class="buttons">
-          <q-btn unelevated rounded label="Join now" to="/app" no-caps class="join-btn" />
+          <q-btn unelevated rounded label="Join now" to="/register" no-caps class="join-btn" />
           <q-btn flat rounded label="Log in" to="/login" no-caps class="log-btn" />
         </div>
       </div>

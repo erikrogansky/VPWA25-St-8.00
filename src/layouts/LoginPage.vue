@@ -62,6 +62,7 @@ const password = ref<string>('');
     display: flex;
     flex-direction: column;
     height: 100%;
+    justify-content: center;
   }
 
   .q-page-container {

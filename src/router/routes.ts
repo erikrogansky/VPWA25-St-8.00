@@ -1,10 +1,15 @@
 import { RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
-  //login
+  // ogin
   {
     path: '/login',
     component: () => import('layouts/LoginPage.vue'),
+  },
+  // register
+  {
+    path: '/register',
+    component: () => import('layouts/RegisterPage.vue'),
   },
 
   {
