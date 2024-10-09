@@ -62,19 +62,19 @@ const password = ref<string>('');
       <q-card flat class="q-pa-md">
         <!--INSIDE-->
         <q-card-section class="text-center">
-          <img src="../assets/logo.png" alt="Convo's logo" />
+          <a href="#"><img src="../assets/logo.png" alt="Convo's logo"/></a>
           <div class="text-h5 text-weight-bold q-pa-sm">Create an Account</div>
         </q-card-section>
 
         <q-card-section>
           <div class="q-gutter">
-            <q-input dense outlined rounded v-model="nick_name" label="Nickname" class="q-mt-md"/>
+            <q-input dense outlined rounded v-model="nick_name" placeholder="Nickname"/>
             <div class="q-gutter q-mt-md row">
-              <q-input dense outlined rounded v-model="first_name" label="First Name" class="col"/>
-              <q-input dense outlined rounded v-model="last_name" label="Last Name" class="col"/>
+              <q-input dense outlined rounded v-model="first_name" placeholder="First Name" class="col"/>
+              <q-input dense outlined rounded v-model="last_name" placeholder="Last Name" class="col"/>
             </div>
             <div class="q-gutter q-mt-md row">
-              <q-input dense outlined rounded v-model="date_of_birth" label="Date of Birth" class="col"/>
+              <q-input dense outlined rounded v-model="date_of_birth" type="date" label="Date of Birth" class="col"/>
               <q-input dense outlined rounded v-model="gender" label="Gender" class="col"/>
             </div>
 
@@ -84,9 +84,9 @@ const password = ref<string>('');
               <q-input dense outlined rounded v-model="date_of_birth" label="Date of Birth" class="col" type="date"/>
               <q-select dense outlined rounded v-model="gender" label="Gender" :options="genderOptions" class="col"/>
             </div>-->
-            <q-input dense outlined rounded v-model="phone_number" label="Phone Number" class="q-mt-md"/>
-            <q-input dense outlined rounded v-model="email" label="Email Address" class="q-mt-md"/>
-            <q-input dense outlined rounded v-model="password" type="password" label="Password" class="q-mt-md"/>
+            <q-input dense outlined rounded v-model="phone_number" placeholder="Phone Number" class="q-mt-md"/>
+            <q-input dense outlined rounded v-model="email" placeholder="Email Address" class="q-mt-md"/>
+            <q-input dense outlined rounded v-model="password" type="password" placeholder="Password" class="q-mt-md"/>
           </div>
         </q-card-section>
 
