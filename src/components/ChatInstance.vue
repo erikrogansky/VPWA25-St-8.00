@@ -29,7 +29,7 @@
           :class="group.type"
         >
           <q-bubble
-            v-for="(message, i) in [...group.messages].reverse()"
+            v-for="(message, i) in group.messages"
             :key="i"
             class="bubble"
           >
