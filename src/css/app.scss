@@ -73,6 +73,12 @@ body {
     background-color: $popup-separator;
     margin: 0 12px;
   }
+
+  .q-item--active {
+    color: $font;
+    opacity: 0.8;
+  }
+
 }
 
 .expand-item {

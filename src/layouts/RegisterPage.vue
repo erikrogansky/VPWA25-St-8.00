@@ -3,9 +3,9 @@
     <q-page-container>
       <q-card flat class="q-pa-md">
         <!--INSIDE-->
-        <q-card-section class="text-center">
+        <q-card-section class="text-center top-part">
           <a href="#"><img src="../assets/logo.png" alt="Convo's logo"/></a>
-          <div class="text-h5 text-weight-bold q-pa-sm">Create an Account</div>
+          <div class="header q-pa-sm">Create a free account</div>
         </q-card-section>
 
         <q-card-section>
@@ -22,7 +22,7 @@
                       <template v-slot:append>
                         <q-icon name="event" class="cursor-pointer">
                           <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                            <q-date dark v-model="date_of_birth">
+                            <q-date dark v-model="date_of_birth" class="date-picker">
                               <div class="row items-center justify-end">
                                 <q-btn v-close-popup label="Close" color="primary" flat />
                               </div>
@@ -33,7 +33,7 @@
                     </q-input>
                   </div>
               </div>
-              <div class="date_gender"><q-select dense outlined rounded v-model="gender" label="Gender" class="col" :options="options" /></div>
+              <div class="date_gender"><q-select dense outlined rounded v-model="gender" :display-value="gender ? gender : 'Gender'"  :class="{ 'no-gender': !gender, 'has-gender': gender }" class="col"  popup-content-class="user-popup" :options="options" /></div>
             </div>
           </div>
           <div class="">
@@ -43,15 +43,20 @@
           </div>
         </q-card-section>
 
+        <div class="text-8 text-center terms-text">
+          By creating an account, you agree with Convo’s <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a>
+        </div>
+
         <q-card-section>
           <q-btn unelevated rounded label="Sign Up" to="/app" no-caps class="login-btn"/>
         </q-card-section>
 
         <q-card-section class="text-center q-pt-none">
-          <div class="text-8">
+          <div class="text-8 signin-text">
             Already have an account?
-            <a href="#">Sign in.</a>
+            <a href="/login">Sign in.</a>
           </div>
+
         </q-card-section>
         <!--INSIDE-->
       </q-card>
@@ -78,7 +83,7 @@ const phone_number = ref<string>('');
 const email = ref<string>('');
 const password = ref<string>('');
 
-const options = ['Google', 'Facebook', 'Twitter', 'Apple', 'Oracle']
+const options = ['Male', 'Female', 'Non-binary', 'Other']
 
 </script>
 
@@ -145,6 +150,48 @@ const options = ['Google', 'Facebook', 'Twitter', 'Apple', 'Oracle']
     display: flex;
     flex-direction: column;
     width: 48%;
+  }
+
+  .header {
+    font-weight: 750;
+    font-size: 32px;
+    letter-spacing: 0.5px;
+  }
+
+  .top-part {
+    padding-bottom: 5px;
+  }
+
+  .signin-text {
+    padding-bottom: 10px;
+    font-size: 13px;
+    opacity: 0.8;
+  }
+
+  .terms-text {
+    font-size: 13px;
+    padding: 4px 16px 4px 16px;
+    opacity: 0.8;
+  }
+
+  .q-dark {
+    background: $popup;
+  }
+
+  :deep(.q-date__header) {
+    background-color: $popup;
+  }
+
+  :deep(.q-date__main) {
+    color: $font;
+  }
+
+  :deep(.text-primary) {
+    color: $font !important;
+  }
+
+  :deep(.no-gender span) {
+     opacity: 0.8;
   }
 
 </style>
