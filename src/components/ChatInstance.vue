@@ -22,15 +22,14 @@
       </div>
 
       <div class="chat-content">
-        <!-- Grouped messages by type -->
         <div
-          v-for="(group, index) in groupedMessages"
+          v-for="(group, index) in [...groupedMessages].reverse()"
           :key="index"
           class="chat-bubble-row"
           :class="group.type"
         >
           <q-bubble
-            v-for="(message, i) in group.messages"
+            v-for="(message, i) in [...group.messages].reverse()"
             :key="i"
             class="bubble"
           >
@@ -134,3 +133,26 @@ const sendMessage = () => {
   }
 };
 </script>
+
+
+<style lang="scss" scoped>
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $scrollbar;
+  border-radius: 10px;
+  border: 3px solid $primary;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $scrollbar-hover;
+}
+
+</style>
