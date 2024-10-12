@@ -5,10 +5,9 @@
           <q-card flat class="q-pa-md">
 
             <!--INSIDE-->
-            <q-card-section class="text-center">
+            <q-card-section class="text-center top-part">
               <img src="../assets/logo.png" alt="Convo's logo">
-              <div class="text-h5 text-weight-bold q-pa-sm">Sign In</div>
-              <div class="">Sign in below to access your account</div>
+              <div class="q-pa-sm header">Sign In</div>
             </q-card-section>
 
             <q-card-section>
@@ -16,14 +15,18 @@
               <q-input outlined rounded v-model="password" type="password" label="Password" class="q-mt-md"></q-input>
             </q-card-section>
 
+            <div class="text-8 text-center terms-text">
+              By signing in, you agree with Convo’s <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a>
+            </div>
+
             <q-card-section>
               <q-btn unelevated rounded label="Sign In" to="/app" no-caps class="login-btn" />
             </q-card-section>
 
             <q-card-section class="text-center q-pt-none">
-              <div class="text-8">
+              <div class="text-8 signup-text">
                 Don't have an account yet?
-                <a href="#">Sign up.</a>
+                <a href="/login">Sign up</a>
               </div>
             </q-card-section>
             <!--INSIDE-->
@@ -87,6 +90,29 @@ const password = ref<string>('');
     margin-right: 10px;
     padding-left: 20px;
     padding-right: 20px;
+  }
+
+  .header {
+    font-weight: 750;
+    font-size: 32px;
+    letter-spacing: 0.5px;
+  }
+
+
+  .top-part {
+    padding-bottom: 5px;
+  }
+
+  .signup-text {
+    padding-bottom: 10px;
+    font-size: 13px;
+    opacity: 0.8;
+  }
+
+  .terms-text {
+    font-size: 13px;
+    padding: 4px 16px 4px 16px;
+    opacity: 0.8;
   }
 
 </style>

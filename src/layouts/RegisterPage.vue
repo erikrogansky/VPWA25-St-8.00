@@ -54,7 +54,7 @@
         <q-card-section class="text-center q-pt-none">
           <div class="text-8 signin-text">
             Already have an account?
-            <a href="/login">Sign in.</a>
+            <a href="/login">Sign in</a>
           </div>
 
         </q-card-section>
