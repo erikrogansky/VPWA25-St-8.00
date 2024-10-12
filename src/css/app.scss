@@ -269,7 +269,7 @@ body {
   height: auto;
   padding-top: 14px;
 
-  .bubble {
+  .bubble.text-message {
     border-radius: 28px;
     padding: 8px 12px 7.8px 12px;
     max-width: 500px;
@@ -280,14 +280,29 @@ body {
       border-radius: 20px;
     }
   }
+
+  .bubble.image-message {
+    border-radius: 28px;
+    padding: 0;
+    max-width: 500px;
+    margin-bottom: 4px;
+
+    @media (min-height: 40px) {
+      border-radius: 20px;
+    }
+  }
 }
 
 .chat-bubble-row.incoming {
   align-items: flex-start;
   padding-right: 250px;
 
-  .bubble {
-    background-color: $chat-bubble-incoming;
+  .bubble.text-message {
+    background: $chat-bubble-incoming;
+  }
+
+  .bubble.image-message {
+    background-color: none;
   }
 }
 
@@ -295,9 +310,23 @@ body {
   align-items: flex-end;
   padding-left: 250px;
 
-  .bubble {
+  .bubble.text-message {
     background-image: $chat-bubble-outgoing;
   }
+
+  .bubble.image-message {
+    background-color: none;
+
+    img {
+      border-radius: 20px;
+    }
+  }
+}
+
+.chat-image {
+  max-width: 100%;
+  height: auto;
+  width: auto;
 }
 
 .chat-footer {
@@ -317,6 +346,7 @@ body {
   .photos {
     font-size: 26px;
     padding: 0 18px 0 0;
+    cursor: pointer;
   }
 
   .send {

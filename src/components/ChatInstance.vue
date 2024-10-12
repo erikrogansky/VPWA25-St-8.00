@@ -8,14 +8,10 @@
           </q-item-section>
           <q-item-section>
             <div>
-              <q-item-label class="chat-header-chat-name"
-                >Chat name</q-item-label
-              >
+              <q-item-label class="chat-header-chat-name">Chat name</q-item-label>
             </div>
             <div>
-              <q-item-label class="chat-header-active-status"
-                >Active</q-item-label
-              >
+              <q-item-label class="chat-header-active-status">Active</q-item-label>
             </div>
           </q-item-section>
         </q-item>
@@ -28,12 +24,9 @@
           class="chat-bubble-row"
           :class="group.type"
         >
-          <q-bubble
-            v-for="(message, i) in group.messages"
-            :key="i"
-            class="bubble"
-          >
-            {{ message.text }}
+          <q-bubble v-for="(message, i) in group.messages" :key="i" class="bubble" :class="{'text-message': message.text,'image-message': message.image}">
+            <div v-if="message.text">{{ message.text }}</div>
+            <img v-if="message.image" :src="message.image" alt="Sent image" class="chat-image" />
           </q-bubble>
         </div>
       </div>
@@ -41,7 +34,8 @@
       <div class="chat-footer">
         <q-item class="photos">
           <q-item-section>
-            <i class="far fa-image"></i>
+            <i class="far fa-image" @click="selectImage"></i>
+            <input type="file" ref="fileInput" @change="handleImageUpload" style="display:none" accept="image/*" />
           </q-item-section>
         </q-item>
         <q-input
@@ -54,26 +48,20 @@
           @keyup.enter="sendMessage"
         />
         <transition name="fade" appear>
-          <q-btn
-            v-if="text.length > 0"
-            icon="send"
-            @click="sendMessage"
-            flat
-            round
-            dense
-            class="send"
-          />
+          <q-btn v-if="text.length > 0" icon="send" @click="sendMessage" flat round dense class="send" />
         </transition>
       </div>
     </div>
   </q-page>
 </template>
 
+
 <script setup scoped lang="ts">
 import { ref, computed } from 'vue';
 
 interface Message {
-  text: string;
+  text?: string;
+  image?: string;
   type: string;
 }
 
@@ -113,6 +101,7 @@ const sendMessage = () => {
 
     text.value = '';
 
+    // Simulating incoming messages
     if (Math.random() < 0.5) {
       setTimeout(() => {
         messages.value.push({
@@ -132,7 +121,31 @@ const sendMessage = () => {
     }
   }
 };
+
+// Handling image selection
+const fileInput = ref<HTMLInputElement | null>(null);
+
+const selectImage = () => {
+  if (fileInput.value) {
+    fileInput.value.click();
+  }
+};
+
+const handleImageUpload = (event: Event) => {
+  const file = (event.target as HTMLInputElement).files?.[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      messages.value.push({
+        image: reader.result as string,
+        type: 'outgoing',
+      });
+    };
+    reader.readAsDataURL(file);
+  }
+};
 </script>
+
 
 
 <style lang="scss" scoped>
