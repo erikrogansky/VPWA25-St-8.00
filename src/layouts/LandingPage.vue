@@ -35,7 +35,11 @@ import FooterLayout from 'src/components/FooterLayout.vue';
 
 <style scoped lang="scss">
 * {
-  color: $font;
+  color: $font !important;
+
+  body.body--light & {
+    color: $l-font !important;
+  }
 }
 
 .q-layout {
@@ -50,6 +54,10 @@ import FooterLayout from 'src/components/FooterLayout.vue';
   flex-direction: row;
   flex-grow: 1;
   align-items: center;
+
+  body.body--light & {
+    background-color: $l-primary !important;
+  }
 
   .left-container {
     width: 720px;
@@ -68,6 +76,10 @@ import FooterLayout from 'src/components/FooterLayout.vue';
       -webkit-text-fill-color: transparent;
       line-height: 1.3;
       padding-bottom: 30px;
+
+      body.body--light & {
+        background: $l-title !important;
+      }
     }
 
     .paragraph {
@@ -98,6 +110,10 @@ import FooterLayout from 'src/components/FooterLayout.vue';
       margin-right: 10px;
       padding-left: 20px;
       padding-right: 20px;
+
+      body.body--light & {
+        background: $l-chat-bubble-outgoing !important;
+      }
     }
 
     .log-btn {

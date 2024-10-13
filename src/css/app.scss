@@ -1,5 +1,9 @@
 body {
-  background-color: $primary;
+  background-color: $primary !important;
+}
+
+body.body--light {
+  background-color: $l-primary  !important;
 }
 
 .left-panel {
@@ -13,8 +17,12 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: $primary-darker-30;
+  background-color: $primary-darker-30  !important;
   padding-top: 6px;
+
+  body.body--light & {
+    background-color: $l-primary-darker-30  !important;
+  }
 }
 
 .left-panel-list {
@@ -23,23 +31,39 @@ body {
 
 .left-panel-icon {
   font-size: 24px;
-  color: $font;
+  color: $font !important;
+
+  body.body--light & {
+    color: $l-font !important;
+  }
 }
 
 .left-panel-icon.channel {
   font-size: 19.2px;
-  color: $font;
+  color: $font !important;
+
+  body.body--light & {
+    color: $l-font !important;
+  }
 }
 
 .left-panel-icon.user {
   font-size: 28px;
-  color: $font;
+  color: $font !important;
+
+  body.body--light & {
+    color: $l-font !important;
+  }
 }
 
 .left-panel-text {
   font-size: 16px;
-  color: $font;
+  color: $font !important;
   font-weight: bold;
+
+  body.body--light & {
+    color: $l-font !important;
+  }
 }
 
 .bottom-section {
@@ -58,25 +82,38 @@ body {
 }
 
 .user-popup {
-  background-color: $popup;
-  color: $font;
+  background-color: $popup !important;
+  color: $font !important;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   border-radius: 14px;
   font-size: 15px;
   font-weight: bold;
+
+  body.body--light & {
+    color: $l-font !important;
+    background-color: $popup !important;
+  }
 
   i {
     font-size: 18px;
   }
 
   .q-separator {
-    background-color: $popup-separator;
+    background-color: $popup-separator !important;
     margin: 0 12px;
+
+    body.body--light & {
+      background-color: $l-popup-separator !important;
+    }
   }
 
   .q-item--active {
-    color: $font;
+    color: $font !important;
     opacity: 0.8;
+
+    body.body--light & {
+      color: $l-font !important;
+    }
   }
 
 }
@@ -104,7 +141,11 @@ body {
 #left-panel .q-item:hover .left-panel-text,
 #left-panel .active-button .left-panel-icon,
 #left-panel .active-button .left-panel-text {
-  color: $font-hover;
+  color: $font-hover !important;
+
+  body.body--light & {
+    color: $l-font-hover;
+  }
 }
 
 .q-page-container {
@@ -113,13 +154,21 @@ body {
 }
 
 #list.q-page {
-  background-color: $primary-darker-15;
+  background-color: $primary-darker-15 !important;
   min-width: 350px;
+
+  body.body--light & {
+    background-color: $l-primary-darker-15 !important;
+  }
 }
 
 #chat-page.q-page {
-  background-color: $primary;
+  background-color: $primary !important;
   width: 100%;
+
+  body.body--light & {
+    background-color: $l-primary !important;
+  }
 }
 
 #chat-page {
@@ -129,15 +178,27 @@ body {
 .q-input, .q-select {
   * {
     color: $font !important;
+
+    body.body--light & {
+      color: $l-font !important;
+    }
   }
 
   .q-field__control {
-    background-color: $primary-lighter;
+    background-color: $primary-lighter !important;
+
+    body.body--light & {
+      background-color: $l-primary-lighter !important;
+    }
   }
 
   &:focus-within .q-field__control {
-    background-color: $primary-lighter;
+    background-color: $primary-lighter !important;
     box-shadow: none;
+
+    body.body--light & {
+      background-color: $l-primary-lighter !important;
+    }
   }
 
   i {
@@ -168,19 +229,31 @@ body {
 
   .q-item:hover .chat-panel-icon,
   .q-item:focus .chat-panel-icon {
-    color: $font-hover;
+    color: $font-hover !important;
+
+    body.body--light & {
+      color: $l-font-hover !important;
+    }
   }
 }
 
 .chat-panel-icon.edit {
   font-size: 20px;
-  color: $font;
+  color: $font !important;
+
+  body.body--light & {
+    color: $l-font !important;
+  }
 }
 
 .chat-panel-text {
   font-size: 22px;
-  color: $font;
+  color: $font !important;
   font-weight: bold;
+
+  body.body--light & {
+    color: $l-font !important;
+  }
 }
 
 .chat-item {
@@ -189,7 +262,11 @@ body {
   align-items: center;
 
   * {
-    color: $font;
+    color: $font !important;
+
+    body.body--light & {
+      color: $l-font !important;
+    }
   }
 
   i {
@@ -225,16 +302,24 @@ body {
 .chat-container {
   height: 100%;
   width: auto;
-  color: $font;
+  color: $font !important;
+
+  body.body--light & {
+    color: $l-font !important;
+  }
 }
 
 .chat-header {
   height: 65px;
   width: 100%;
-  background-color: $primary-darker-10;
+  background-color: $primary-darker-10 !important;
   display: flex;
   flex-direction: row;
   align-items: center;
+
+  body.body--light & {
+    background-color: $l-primary-darker-10 !important;
+  }
 
   .chat-header-info {
     i {
@@ -298,7 +383,11 @@ body {
   padding-right: 250px;
 
   .bubble.text-message {
-    background: $chat-bubble-incoming;
+    background: $chat-bubble-incoming !important;
+
+    body.body--light & {
+      background: $l-chat-bubble-incoming !important;
+    }
   }
 
   .bubble.image-message {
@@ -311,7 +400,11 @@ body {
   padding-left: 250px;
 
   .bubble.text-message {
-    background-image: $chat-bubble-outgoing;
+    background-image: $chat-bubble-outgoing !important;
+
+    body.body--light & {
+      background-image: $l-chat-bubble-outgoing !important;
+    }
   }
 
   .bubble.image-message {
@@ -332,11 +425,15 @@ body {
 .chat-footer {
   height: 65px;
   width: 100%;
-  background-color: $primary-darker-10;
+  background-color: $primary-darker-10 !important;
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 0 18px;
+
+  body.body--light & {
+    background-color: $l-primary-darker-10 !important;
+  }
 
   .text-bar {
     height: 40px;

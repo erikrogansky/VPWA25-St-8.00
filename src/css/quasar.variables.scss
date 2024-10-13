@@ -13,6 +13,7 @@
 // Tip: Use the "Theme Builder" on Quasar's documentation website.
 
 $primary   : #0F0E29;
+
 $primary-darker-15: #0D0C23;
 $primary-darker-30: #0B0A1E;
 $primary-darker-10: #0e0d25;
@@ -21,11 +22,10 @@ $primary-lighter: #252439;
 $secondary : #26A69A;
 $accent    : #9C27B0;
 
-$dark      : #1D1D1D;
-$dark-page : #121212;
+$toggle : #717AED;
 
 $positive  : #21BA45;
-$negative  : #C10015;
+$negative  : #D81717;
 $info      : #31CCEC;
 $warning   : #F2C037;
 
@@ -41,9 +41,39 @@ $chat-bubble-outgoing: linear-gradient(-80deg, #717AED, #C134F8);
 $scrollbar: linear-gradient(-80deg, rgba(113, 122, 237, 0.65), rgba(193, 52, 248, 0.65));
 $scrollbar-hover: linear-gradient(-80deg, rgba(113, 122, 237, 0.85), rgba(193, 52, 248, 0.85));
 
-
 $title: linear-gradient(-64deg, #00DBDE 40%, #FC00FF);
 
+
+$l-primary   : #d1c9ed;
+
+$l-primary-darker-15: #0D0C23;
+$l-primary-darker-30: #0B0A1E;
+$l-primary-darker-10: #0e0d25;
+$l-primary-lighter: #252439;
+
+$l-secondary : #26A69A;
+$l-accent    : #9C27B0;
+
+$l-toggle : #717AED;
+
+$l-positive  : #21BA45;
+$l-negative  : #D81717;
+$l-info      : #31CCEC;
+$l-warning   : #F2C037;
+
+$l-popup: #19182E;
+$l-popup-separator: rgba(255,255,255,0.125);
+
+$l-font   : #000;
+$l-font-hover   : #bab9ce;
+
+$l-chat-bubble-incoming: #1F1D44;
+$l-chat-bubble-outgoing: linear-gradient(-80deg, #717AED, #C134F8);
+
+$l-scrollbar: linear-gradient(-80deg, rgba(113, 122, 237, 0.65), rgba(193, 52, 248, 0.65));
+$l-scrollbar-hover: linear-gradient(-80deg, rgba(113, 122, 237, 0.85), rgba(193, 52, 248, 0.85));
+
+$l-title: linear-gradient(-64deg, #00DBDE 40%, #FC00FF);
 
 
 @font-face {

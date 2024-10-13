@@ -74,6 +74,10 @@ const password = ref<string>('');
     align-items: center;
     justify-content: center;
     height: 100%;
+
+    body.body--light & {
+      background-color: $l-primary !important;
+    }
   }
 
   .q-card {
@@ -90,6 +94,10 @@ const password = ref<string>('');
     margin-right: 10px;
     padding-left: 20px;
     padding-right: 20px;
+
+    body.body--light & {
+      background-color: $l-chat-bubble-outgoing !important;
+    }
   }
 
   .header {

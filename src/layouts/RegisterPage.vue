@@ -91,7 +91,11 @@ const options = ['Male', 'Female', 'Non-binary', 'Other']
 <style scoped lang="scss">
 
   * {
-  color: $font;
+  color: $font !important;;
+
+  body.body--light & {
+    color: $l-font !important;
+  }
   }
 
   img {
@@ -106,11 +110,15 @@ const options = ['Male', 'Female', 'Non-binary', 'Other']
   }
 
   .q-page-container {
-    background-color: $primary;
+    background-color: $primary !important;;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
+
+    body.body--light & {
+      background-color: $l-primary !important;
+    }
   }
 
   .q-card {
@@ -123,10 +131,14 @@ const options = ['Male', 'Female', 'Non-binary', 'Other']
     font-weight: 400;
     display: flex;
     flex-direction: row;
-    background: $chat-bubble-outgoing;
+    background: $chat-bubble-outgoing !important;;
     margin-right: 10px;
     padding-left: 20px;
     padding-right: 20px;
+
+    body.body--light & {
+      background: $l-chat-bubble-outgoing !important;
+    }
   }
 
   .date_gender {
@@ -175,19 +187,35 @@ const options = ['Male', 'Female', 'Non-binary', 'Other']
   }
 
   .q-dark {
-    background: $popup;
+    background: $popup !important;;
+
+    body.body--light & {
+      background-color: $l-popup !important;
+    }
   }
 
   :deep(.q-date__header) {
-    background-color: $popup;
+    background-color: $popup !important;;
+
+    body.body--light & {
+      background-color: $l-popup !important;
+    }
   }
 
   :deep(.q-date__main) {
     color: $font;
+
+    body.body--light & {
+      color: $l-font !important;
+    }
   }
 
   :deep(.text-primary) {
     color: $font !important;
+
+    body.body--light & {
+      color: $l-font !important;
+    }
   }
 
   :deep(.no-gender span) {
