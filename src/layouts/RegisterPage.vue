@@ -1,7 +1,7 @@
 <template>
   <q-layout view="hHh p fFf">
     <q-page-container>
-      <q-card flat class="q-pa-md">
+      <q-card flat class="q-pa-md content">
         <!--INSIDE-->
         <q-card-section class="text-center top-part">
           <a href="#"><img src="../assets/logo.png" alt="Convo's logo"/></a>
@@ -10,15 +10,15 @@
 
         <q-card-section>
           <div class="q-gutter">
-            <q-input dense outlined rounded v-model="nick_name" placeholder="Nickname"/>
+            <q-input dense rounded standout v-model="nick_name" placeholder="Nickname"/>
             <div class="q-gutter q-mt-md row">
-              <div class="name"><q-input dense outlined rounded v-model="first_name" placeholder="First Name" class="col"/></div>
-              <div class="name"><q-input dense outlined rounded v-model="last_name" placeholder="Last Name" class="col"/></div>
+              <div class="name"><q-input dense rounded standout v-model="first_name" placeholder="First Name" class="col"/></div>
+              <div class="name"><q-input dense rounded standout v-model="last_name" placeholder="Last Name" class="col"/></div>
             </div>
             <div class="q-gutter q-mt-md row">
               <div class="date_gender">
                   <div style="max-width: 300px">
-                    <q-input dense outlined rounded v-model="date_of_birth" mask="date" placeholder="Date of birth">
+                    <q-input dense rounded standout v-model="date_of_birth" mask="date" placeholder="Date of birth">
                       <template v-slot:append>
                         <q-icon name="event" class="cursor-pointer">
                           <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -33,13 +33,13 @@
                     </q-input>
                   </div>
               </div>
-              <div class="date_gender"><q-select dense outlined rounded v-model="gender" :display-value="gender ? gender : 'Gender'"  :class="{ 'no-gender': !gender, 'has-gender': gender }" class="col"  popup-content-class="user-popup" :options="options" /></div>
+              <div class="date_gender"><q-select dense rounded standout v-model="gender" :display-value="gender ? gender : 'Gender'"  :class="{ 'no-gender': !gender, 'has-gender': gender }" class="col"  popup-content-class="user-popup" :options="options" /></div>
             </div>
           </div>
           <div class="">
-            <q-input dense outlined rounded v-model="phone_number" placeholder="Phone Number" class="q-mt-md"/>
-            <q-input dense outlined rounded v-model="email" placeholder="Email Address" class="q-mt-md"/>
-            <q-input dense outlined rounded v-model="password" type="password" placeholder="Password" class="q-mt-md"/>
+            <q-input dense rounded standout v-model="phone_number" placeholder="Phone Number" class="q-mt-md"/>
+            <q-input dense rounded standout v-model="email" placeholder="Email Address" class="q-mt-md"/>
+            <q-input dense rounded standout v-model="password" type="password" placeholder="Password" class="q-mt-md"/>
           </div>
         </q-card-section>
 
@@ -191,6 +191,14 @@ const options = ['Male', 'Female', 'Non-binary', 'Other']
 
     body.body--light & {
       background-color: $l-popup !important;
+    }
+  }
+
+  .content {
+    background: $primary !important;
+
+    body.body--light & {
+      background: $l-primary !important;
     }
   }
 

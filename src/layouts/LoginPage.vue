@@ -11,8 +11,8 @@
             </q-card-section>
 
             <q-card-section>
-              <q-input outlined rounded v-model="email" label="Email Address"></q-input>
-              <q-input outlined rounded v-model="password" type="password" label="Password" class="q-mt-md"></q-input>
+              <q-input rounded standout v-model="email" label="Email Address"></q-input>
+              <q-input rounded standout v-model="password" type="password" label="Password" class="q-mt-md"></q-input>
             </q-card-section>
 
             <div class="text-8 text-center terms-text">
