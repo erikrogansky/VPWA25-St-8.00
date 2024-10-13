@@ -86,6 +86,7 @@
 
 <script setup scoped lang="ts">
 import { ref, watch } from 'vue';
+import { useModeStore } from '../stores/mode-store';
 import { useQuasar } from 'quasar';
 
 const $q = useQuasar();
@@ -93,10 +94,22 @@ const $q = useQuasar();
 const fixed = ref(false);
 const menuOpen = ref(false);
 const activeStatus = ref('on');
+const modeStore = useModeStore();
 const notifications = ref(['display', 'sound']);
-const mode = ref('sp');
+
+const mode = ref(modeStore.mode);
+
+watch(() => modeStore.mode, (newMode) => {
+  mode.value = newMode;
+  updateDarkMode(newMode);
+});
 
 watch(mode, (newMode) => {
+  modeStore.setMode(newMode);
+  updateDarkMode(newMode);
+});
+
+function updateDarkMode(newMode: string) {
   switch (newMode) {
     case 'on':
       $q.dark.set(true);
@@ -109,7 +122,9 @@ watch(mode, (newMode) => {
       $q.dark.set(isDark);
       break;
   }
-});
+}
+
+updateDarkMode(modeStore.mode);
 </script>
 
 

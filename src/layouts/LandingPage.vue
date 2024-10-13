@@ -71,14 +71,16 @@ import FooterLayout from 'src/components/FooterLayout.vue';
     .title {
       font-size: 56px;
       font-weight: bolder;
-      background: $title;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      background: $title !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
       line-height: 1.3;
       padding-bottom: 30px;
 
       body.body--light & {
         background: $l-title !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
       }
     }
 
