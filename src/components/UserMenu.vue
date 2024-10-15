@@ -12,17 +12,6 @@
             </q-card-section>
 
             <q-card-section class="section">
-              <div class="section-name">Account</div>
-              <div class="section-item"><q-label class="name">ErikR7</q-label><q-btn flat no-caps dense class="action-btn"><q-label class="action">Edit nick</q-label><i class="fas fa-edit"></i></q-btn></div>
-              <div class="section-item"><q-label class="name">Erik Roganský</q-label><q-btn flat no-caps dense class="action-btn"><q-label class="action">Edit name</q-label><i class="fas fa-edit"></i></q-btn></div>
-              <div class="section-item"><q-label class="name">Male</q-label><q-btn flat no-caps dense class="action-btn"><q-label class="action">Edit gender</q-label><i class="fas fa-edit"></i></q-btn></div>
-              <div class="section-item"><q-label class="name">+421 911 111 111</q-label><q-btn flat no-caps dense class="action-btn"><q-label class="action">Edit phone</q-label><i class="fas fa-edit"></i></q-btn></div>
-              <div class="delete-account"><q-btn flat no-caps dense class="action-btn">Delete account</q-btn></div>
-            </q-card-section>
-
-            <q-separator />
-
-            <q-card-section class="section">
               <div class="section-name">Active status</div>
               <div class="section-item"><q-label class="name">On</q-label><q-radio keep-color dense size="sm" v-model="activeStatus" val="on" color="white" /></div>
               <div class="section-item"><q-label class="name">Off</q-label> <q-radio keep-color dense size="sm" v-model="activeStatus" val="off" color="white" /></div>
@@ -46,6 +35,17 @@
               <div class="section-item"><q-label class="name">Off</q-label> <q-radio keep-color dense size="sm" v-model="mode" val="off" color="white" /></div>
               <div class="section-item"><q-label class="name">System preferences</q-label><q-radio keep-color dense size="sm" v-model="mode" val="sp" color="white" /></div>
               <div class="section-item-description">The display will be automatically adjusted based on your system preferences.</div>
+            </q-card-section>
+
+            <q-separator />
+
+            <q-card-section class="section">
+              <div class="section-name">Account</div>
+              <div class="section-item"><q-label class="name">ErikR7</q-label><q-btn flat no-caps dense class="action-btn"><q-label class="action">Edit nick</q-label><i class="fas fa-edit"></i></q-btn></div>
+              <div class="section-item"><q-label class="name">Erik Roganský</q-label><q-btn flat no-caps dense class="action-btn"><q-label class="action">Edit name</q-label><i class="fas fa-edit"></i></q-btn></div>
+              <div class="section-item"><q-label class="name">Male</q-label><q-btn flat no-caps dense class="action-btn"><q-label class="action">Edit gender</q-label><i class="fas fa-edit"></i></q-btn></div>
+              <div class="section-item"><q-label class="name">+421 911 111 111</q-label><q-btn flat no-caps dense class="action-btn"><q-label class="action">Edit phone</q-label><i class="fas fa-edit"></i></q-btn></div>
+              <div class="delete-account"><q-btn flat no-caps dense class="action-btn">Delete account</q-btn></div>
             </q-card-section>
 
             <q-separator />
@@ -281,5 +281,25 @@ updateDarkMode(modeStore.mode);
     }
   }
 
+}
+
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $scrollbar;
+  border-radius: 10px;
+  border: 3px solid $primary;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $scrollbar-hover;
 }
 </style>

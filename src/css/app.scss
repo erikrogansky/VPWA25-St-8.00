@@ -1,9 +1,22 @@
+.q-layout__section--marginal {
+  background-color: $primary !important;
+  color: $font !important;
+
+  body.body--light & {
+    background-color: $l-primary !important;
+  }
+}
+
+body.body--light .q-layout__section--marginal * {
+  color: $l-font !important;
+}
+
 body {
   background-color: $primary !important;
 }
 
 body.body--light {
-  background-color: $l-primary  !important;
+  background-color: $l-primary !important;
 }
 
 .left-panel {
@@ -17,11 +30,11 @@ body.body--light {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: $primary-darker-30  !important;
+  background-color: $primary-darker-30 !important;
   padding-top: 6px;
 
   body.body--light & {
-    background-color: $l-primary-darker-30  !important;
+    background-color: $l-primary-darker-30 !important;
   }
 }
 
@@ -91,7 +104,7 @@ body.body--light {
 
   body.body--light & {
     color: $l-font !important;
-    background-color: $popup !important;
+    background-color: $l-popup !important;
   }
 
   i {
@@ -115,7 +128,6 @@ body.body--light {
       color: $l-font !important;
     }
   }
-
 }
 
 .expand-item {
@@ -175,7 +187,8 @@ body.body--light {
   height: 1vh;
 }
 
-.q-input, .q-select {
+.q-input,
+.q-select {
   * {
     color: $font !important;
 
@@ -398,6 +411,7 @@ body.body--light {
 .chat-bubble-row.outgoing {
   align-items: flex-end;
   padding-left: 250px;
+  color: $font !important;
 
   .bubble.text-message {
     background-image: $chat-bubble-outgoing !important;

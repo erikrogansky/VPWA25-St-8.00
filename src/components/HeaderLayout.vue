@@ -11,7 +11,11 @@
 
 <style scoped lang="scss">
 * {
-  color: $font;
+  color: $font !important;
+}
+
+body.body--light * {
+    color: $l-font !important;
 }
 
 .q-header {

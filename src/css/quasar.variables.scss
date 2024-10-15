@@ -44,12 +44,12 @@ $scrollbar-hover: linear-gradient(-80deg, rgba(113, 122, 237, 0.85), rgba(193, 5
 $title: linear-gradient(-64deg, #00DBDE 40%, #FC00FF);
 
 
-$l-primary   : #d1c9ed;
+$l-primary   : #FFF;
 
-$l-primary-darker-15: #0D0C23;
-$l-primary-darker-30: #0B0A1E;
-$l-primary-darker-10: #0e0d25;
-$l-primary-lighter: #252439;
+$l-primary-darker-15: #eaeaea;
+$l-primary-darker-30: #acacac;
+$l-primary-darker-10: #8d8bb1;
+$l-primary-lighter: #9a99aa;
 
 $l-secondary : #26A69A;
 $l-accent    : #9C27B0;
@@ -61,13 +61,13 @@ $l-negative  : #D81717;
 $l-info      : #31CCEC;
 $l-warning   : #F2C037;
 
-$l-popup: #19182E;
+$l-popup: #8d8bb1;
 $l-popup-separator: rgba(255,255,255,0.125);
 
 $l-font   : #000;
 $l-font-hover   : #bab9ce;
 
-$l-chat-bubble-incoming: #1F1D44;
+$l-chat-bubble-incoming: #dbdbdb;
 $l-chat-bubble-outgoing: linear-gradient(-80deg, #717AED, #C134F8);
 
 $l-scrollbar: linear-gradient(-80deg, rgba(113, 122, 237, 0.65), rgba(193, 52, 248, 0.65));
