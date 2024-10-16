@@ -6,7 +6,7 @@
 
             <!--INSIDE-->
             <q-card-section class="text-center top-part">
-              <img src="../assets/logo.png" alt="Convo's logo">
+              <img :src="logoSource" alt="Convo's logo">
               <div class="q-pa-sm header">Sign In</div>
             </q-card-section>
 
@@ -48,6 +48,17 @@ import FooterLayout from 'src/components/FooterLayout.vue';
 
 const email = ref<string>('');
 const password = ref<string>('');
+
+import { computed } from 'vue';
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar();
+
+const logoSource = computed(() => {
+  return $q.dark.isActive
+    ? '/src/assets/logo.png'
+    : '/src/assets/l-logo.png';
+});
 
 </script>
 

@@ -4,7 +4,7 @@
       <q-card flat class="q-pa-md content">
         <!--INSIDE-->
         <q-card-section class="text-center top-part">
-          <a href="#"><img src="../assets/logo.png" alt="Convo's logo"/></a>
+          <a href="#"><img :src="logoSource" alt="Convo's logo"/></a>
           <div class="header q-pa-sm">Create a free account</div>
         </q-card-section>
 
@@ -85,6 +85,16 @@ const password = ref<string>('');
 
 const options = ['Male', 'Female', 'Non-binary', 'Other']
 
+import { computed } from 'vue';
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar();
+
+const logoSource = computed(() => {
+  return $q.dark.isActive
+    ? '/src/assets/logo.png'
+    : '/src/assets/l-logo.png';
+});
 </script>
 
 
