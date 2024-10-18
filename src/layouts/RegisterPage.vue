@@ -4,7 +4,7 @@
       <q-card flat class="q-pa-md content">
         <!--INSIDE-->
         <q-card-section class="text-center top-part">
-          <a href="#"><img :src="logoSource" alt="Convo's logo"/></a>
+          <router-link to="/"><img :src="logoSource" alt="Convo's logo"/></router-link>
           <div class="header q-pa-sm">Create a free account</div>
         </q-card-section>
 
@@ -44,7 +44,7 @@
         </q-card-section>
 
         <div class="text-8 text-center terms-text">
-          By creating an account, you agree with Convo’s <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a>
+          By creating an account, you agree with Convo’s <router-link to="/privacy-policy">Privacy Policy</router-link> and <router-link to="/terms-and-conditions">Terms of Service</router-link>
         </div>
 
         <q-card-section>
@@ -54,7 +54,7 @@
         <q-card-section class="text-center q-pt-none">
           <div class="text-8 signin-text">
             Already have an account?
-            <a href="/login">Sign in</a>
+            <router-link to="/login">Sign in</router-link>
           </div>
 
         </q-card-section>

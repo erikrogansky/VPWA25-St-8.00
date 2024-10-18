@@ -63,15 +63,15 @@
         <q-item-section>Help</q-item-section>
       </q-item>
       <q-separator />
-      <q-item clickable v-close-popup>
+      <q-item clickable v-close-popup to="/terms-and-conditions">
         <q-item-section avatar><i class="fas fa-align-left"></i></q-item-section>
         <q-item-section>Terms & Conditions</q-item-section>
       </q-item>
-      <q-item clickable v-close-popup>
+      <q-item clickable v-close-popup to="/privacy-policy">
         <q-item-section avatar><i class="fas fa-align-left"></i></q-item-section>
         <q-item-section>Privacy Policy</q-item-section>
       </q-item>
-      <q-item clickable v-close-popup>
+      <q-item clickable v-close-popup to="/cookie-policy">
         <q-item-section avatar><i class="fas fa-align-left"></i></q-item-section>
         <q-item-section>Cookie Policy</q-item-section>
       </q-item>

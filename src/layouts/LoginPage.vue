@@ -6,27 +6,27 @@
 
             <!--INSIDE-->
             <q-card-section class="text-center top-part">
-              <img :src="logoSource" alt="Convo's logo">
+              <router-link to="/"><img :src="logoSource" alt="Convo's logo"/></router-link>
               <div class="q-pa-sm header">Sign In</div>
             </q-card-section>
 
             <q-card-section>
-              <q-input rounded standout v-model="email" label="Email Address"></q-input>
-              <q-input rounded standout v-model="password" type="password" label="Password" class="q-mt-md"></q-input>
+              <q-input rounded standout v-model="email" label="Email Address" :error="!!emailError" :error-message="emailError" :class="{'padding-err': !!emailError}"></q-input>
+              <q-input rounded standout v-model="password" type="password" label="Password" class="q-mt-md" :error="!!passwordError" :error-message="passwordError" :class="{'padding-err': !!passwordError}"></q-input>
             </q-card-section>
 
             <div class="text-8 text-center terms-text">
-              By signing in, you agree with Convo’s <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a>
+              By signing in, you agree with Convo’s <router-link to="/privacy-policy">Privacy Policy</router-link> and <router-link to="/terms-and-conditions">Terms of Service</router-link>
             </div>
 
             <q-card-section>
-              <q-btn unelevated rounded label="Sign In" to="/app" no-caps class="login-btn" />
+              <q-btn unelevated rounded label="Sign In" no-caps class="login-btn" @click="validateAndSubmit" />
             </q-card-section>
 
             <q-card-section class="text-center q-pt-none">
               <div class="text-8 signup-text">
                 Don't have an account yet?
-                <a href="/login">Sign up</a>
+                <router-link to="/register">Sign up</router-link>
               </div>
             </q-card-section>
             <!--INSIDE-->
@@ -44,15 +44,19 @@
 
 <script scoped setup lang="ts">
 import { ref } from 'vue';
+import { useQuasar } from 'quasar';
+import { useRouter } from 'vue-router';
 import FooterLayout from 'src/components/FooterLayout.vue';
 
 const email = ref<string>('');
 const password = ref<string>('');
+const emailError = ref('');
+const passwordError = ref('');
 
 import { computed } from 'vue';
-import { useQuasar } from 'quasar';
 
 const $q = useQuasar();
+const router = useRouter();
 
 const logoSource = computed(() => {
   return $q.dark.isActive
@@ -60,6 +64,57 @@ const logoSource = computed(() => {
     : '/src/assets/l-logo.png';
 });
 
+const validateAndSubmit = () => {
+  emailError.value = '';
+  passwordError.value = '';
+
+  let valid = true;
+
+  if (!email.value) {
+    emailError.value = 'Email is required';
+    valid = false;
+  } else if (!validateEmail(email.value)) {
+    emailError.value = 'Please enter a valid email';
+    valid = false;
+  }
+
+  if (!password.value) {
+    passwordError.value = 'Password is required';
+    valid = false;
+  } else if (password.value.length < 6) {
+    passwordError.value = 'Password must be at least 6 characters long';
+    valid = false;
+  }
+
+  if (!valid) {
+    $q.notify({
+      type: 'negative',
+      message: 'Please correct the errors and try again',
+      position: 'bottom'
+    });
+    return;
+  }
+
+  if (email.value !== 'test@example.com' || password.value !== 'password') {
+    $q.notify({
+      type: 'negative',
+      message: 'Incorrect credentials',
+      position: 'top'
+    });
+  } else {
+    $q.notify({
+      type: 'positive',
+      message: 'Login successful',
+      position: 'top'
+    });
+    router.push('/app');
+  }
+};
+
+const validateEmail = (email: string) => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+};
 </script>
 
 <style scoped lang="scss">
@@ -99,6 +154,7 @@ const logoSource = computed(() => {
   .login-btn {
     font-size: 15px;
     font-weight: 400;
+    width: 100%;
     display: flex;
     flex-direction: row;
     background: $chat-bubble-outgoing;
@@ -132,6 +188,14 @@ const logoSource = computed(() => {
     font-size: 13px;
     padding: 4px 16px 4px 16px;
     opacity: 0.8;
+  }
+
+  .q-input {
+    padding-bottom: 0;
+  }
+
+  .q-input.padding-err {
+    padding-bottom: 16px;
   }
 
 </style>
