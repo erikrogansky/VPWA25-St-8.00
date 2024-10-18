@@ -137,4 +137,11 @@ import FooterLayout from 'src/components/FooterLayout.vue';
     padding-right: 50px !important;
   }
 }
+
+@media (max-width: 375px) {
+  .left-container {
+    padding-left: 25px !important;
+    padding-right: 0 !important;
+  }
+}
 </style>

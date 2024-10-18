@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh p fFf">
+  <q-layout view="hHh p fff">
 
       <q-page-container>
           <q-card flat class="q-pa-md">
