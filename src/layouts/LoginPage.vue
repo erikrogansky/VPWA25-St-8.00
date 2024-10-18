@@ -68,31 +68,16 @@ const validateAndSubmit = () => {
   emailError.value = '';
   passwordError.value = '';
 
-  let valid = true;
-
   if (!email.value) {
     emailError.value = 'Email is required';
-    valid = false;
   } else if (!validateEmail(email.value)) {
     emailError.value = 'Please enter a valid email';
-    valid = false;
   }
 
   if (!password.value) {
     passwordError.value = 'Password is required';
-    valid = false;
   } else if (password.value.length < 6) {
     passwordError.value = 'Password must be at least 6 characters long';
-    valid = false;
-  }
-
-  if (!valid) {
-    $q.notify({
-      type: 'negative',
-      message: 'Please correct the errors and try again',
-      position: 'bottom'
-    });
-    return;
   }
 
   if (email.value !== 'test@example.com' || password.value !== 'password') {

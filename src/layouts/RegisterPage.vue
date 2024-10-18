@@ -10,15 +10,15 @@
 
         <q-card-section>
           <div class="q-gutter">
-            <q-input dense rounded standout v-model="nick_name" placeholder="Nickname"/>
+            <q-input dense rounded standout v-model="nick_name" placeholder="Nickname" :error="!!nickError" :error-message="nickError" :class="{'padding-err': !!nickError}"/>
             <div class="q-gutter q-mt-md row">
-              <div class="name"><q-input dense rounded standout v-model="first_name" placeholder="First Name" class="col"/></div>
-              <div class="name"><q-input dense rounded standout v-model="last_name" placeholder="Last Name" class="col"/></div>
+              <div class="name"><q-input dense rounded standout v-model="first_name" placeholder="First Name" class="col" :error="!!firstNameError" :error-message="firstNameError" :class="{'padding-err': !!firstNameError}"/></div>
+              <div class="name"><q-input dense rounded standout v-model="last_name" placeholder="Last Name" class="col" :error="!!lastNameError" :error-message="lastNameError" :class="{'padding-err': !!lastNameError}"/></div>
             </div>
             <div class="q-gutter q-mt-md row">
               <div class="date_gender">
                   <div style="max-width: 300px">
-                    <q-input dense rounded standout v-model="date_of_birth" mask="date" placeholder="Date of birth">
+                    <q-input dense rounded standout v-model="date_of_birth" mask="date" placeholder="Date of birth" :error="!!dateError" :error-message="dateError" :class="{'padding-err': !!dateError}">
                       <template v-slot:append>
                         <q-icon name="event" class="cursor-pointer">
                           <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -33,13 +33,13 @@
                     </q-input>
                   </div>
               </div>
-              <div class="date_gender"><q-select dense rounded standout v-model="gender" :display-value="gender ? gender : 'Gender'"  :class="{ 'no-gender': !gender, 'has-gender': gender }" class="col"  popup-content-class="user-popup" :options="options" /></div>
+              <div class="date_gender"><q-select dense rounded standout v-model="gender" :display-value="gender ? gender : 'Gender'"  :class="{ 'no-gender': !gender, 'has-gender': gender, 'padding-err': !!genderError }" class="col"  popup-content-class="user-popup" :options="options" :error="!!genderError" :error-message="genderError" /></div>
             </div>
           </div>
           <div class="">
-            <q-input dense rounded standout v-model="phone_number" placeholder="Phone Number" class="q-mt-md"/>
-            <q-input dense rounded standout v-model="email" placeholder="Email Address" class="q-mt-md"/>
-            <q-input dense rounded standout v-model="password" type="password" placeholder="Password" class="q-mt-md"/>
+            <q-input dense rounded standout v-model="phone_number" placeholder="Phone Number" class="q-mt-md" :error="!!phoneError" :error-message="phoneError" :class="{'padding-err': !!phoneError}"/>
+            <q-input dense rounded standout v-model="email" placeholder="Email Address" class="q-mt-md" :error="!!emailError" :error-message="emailError" :class="{'padding-err': !!emailError}"/>
+            <q-input dense rounded standout v-model="password" type="password" placeholder="Password" class="q-mt-md" :error="!!passwordError" :error-message="passwordError" :class="{'padding-err': !!passwordError}"/>
           </div>
         </q-card-section>
 
@@ -48,7 +48,7 @@
         </div>
 
         <q-card-section>
-          <q-btn unelevated rounded label="Sign Up" to="/app" no-caps class="login-btn"/>
+          <q-btn unelevated rounded label="Sign Up" no-caps class="login-btn" @click="validateAndSubmit"/>
         </q-card-section>
 
         <q-card-section class="text-center q-pt-none">
@@ -68,6 +68,7 @@
 
 <script scoped setup lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import FooterLayout from 'src/components/FooterLayout.vue';
 
 const nick_name = ref<string>('');
@@ -81,16 +82,104 @@ const password = ref<string>('');
 
 const options = ['Male', 'Female', 'Non-binary', 'Other']
 
+const nickError = ref('');
+const firstNameError = ref('');
+const lastNameError = ref('');
+const dateError = ref('');
+const genderError = ref('');
+const phoneError = ref('');
+const emailError = ref('');
+const passwordError = ref('');
+
+
 import { computed } from 'vue';
 import { useQuasar } from 'quasar';
 
 const $q = useQuasar();
+
+const router = useRouter();
 
 const logoSource = computed(() => {
   return $q.dark.isActive
     ? '/src/assets/logo.png'
     : '/src/assets/l-logo.png';
 });
+
+const validateAndSubmit = () => {
+  // Clear previous errors
+  nickError.value = '';
+  firstNameError.value = '';
+  lastNameError.value = '';
+  dateError.value = '';
+  genderError.value = '';
+  phoneError.value = '';
+  emailError.value = '';
+  passwordError.value = '';
+
+  if (!nick_name.value) {
+    nickError.value = 'Nickname is required';
+  }
+
+  if (!first_name.value) {
+    firstNameError.value = 'First name is required';
+  }
+
+  if (!last_name.value) {
+    lastNameError.value = 'Last name is required';
+  }
+
+  if (!date_of_birth.value) {
+    dateError.value = 'Date of birth is required';
+  }
+
+  if (!gender.value) {
+    genderError.value = 'Gender is required';
+  }
+
+  if (!phone_number.value) {
+    phoneError.value = 'Phone number is required';
+  } else if (!validatePhoneNumber(phone_number.value)) {
+    phoneError.value = 'Please enter a valid phone number';
+  }
+
+  if (!email.value) {
+    emailError.value = 'Email is required';
+  } else if (!validateEmail(email.value)) {
+    emailError.value = 'Please enter a valid email';
+  }
+
+  if (!password.value) {
+    passwordError.value = 'Password is required';
+  } else if (password.value.length < 6) {
+    passwordError.value = 'Password must be at least 6 characters long';
+  }
+
+  if (!nickError.value && !firstNameError.value && !lastNameError.value && !dateError.value &&
+      !genderError.value && !phoneError.value && !emailError.value && !passwordError.value) {
+    $q.notify({
+      type: 'positive',
+      message: 'Registration successful',
+      position: 'top',
+    });
+    router.push('/app');
+  } else {
+    $q.notify({
+      type: 'negative',
+      message: 'Please correct the highlighted errors',
+      position: 'top',
+    });
+  }
+};
+
+const validateEmail = (email: string) => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+};
+
+const validatePhoneNumber = (phone: string) => {
+  const re = /^\+?\d{10,15}$/;
+  return re.test(phone);
+};
 </script>
 
 
@@ -135,6 +224,7 @@ const logoSource = computed(() => {
   .login-btn {
     font-size: 15px;
     font-weight: 400;
+    width: 100%;
     display: flex;
     flex-direction: row;
     background: $chat-bubble-outgoing !important;;
@@ -235,5 +325,14 @@ const logoSource = computed(() => {
   :deep(.no-gender span) {
      opacity: 0.8;
   }
+
+  .q-input, .q-select {
+    padding-bottom: 0;
+  }
+
+  .q-input.padding-err, .q-select.padding-err {
+    padding-bottom: 16px;
+  }
+
 
 </style>
