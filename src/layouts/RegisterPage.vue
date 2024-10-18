@@ -70,10 +70,6 @@
 import { ref } from 'vue';
 import FooterLayout from 'src/components/FooterLayout.vue';
 
-// Defining the options for gender selection
-//const genderOptions = ref<string[]>(['Male', 'Female', 'Other']);
-
-// State variables
 const nick_name = ref<string>('');
 const first_name = ref<string>('');
 const last_name = ref<string>('');

@@ -54,4 +54,20 @@ body.body--light * {
     }
   }
 }
+
+@media (max-width: 550px) {
+    .q-header {
+      padding: 10px 25px 0 25px;
+    }
+  }
+
+  @media (max-width: 340px) {
+    img {
+      display: none;
+    }
+
+    .q-header {
+      justify-content: center;
+    }
+  }
 </style>

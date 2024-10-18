@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh lpr fFf">
+  <q-layout view="hHh lpr fff">
 
     <HeaderLayout/>
 
@@ -121,6 +121,20 @@ import FooterLayout from 'src/components/FooterLayout.vue';
     .log-btn {
       text-decoration: underline;
     }
+  }
+}
+
+@media (max-height: 650px) {
+  .left-container {
+    padding-top: 50px !important;
+    padding-bottom: 50px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .left-container {
+    padding-left: 50px !important;
+    padding-right: 50px !important;
   }
 }
 </style>

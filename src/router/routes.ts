@@ -22,6 +22,21 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/LandingPage.vue'),
   },
 
+  {
+    path: '/terms-and-conditions',
+    component: () => import('layouts/TermsPage.vue'),
+  },
+
+  {
+    path: '/cookie-policy',
+    component: () => import('layouts/CookiePage.vue'),
+  },
+
+  {
+    path: '/privacy-policy',
+    component: () => import('layouts/PrivacyPage.vue'),
+  },
+
   // Always leave this as last one,
   // but you can also remove it
   {
