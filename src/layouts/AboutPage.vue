@@ -1,9 +1,9 @@
 <template>
   <q-layout view="hhh lpr fff">
-
-    <HeaderLayout/>
+    <HeaderLayout :class="{ hidden: isHeaderHidden }" />
 
     <q-page-container class="content">
+
 
       <h1 id="whats-new">What's new</h1>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel tortor fermentum, egestas sapien vitae, finibus elit. Fusce ullamcorper nec massa vel eleifend. Suspendisse luctus vitae orci sit amet maximus. Donec dictum ligula non dapibus varius. Nulla facilisis odio enim, eu ullamcorper tellus tristique varius. Pellentesque in posuere diam. Ut sed justo ut nisl pretium posuere ut quis nisl. Nulla nec efficitur metus. Mauris eget nibh orci.</p>
@@ -30,23 +30,34 @@
     </q-page-container>
 
     <FooterLayout/>
-
   </q-layout>
 </template>
 
 <script scoped setup lang="ts">
-import { onMounted, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import HeaderLayout from 'src/components/HeaderLayout.vue';
 import FooterLayout from 'src/components/FooterLayout.vue';
 
 const route = useRoute();
+const isHeaderHidden = ref(false);
+let lastScrollTop = 0;
+
+// Adjust this value based on the height of your header
+const HEADER_HEIGHT = 100; // e.g., 100px or adjust as needed
 
 const scrollToSection = (section: string) => {
   setTimeout(() => {
     const element = document.getElementById(section);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      // Use scrollIntoView and adjust with an offset to prevent header overlap
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - HEADER_HEIGHT;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      });
     }
   }, 100); // Small delay to ensure DOM is ready
 };
@@ -60,12 +71,25 @@ const handleScroll = () => {
 
 onMounted(() => {
   handleScroll();
+
+  // Listener to hide/show header on scroll
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (currentScroll > lastScrollTop) {
+      // Scroll down -> hide header
+      isHeaderHidden.value = true;
+    } else {
+      // Scroll up -> show header
+      isHeaderHidden.value = false;
+    }
+
+    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+  });
 });
 
 watch(() => route.path, handleScroll);
 </script>
-
-
 
 <style scoped lang="scss">
 .content {
@@ -76,6 +100,19 @@ watch(() => route.path, handleScroll);
   h1 {
     font-size: 40px;
     font-weight: bold;
+  }
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  transition: top 0.3s ease-in-out;
+
+  &.hidden {
+    top: -100px; // Adjust as needed to fully hide the header
   }
 }
 </style>
