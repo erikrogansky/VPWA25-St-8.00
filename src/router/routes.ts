@@ -36,7 +36,16 @@ const routes: RouteRecordRaw[] = [
     path: '/privacy-policy',
     component: () => import('layouts/PrivacyPage.vue'),
   },
-
+  {
+    path: '/about',
+    component: () => import('layouts/AboutPage.vue'),
+    children: [
+    { path: '', redirect: 'whats-new' },
+    { path: 'whats-new', component: () => import('layouts/AboutPage.vue') },
+    { path: 'about-us', component: () => import('layouts/AboutPage.vue') },
+    { path: 'contact-us', component: () => import('layouts/AboutPage.vue') },
+    ]
+    },
   // Always leave this as last one,
   // but you can also remove it
   {

@@ -1,10 +1,10 @@
 <template>
   <q-header>
-    <img :src="logoSource" alt="Convo's logo">
+    <router-link to="/"><img :src="logoSource" alt="Convo's logo"/></router-link>
     <div class="header-links">
-      <a href="#">What's new</a>
-      <a href="#">About us</a>
-      <a href="#">Contact us</a>
+      <router-link to="/about/whats-new">What's new</router-link>
+      <router-link to="/about/about-us">About us</router-link>
+      <router-link to="/about/contact-us">Contact us</router-link>
     </div>
   </q-header>
 </template>
