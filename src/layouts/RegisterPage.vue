@@ -214,6 +214,7 @@ const validatePhoneNumber = (phone: string) => {
   }
 
   .login-btn {
+    color: var(--font-white);
     font-size: 15px;
     font-weight: 400;
     width: 100%;

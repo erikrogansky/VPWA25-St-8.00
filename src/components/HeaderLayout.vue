@@ -35,6 +35,10 @@ const logoSource = computed(() => {
   align-items: center;
   padding: 10px 75px 0 75px;
 
+  /* [data-theme='light'] & {
+    box-shadow: 0px -7px 22px rgba(0,0,0, 0.2);
+  } */
+
   img {
     height: 60px;
   }

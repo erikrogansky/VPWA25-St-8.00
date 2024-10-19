@@ -95,6 +95,7 @@ import FooterLayout from 'src/components/FooterLayout.vue';
 
     .join-btn {
       background: var(--chat-bubble-outgoing);
+      color: var(--font-white);
       margin-right: 10px;
       padding-left: 20px;
       padding-right: 20px;

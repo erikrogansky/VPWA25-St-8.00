@@ -22,6 +22,10 @@
   align-items: center;
   padding: 0 75px;
 
+  /* [data-theme='light'] & {
+    box-shadow: 0px 7px 22px rgba(0,0,0, 0.2);
+  } */
+
   .footer-links {
     display: flex;
     flex-direction: row;
