@@ -27,16 +27,16 @@
           </div>
         </transition>
 
-        <div
-          v-for="(group, index) in [...groupedMessages].reverse()"
-          :key="index"
-          class="chat-bubble-row"
-          :class="group.type"
-        >
-          <q-bubble v-for="(message, i) in group.messages" :key="i" class="bubble" :class="{'text-message': message.text,'image-message': message.image}">
-            <div v-if="message.text">{{ message.text }}</div>
-            <img v-if="message.image" :src="message.image" alt="Sent image" class="chat-image" />
-          </q-bubble>
+        <div v-for="(group, index) in [...groupedMessages].reverse()" :key="index" class="chat-bubble-row" :class="group.type">
+          <i v-if="group.type === 'incoming'" class="fas fa-circle-user profile-picture" />
+
+          <div class="messages" :class="group.type">
+            <span v-if="group.type === 'incoming'" class="sender">Name</span>
+            <q-bubble v-for="(message, i) in group.messages" :key="i" class="bubble" :class="{'text-message': message.text,'image-message': message.image}">
+              <div v-if="message.text">{{ message.text }}</div>
+              <img v-if="message.image" :src="message.image" alt="Sent image" class="chat-image" />
+            </q-bubble>
+          </div>
         </div>
       </div>
 
