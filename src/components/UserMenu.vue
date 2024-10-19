@@ -118,8 +118,8 @@ import { useQuasar } from 'quasar';
 
 const $q = useQuasar();
 
-const accountDialog = ref(false); // Account dialog var
-const preferencesDialog = ref(false); // Preferences dialog var
+const accountDialog = ref(false);
+const preferencesDialog = ref(false);
 const menuOpen = ref(false);
 const accountSettings = ref(false);
 const activeStatus = ref('on');
@@ -128,6 +128,8 @@ const notifications = ref(['display', 'sound']);
 
 const mode = ref(modeStore.mode);
 
+import { Cookies } from 'quasar';
+
 watch(() => modeStore.mode, (newMode) => {
   mode.value = newMode;
   updateDarkMode(newMode);
@@ -135,7 +137,7 @@ watch(() => modeStore.mode, (newMode) => {
 
 watch(mode, (newMode) => {
   modeStore.setMode(newMode);
-  updateDarkMode(newMode);
+  Cookies.set('themeMode', newMode, { expires: 7 });
 });
 
 function updateDarkMode(newMode: string) {
@@ -151,16 +153,23 @@ function updateDarkMode(newMode: string) {
     case 'sp':
       const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
       $q.dark.set(isDark);
-      if (!isDark) {
-        document.documentElement.setAttribute('data-theme', 'light');
-      } else {
-        document.documentElement.setAttribute('data-theme', 'dark');
-      }
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
       break;
   }
 }
 
-updateDarkMode(modeStore.mode);
+const storedMode = Cookies.get('themeMode');
+
+if (storedMode && (storedMode === 'on' || storedMode === 'sp' || storedMode === 'off')) {
+  mode.value = storedMode;
+  modeStore.setMode(storedMode);
+  updateDarkMode(storedMode);
+} else {
+  const defaultMode = modeStore.mode;
+  mode.value = defaultMode;
+  updateDarkMode(defaultMode);
+}
+
 </script>
 
 
