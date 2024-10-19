@@ -1,6 +1,14 @@
 <template>
   <q-menu v-model="menuOpen" class="user-popup">
     <q-list style="min-width: 290px; height: auto;">
+
+      <!-- Account -->
+      <q-item clickable @click="fixed = true">
+        <q-item-section avatar><i class="fas fa-user"></i></q-item-section>
+        <q-item-section>Account</q-item-section>
+      </q-item>
+
+      <!-- Preferences -->
       <q-item clickable @click="fixed = true">
         <q-item-section avatar><i class="fas fa-gear"></i></q-item-section>
         <q-item-section>Preferences</q-item-section>
@@ -58,11 +66,15 @@
         </q-dialog>
       </q-item>
       <q-separator />
+
+      <!-- Help -->
       <q-item clickable v-close-popup>
         <q-item-section avatar><i class="fas fa-circle-question"></i></q-item-section>
         <q-item-section>Help</q-item-section>
       </q-item>
       <q-separator />
+
+      <!-- Terms & Conditions -->
       <q-item clickable v-close-popup to="/terms-and-conditions">
         <q-item-section avatar><i class="fas fa-align-left"></i></q-item-section>
         <q-item-section>Terms & Conditions</q-item-section>
