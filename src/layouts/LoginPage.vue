@@ -11,8 +11,8 @@
             </q-card-section>
 
             <q-card-section>
-              <q-input rounded standout v-model="email" label="Email Address" :error="!!emailError" :error-message="emailError" :class="{'padding-err': !!emailError}"></q-input>
-              <q-input rounded standout v-model="password" type="password" label="Password" class="q-mt-md" :error="!!passwordError" :error-message="passwordError" :class="{'padding-err': !!passwordError}"></q-input>
+              <q-input rounded standout v-model="email" label="Email Address" :error="!!emailError" :error-message="emailError" :class="{'padding-err': !!emailError}" @keyup.enter="focusNext"></q-input>
+              <q-input rounded standout v-model="password" type="password" label="Password" class="q-mt-md" :error="!!passwordError" :error-message="passwordError" :class="{'padding-err': !!passwordError}" ref="passwordInput" @keyup.enter="validateAndSubmit"></q-input>
             </q-card-section>
 
             <div class="text-8 text-center terms-text">
@@ -100,6 +100,17 @@ const validateEmail = (email: string) => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return re.test(email);
 };
+
+function focusNext(event: KeyboardEvent) {
+  const target = event.target as HTMLInputElement;
+
+  const inputs = Array.from(document.querySelectorAll<HTMLInputElement>('input'));
+  const index = inputs.indexOf(target);
+
+  if (index < inputs.length - 1) {
+    inputs[index + 1].focus();
+  }
+}
 </script>
 
 <style scoped lang="scss">

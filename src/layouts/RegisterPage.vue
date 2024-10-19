@@ -10,15 +10,15 @@
 
         <q-card-section>
           <div class="q-gutter">
-            <q-input dense rounded standout v-model="nick_name" placeholder="Nickname" :error="!!nickError" :error-message="nickError" :class="{'padding-err': !!nickError}"/>
+            <q-input dense rounded standout v-model="nick_name" placeholder="Nickname" :error="!!nickError" :error-message="nickError" :class="{'padding-err': !!nickError}" @keyup.enter="focusNext"/>
             <div class="q-gutter q-mt-md row">
-              <div class="name"><q-input dense rounded standout v-model="first_name" placeholder="First Name" class="col" :error="!!firstNameError" :error-message="firstNameError" :class="{'padding-err': !!firstNameError}"/></div>
-              <div class="name"><q-input dense rounded standout v-model="last_name" placeholder="Last Name" class="col" :error="!!lastNameError" :error-message="lastNameError" :class="{'padding-err': !!lastNameError}"/></div>
+              <div class="name"><q-input dense rounded standout v-model="first_name" placeholder="First Name" class="col" :error="!!firstNameError" :error-message="firstNameError" :class="{'padding-err': !!firstNameError}" @keyup.enter="focusNext"/></div>
+              <div class="name"><q-input dense rounded standout v-model="last_name" placeholder="Last Name" class="col" :error="!!lastNameError" :error-message="lastNameError" :class="{'padding-err': !!lastNameError}" @keyup.enter="focusNext"/></div>
             </div>
             <div class="q-gutter q-mt-md row">
               <div class="date_gender">
                   <div style="max-width: 300px">
-                    <q-input dense rounded standout v-model="date_of_birth" mask="date" placeholder="Date of birth" :error="!!dateError" :error-message="dateError" :class="{'padding-err': !!dateError}">
+                    <q-input dense rounded standout v-model="date_of_birth" mask="date" placeholder="Date of birth" :error="!!dateError" :error-message="dateError" :class="{'padding-err': !!dateError}"  @keyup.enter="focusNext">
                       <template v-slot:append>
                         <q-icon name="event" class="cursor-pointer">
                           <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -37,9 +37,9 @@
             </div>
           </div>
           <div class="">
-            <q-input dense rounded standout v-model="phone_number" placeholder="Phone Number" class="q-mt-md" :error="!!phoneError" :error-message="phoneError" :class="{'padding-err': !!phoneError}"/>
-            <q-input dense rounded standout v-model="email" placeholder="Email Address" class="q-mt-md" :error="!!emailError" :error-message="emailError" :class="{'padding-err': !!emailError}"/>
-            <q-input dense rounded standout v-model="password" type="password" placeholder="Password" class="q-mt-md" :error="!!passwordError" :error-message="passwordError" :class="{'padding-err': !!passwordError}"/>
+            <q-input dense rounded standout v-model="phone_number" placeholder="Phone Number" class="q-mt-md" :error="!!phoneError" :error-message="phoneError" :class="{'padding-err': !!phoneError}"  @keyup.enter="focusNext"/>
+            <q-input dense rounded standout v-model="email" placeholder="Email Address" class="q-mt-md" :error="!!emailError" :error-message="emailError" :class="{'padding-err': !!emailError}"  @keyup.enter="focusNext"/>
+            <q-input dense rounded standout v-model="password" type="password" placeholder="Password" class="q-mt-md" :error="!!passwordError" :error-message="passwordError" :class="{'padding-err': !!passwordError}"  @keyup.enter="validateAndSubmit"/>
           </div>
         </q-card-section>
 
@@ -180,6 +180,17 @@ const validatePhoneNumber = (phone: string) => {
   const re = /^\+?\d{10,15}$/;
   return re.test(phone);
 };
+
+function focusNext(event: KeyboardEvent) {
+  const target = event.target as HTMLInputElement;
+
+  const inputs = Array.from(document.querySelectorAll<HTMLInputElement>('input'));
+  const index = inputs.indexOf(target);
+
+  if (index < inputs.length - 1) {
+    inputs[index + 1].focus();
+  }
+}
 </script>
 
 
