@@ -38,6 +38,8 @@ $font-hover   : #bab9ce;
 $chat-bubble-incoming: #1F1D44;
 $chat-bubble-outgoing: linear-gradient(-80deg, #717AED, #C134F8);
 
+$is-typing-hover: #33315d;
+
 $scrollbar: linear-gradient(-80deg, rgba(113, 122, 237, 0.65), rgba(193, 52, 248, 0.65));
 $scrollbar-hover: linear-gradient(-80deg, rgba(113, 122, 237, 0.85), rgba(193, 52, 248, 0.85));
 
@@ -69,6 +71,8 @@ $l-font-hover   : #828282;
 
 $l-chat-bubble-incoming: #dbdbdb;
 $l-chat-bubble-outgoing: linear-gradient(-80deg, #717AED, #C134F8);
+
+$l-is-typing-hover: #33315d;
 
 $l-scrollbar: linear-gradient(-80deg, rgba(113, 122, 237, 0.65), rgba(193, 52, 248, 0.65));
 $l-scrollbar-hover: linear-gradient(-80deg, rgba(113, 122, 237, 0.85), rgba(193, 52, 248, 0.85));

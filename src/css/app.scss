@@ -452,6 +452,18 @@ body.body--light {
   }
 }
 
+.typing-indicator {
+  cursor: pointer;
+}
+
+.chat-bubble-row.incoming .bubble.text-message.typing-indicator:hover {
+  background: $is-typing-hover !important;
+
+  body.body--light & {
+    background-image: $l-is-typing-hover !important;
+  }
+}
+
 .profile-picture {
   font-size: 24px;
   margin: 0 8px 6px 0;
