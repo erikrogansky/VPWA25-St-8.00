@@ -18,6 +18,15 @@
       </div>
 
       <div class="chat-content">
+        <transition name="fade" appear>
+          <div class="chat-bubble-row incoming">
+            <q-bubble v-if="text.length > 0" class="bubble text-message typing-indicator" @click="showTypingText = !showTypingText">
+              <span v-if="!showTypingText"><q-spinner-dots size="20px" /></span>
+              <span v-else>{{ text }}</span>
+            </q-bubble>
+          </div>
+        </transition>
+
         <div
           v-for="(group, index) in [...groupedMessages].reverse()"
           :key="index"
@@ -45,10 +54,10 @@
           v-model="text"
           placeholder="Aa"
           class="text-bar"
-          @keyup.enter="sendMessage"
+          @keyup.enter="() => { sendMessage(); showTypingText = false; }"
         />
         <transition name="fade" appear>
-          <q-btn v-if="text.length > 0" icon="send" @click="sendMessage" flat round dense class="send" />
+          <q-btn v-if="text.length > 0" icon="send" @click="() => { sendMessage(); showTypingText = false; }" flat round dense class="send" />
         </transition>
       </div>
     </div>
@@ -72,6 +81,7 @@ interface MessageGroup {
 
 const text = ref<string>('');
 const messages = ref<Message[]>([]);
+const showTypingText = ref<boolean>(false);
 
 const groupedMessages = computed<MessageGroup[]>(() => {
   const groups: MessageGroup[] = [];
