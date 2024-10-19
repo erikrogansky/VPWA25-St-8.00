@@ -5,7 +5,8 @@
         <q-item class="chat-header-info">
           <q-item-section avatar>
             <i class="fas fa-circle-user"></i>
-            <i class="fas fa-circle" style="position: absolute; font-size: 13px; bottom: 7px; left: 44px; color: lime;" />
+            <i class="fas fa-circle active-status-help" />
+            <i class="fas fa-circle active-status" />
           </q-item-section>
           <q-item-section>
             <div>
@@ -181,6 +182,23 @@ const handleImageUpload = (event: Event) => {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-hover);
+}
+
+
+.active-status-help {
+  position: absolute;
+  font-size: 18px !important;
+  bottom: 5px;
+  left: 41.5px;
+  color: var(--primary-darker-15);
+}
+
+.active-status {
+  position: absolute;
+  font-size: 13px !important;
+  bottom: 7px;
+  left: 44px;
+  color: lime;
 }
 
 </style>

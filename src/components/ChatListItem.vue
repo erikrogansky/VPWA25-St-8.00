@@ -2,7 +2,8 @@
   <q-item class="chat-item" @mouseover="hover" @mouseleave="unhover">
     <q-item-section avatar>
       <i class="fas fa-circle-user"></i>
-      <i class="fas fa-circle" style="position: absolute; font-size: 12px; bottom: 14px; left: 34px; color: lime;" />
+      <i class="fas fa-circle active-status-help" />
+      <i class="fas fa-circle active-status" />
     </q-item-section>
     <q-item-section>
       <div class="chat-item-content">
@@ -80,3 +81,21 @@ const onMenuItemClick = () => {
 };
 
 </script>
+
+<style lang="scss" scoped>
+.active-status-help {
+  position: absolute;
+  font-size: 17px;
+  bottom: 11.5px;
+  left: 31.5px;
+  color: var(--primary-darker-15);
+}
+
+.active-status {
+  position: absolute;
+  font-size: 12px;
+  bottom: 14px;
+  left: 34px;
+  color: lime;
+}
+</style>

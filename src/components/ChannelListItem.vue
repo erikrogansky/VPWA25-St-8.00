@@ -2,7 +2,8 @@
   <q-item class="chat-item" @mouseover="hover" @mouseleave="unhover">
     <q-item-section avatar>
       <i class="fas fa-circle-user"></i>
-      <img src="/src/assets/padlock.svg" style="position: absolute; width: 20px; bottom: 12px; left: 30px;" />
+      <i class="fas fa-circle public-private-help" />
+      <img :src="imageSrc" class="public-private" />
     </q-item-section>
     <q-item-section>
       <div class="chat-item-content">
@@ -79,4 +80,33 @@ const onMenuItemClick = () => {
   show.value = false;
 };
 
+const publicImage = '/src/assets/public.svg';
+const privateImage = '/src/assets/padlock.svg';
+
+const imageSrc = ref(publicImage);
+
+function setImageWithProbability(probability: number) {
+  imageSrc.value = Math.random() < probability ? privateImage : publicImage;
+}
+
+setImageWithProbability(0.5);
+
 </script>
+
+
+<style lang="scss" scoped>
+.public-private-help {
+  position: absolute;
+  font-size: 17px;
+  bottom: 11.5px;
+  left: 31.5px;
+  color: var(--primary-darker-15);
+}
+
+.public-private {
+  position: absolute;
+  width: 12px;
+  bottom: 14px;
+  left: 34px;
+}
+</style>
