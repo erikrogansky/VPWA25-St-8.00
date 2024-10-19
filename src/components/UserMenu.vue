@@ -3,17 +3,39 @@
     <q-list style="min-width: 290px; height: auto;">
 
       <!-- Account -->
-      <q-item clickable @click="fixed = true">
+      <q-item clickable @click="accountDialog = true">
         <q-item-section avatar><i class="fas fa-user"></i></q-item-section>
         <q-item-section>Account</q-item-section>
+
+        <q-dialog v-model="accountDialog" @hide="accountSettings = false">
+          <q-card class="account">
+
+            <q-card-section class="header">
+              <q-label class="h">Account settings</q-label>
+              <q-btn flat round dense><i class="fas fa-close"></i></q-btn>
+            </q-card-section>
+
+            <q-card-section class="section">
+              <div class="section-name">Account</div>
+              <div class="section-item"><q-label class="name">ErikR7</q-label><q-btn flat no-caps dense class="action-btn"><q-label class="action">Edit nick</q-label><i class="fas fa-edit"></i></q-btn></div>
+              <div class="section-item"><q-label class="name">Erik Roganský</q-label><q-btn flat no-caps dense class="action-btn"><q-label class="action">Edit name</q-label><i class="fas fa-edit"></i></q-btn></div>
+              <div class="section-item"><q-label class="name">Male</q-label><q-btn flat no-caps dense class="action-btn"><q-label class="action">Edit gender</q-label><i class="fas fa-edit"></i></q-btn></div>
+              <div class="section-item"><q-label class="name">+421 911 111 111</q-label><q-btn flat no-caps dense class="action-btn"><q-label class="action">Edit phone</q-label><i class="fas fa-edit"></i></q-btn></div>
+              <div class="delete-account"><q-btn flat no-caps dense class="action-btn">Delete account</q-btn></div>
+            </q-card-section>
+
+          </q-card>
+        </q-dialog>
       </q-item>
 
       <!-- Preferences -->
-      <q-item clickable @click="fixed = true">
+      <q-item clickable @click="preferencesDialog = true">
         <q-item-section avatar><i class="fas fa-gear"></i></q-item-section>
         <q-item-section>Preferences</q-item-section>
-        <q-dialog v-model="fixed" @hide="menuOpen = false">
+
+        <q-dialog v-model="preferencesDialog" @hide="menuOpen = false">
           <q-card class="preferences">
+
             <q-card-section class="header">
               <q-label class="h">Preferences</q-label>
               <q-btn flat round dense><i class="fas fa-close"></i></q-btn>
@@ -47,14 +69,7 @@
 
             <q-separator />
 
-            <q-card-section class="section">
-              <div class="section-name">Account</div>
-              <div class="section-item"><q-label class="name">ErikR7</q-label><q-btn flat no-caps dense class="action-btn"><q-label class="action">Edit nick</q-label><i class="fas fa-edit"></i></q-btn></div>
-              <div class="section-item"><q-label class="name">Erik Roganský</q-label><q-btn flat no-caps dense class="action-btn"><q-label class="action">Edit name</q-label><i class="fas fa-edit"></i></q-btn></div>
-              <div class="section-item"><q-label class="name">Male</q-label><q-btn flat no-caps dense class="action-btn"><q-label class="action">Edit gender</q-label><i class="fas fa-edit"></i></q-btn></div>
-              <div class="section-item"><q-label class="name">+421 911 111 111</q-label><q-btn flat no-caps dense class="action-btn"><q-label class="action">Edit phone</q-label><i class="fas fa-edit"></i></q-btn></div>
-              <div class="delete-account"><q-btn flat no-caps dense class="action-btn">Delete account</q-btn></div>
-            </q-card-section>
+
 
             <q-separator />
 
@@ -103,8 +118,10 @@ import { useQuasar } from 'quasar';
 
 const $q = useQuasar();
 
-const fixed = ref(false);
+const accountDialog = ref(false); // Account dialog var
+const preferencesDialog = ref(false); // Preferences dialog var
 const menuOpen = ref(false);
+const accountSettings = ref(false);
 const activeStatus = ref('on');
 const modeStore = useModeStore();
 const notifications = ref(['display', 'sound']);
@@ -141,7 +158,7 @@ updateDarkMode(modeStore.mode);
 
 
 <style lang="scss" scoped>
-.preferences {
+.preferences, .account {
   background-color: $popup;
   color: $font;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
