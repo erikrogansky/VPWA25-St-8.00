@@ -105,7 +105,7 @@ const validateEmail = (email: string) => {
 <style scoped lang="scss">
 
   * {
-  color: $font;
+  color: var(--font);
   }
 
   img {
@@ -120,15 +120,11 @@ const validateEmail = (email: string) => {
   }
 
   .q-page-container {
-    background-color: $primary;
+    background-color: var(--primary);
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
-
-    body.body--light & {
-      background-color: $l-primary !important;
-    }
   }
 
   .q-card {
@@ -142,14 +138,10 @@ const validateEmail = (email: string) => {
     width: 100%;
     display: flex;
     flex-direction: row;
-    background: $chat-bubble-outgoing;
+    background: var(--chat-bubble-outgoing);
     margin-right: 10px;
     padding-left: 20px;
     padding-right: 20px;
-
-    body.body--light & {
-      background-color: $l-chat-bubble-outgoing !important;
-    }
   }
 
   .header {

@@ -1,46 +1,26 @@
 .q-layout__section--marginal {
-  background-color: $primary !important;
-  color: $font !important;
-
-  body.body--light & {
-    background-color: $l-primary !important;
-  }
-}
-
-body.body--light .q-layout__section--marginal * {
-  color: $l-font !important;
+  background-color: var(--primary) !important;
+  color: var(--font) !important;
 }
 
 body {
-  background-color: $primary !important;
+  background-color: var(--primary) !important;
 }
 
-body.body--light {
-  background-color: $l-primary !important;
-}
 
 .left-panel {
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   height: 100%;
-
-  body.body--light & {
-    box-shadow: -4px 0px 14px 0px rgba(0, 0, 0, 0.2);
-  }
 }
 
 .left-panel-content {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: $primary-darker-30 !important;
+  background-color: var(--primary-darker-30);
   padding-top: 6px;
-
-  body.body--light & {
-    box-shadow: -7px 0px 22px 0px rgba(0, 0, 0, 0.2);
-    background-color: $l-primary-darker-30 !important;
-  }
 }
 
 .left-panel-list {
@@ -49,39 +29,23 @@ body.body--light {
 
 .left-panel-icon {
   font-size: 24px;
-  color: $font !important;
-
-  body.body--light & {
-    color: $l-font !important;
-  }
+  color: var(--font);
 }
 
 .left-panel-icon.channel {
   font-size: 19.2px;
-  color: $font !important;
-
-  body.body--light & {
-    color: $l-font !important;
-  }
+  color: var(--font);
 }
 
 .left-panel-icon.user {
   font-size: 28px;
-  color: $font !important;
-
-  body.body--light & {
-    color: $l-font !important;
-  }
+  color: var(--font);
 }
 
 .left-panel-text {
   font-size: 16px;
-  color: $font !important;
+  color: var(--font);
   font-weight: bold;
-
-  body.body--light & {
-    color: $l-font !important;
-  }
 }
 
 .bottom-section {
@@ -100,38 +64,25 @@ body.body--light {
 }
 
 .user-popup {
-  background-color: $popup !important;
-  color: $font !important;
+  background-color: var(--popup);
+  color: var(--font);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   border-radius: 14px;
   font-size: 15px;
   font-weight: bold;
-
-  body.body--light & {
-    color: $l-font !important;
-    background-color: $l-popup !important;
-  }
 
   i {
     font-size: 18px;
   }
 
   .q-separator {
-    background-color: $popup-separator !important;
+    background-color: var(--popup-separator);
     margin: 0 12px;
-
-    body.body--light & {
-      background-color: $l-popup-separator !important;
-    }
   }
 
   .q-item--active {
-    color: $font !important;
+    color: var(--font);
     opacity: 0.8;
-
-    body.body--light & {
-      color: $l-font !important;
-    }
   }
 }
 
@@ -158,11 +109,7 @@ body.body--light {
 #left-panel .q-item:hover .left-panel-text,
 #left-panel .active-button .left-panel-icon,
 #left-panel .active-button .left-panel-text {
-  color: $font-hover !important;
-
-  body.body--light & {
-    color: $l-font-hover !important;
-  }
+  color: var(--font-hover);
 }
 
 .q-page-container {
@@ -171,23 +118,13 @@ body.body--light {
 }
 
 #list.q-page {
-  background-color: $primary-darker-15 !important;
+  background-color: var(--primary-darker-15);
   min-width: 350px;
-
-  body.body--light & {
-    z-index: 200;
-    background-color: $l-primary-darker-15 !important;
-    box-shadow: -7px 0px 22px 0px rgba(0, 0, 0, 0.2);
-  }
 }
 
 #chat-page.q-page {
-  background-color: $primary !important;
+  background-color: var(--primary);
   width: 100%;
-
-  body.body--light & {
-    background-color: $l-primary !important;
-  }
 }
 
 #chat-page {
@@ -197,28 +134,16 @@ body.body--light {
 .q-input,
 .q-select {
   * {
-    color: $font !important;
-
-    body.body--light & {
-      color: $l-font !important;
-    }
+    color: var(--font);
   }
 
   .q-field__control {
-    background-color: $primary-lighter !important;
-
-    body.body--light & {
-      background-color: $l-primary-lighter !important;
-    }
+    background-color: var(--primary-lighter);
   }
 
   &:focus-within .q-field__control {
-    background-color: $primary-lighter !important;
+    background-color: var(--primary-lighter);
     box-shadow: none;
-
-    body.body--light & {
-      background-color: $l-primary-lighter !important;
-    }
   }
 
   i {
@@ -249,31 +174,19 @@ body.body--light {
 
   .q-item:hover .chat-panel-icon,
   .q-item:focus .chat-panel-icon {
-    color: $font-hover !important;
-
-    body.body--light & {
-      color: $l-font-hover !important;
-    }
+    color: var(--font-hover);
   }
 }
 
 .chat-panel-icon.edit {
   font-size: 20px;
-  color: $font !important;
-
-  body.body--light & {
-    color: $l-font !important;
-  }
+  color: var(--font);
 }
 
 .chat-panel-text {
   font-size: 22px;
-  color: $font !important;
+  color: var(--font);
   font-weight: bold;
-
-  body.body--light & {
-    color: $l-font !important;
-  }
 }
 
 .chat-item {
@@ -282,11 +195,7 @@ body.body--light {
   align-items: center;
 
   * {
-    color: $font !important;
-
-    body.body--light & {
-      color: $l-font !important;
-    }
+    color: var(--font);
   }
 
   i {
@@ -322,25 +231,16 @@ body.body--light {
 .chat-container {
   height: 100%;
   width: auto;
-  color: $font !important;
-
-  body.body--light & {
-    color: $l-font !important;
-  }
+  color: var(--font);
 }
 
 .chat-header {
   height: 65px;
   width: 100%;
-  background-color: $primary-darker-10 !important;
+  background-color: var(--primary-darker-10);
   display: flex;
   flex-direction: row;
   align-items: center;
-
-  body.body--light & {
-    box-shadow: 0px -4px 22px 0px rgba(0, 0, 0, 0.2);
-    background-color: $l-primary-darker-10 !important;
-  }
 
   .chat-header-info {
     i {
@@ -418,11 +318,7 @@ body.body--light {
   padding-right: 250px;
 
   .bubble.text-message {
-    background: $chat-bubble-incoming !important;
-
-    body.body--light & {
-      background: $l-chat-bubble-incoming !important;
-    }
+    background: var(--chat-bubble-incoming);
   }
 
   .bubble.image-message {
@@ -433,14 +329,11 @@ body.body--light {
 .chat-bubble-row.outgoing {
   justify-content: flex-end;
   padding-left: 250px;
-  color: $font !important;
+  color: var(--font);
 
   .bubble.text-message {
-    background-image: $chat-bubble-outgoing !important;
-
-    body.body--light & {
-      background-image: $l-chat-bubble-outgoing !important;
-    }
+    background-image: var(--chat-bubble-outgoing);
+    color: var(--font-white);
   }
 
   .bubble.image-message {
@@ -457,12 +350,9 @@ body.body--light {
 }
 
 .chat-bubble-row.incoming .bubble.text-message.typing-indicator:hover {
-  background: $is-typing-hover !important;
-
-  body.body--light & {
-    background-image: $l-is-typing-hover !important;
-  }
+  background: var(--is-typing-hover);
 }
+
 
 .profile-picture {
   font-size: 24px;
@@ -483,16 +373,11 @@ body.body--light {
 .chat-footer {
   height: 65px;
   width: 100%;
-  background-color: $primary-darker-10 !important;
+  background-color: var(--primary-darker-10);
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 0 18px;
-
-  body.body--light & {
-    box-shadow: 0px 4px 22px 0px rgba(0, 0, 0, 0.2);
-    background-color: $l-primary-darker-10 !important;
-  }
 
   .text-bar {
     height: 40px;

@@ -173,22 +173,13 @@ const handleImageUpload = (event: Event) => {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: $scrollbar !important;
+  background: var(--scrollbar);
   border-radius: 10px;
-  border: 3px solid $primary !important;
+  border: 3px solid var(--primary);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: $scrollbar-hover !important;
-}
-
-body.body--light ::-webkit-scrollbar-thumb {
-  background: $l-scrollbar !important;
-  border: 3px solid $l-primary !important;
-}
-
-body.body--light ::-webkit-scrollbar-thumb:hover {
-  background: $l-scrollbar-hover !important;
+  background: var(--scrollbar-hover);
 }
 
 </style>

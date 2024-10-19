@@ -24,11 +24,7 @@ const logoSource = computed(() => {
 
 <style scoped lang="scss">
 * {
-  color: $font !important;
-}
-
-body.body--light * {
-    color: $l-font !important;
+  color: var(--font);
 }
 
 .q-header {

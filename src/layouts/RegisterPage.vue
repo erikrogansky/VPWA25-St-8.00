@@ -186,11 +186,7 @@ const validatePhoneNumber = (phone: string) => {
 <style scoped lang="scss">
 
   * {
-  color: $font !important;;
-
-  body.body--light & {
-    color: $l-font !important;
-  }
+    color: var(--font);
   }
 
   img {
@@ -205,15 +201,11 @@ const validatePhoneNumber = (phone: string) => {
   }
 
   .q-page-container {
-    background-color: $primary !important;;
+    background-color: var(--primary);
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
-
-    body.body--light & {
-      background-color: $l-primary !important;
-    }
   }
 
   .q-card {
@@ -227,14 +219,10 @@ const validatePhoneNumber = (phone: string) => {
     width: 100%;
     display: flex;
     flex-direction: row;
-    background: $chat-bubble-outgoing !important;;
+    background: var(--chat-bubble-outgoing);
     margin-right: 10px;
     padding-left: 20px;
     padding-right: 20px;
-
-    body.body--light & {
-      background: $l-chat-bubble-outgoing !important;
-    }
   }
 
   .date_gender {
@@ -283,43 +271,23 @@ const validatePhoneNumber = (phone: string) => {
   }
 
   .q-dark {
-    background: $popup !important;;
-
-    body.body--light & {
-      background-color: $l-popup !important;
-    }
+    background: var(--popup);
   }
 
   .content {
-    background: $primary !important;
-
-    body.body--light & {
-      background: $l-primary !important;
-    }
+    background: var(--primary);
   }
 
   :deep(.q-date__header) {
-    background-color: $popup !important;;
-
-    body.body--light & {
-      background-color: $l-popup !important;
-    }
+    background-color: var(--popup);
   }
 
   :deep(.q-date__main) {
-    color: $font;
-
-    body.body--light & {
-      color: $l-font !important;
-    }
+    color: var(--font);
   }
 
   :deep(.text-primary) {
-    color: $font !important;
-
-    body.body--light & {
-      color: $l-font !important;
-    }
+    color: var(--font);
   }
 
   :deep(.no-gender span) {

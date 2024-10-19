@@ -142,13 +142,20 @@ function updateDarkMode(newMode: string) {
   switch (newMode) {
     case 'on':
       $q.dark.set(true);
+      document.documentElement.setAttribute('data-theme', 'dark');
       break;
     case 'off':
       $q.dark.set(false);
+      document.documentElement.setAttribute('data-theme', 'light');
       break;
     case 'sp':
       const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
       $q.dark.set(isDark);
+      if (!isDark) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
       break;
   }
 }
@@ -159,8 +166,8 @@ updateDarkMode(modeStore.mode);
 
 <style lang="scss" scoped>
 .preferences, .account {
-  background-color: $popup;
-  color: $font;
+  background-color: var(--popup);
+  color: var(--font);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   border-radius: 14px;
   width: 450px;
@@ -171,12 +178,12 @@ updateDarkMode(modeStore.mode);
   }
 
   .q-separator {
-    background-color: $popup-separator;
+    background-color:var(--popup-separator);
     margin: 0 12px;
   }
 
   .q-item--active {
-    color: $font;
+    color: var(--font);
     opacity: 0.8;
   }
 
@@ -205,7 +212,7 @@ updateDarkMode(modeStore.mode);
 
 
       :hover {
-        color: $font-hover;
+        color: var(--font-hover);
       }
     }
   }
@@ -229,7 +236,7 @@ updateDarkMode(modeStore.mode);
     height: 18px;
     width: 28px;
     border-radius: 100px;
-    background: $toggle;
+    background: var(--toggle);
 
     position: absolute;
     bottom: 1.25px;
@@ -244,7 +251,7 @@ updateDarkMode(modeStore.mode);
 
   .delete-account {
     font-size: 14px;
-    color: $negative;
+    color: var(--negtive);
     text-decoration: underline;
 
     display: flex;
@@ -292,7 +299,7 @@ updateDarkMode(modeStore.mode);
       }
 
       :hover {
-        color: $font-hover;
+        color: var(--font-hover);
       }
 
       padding: 0;
@@ -323,21 +330,12 @@ updateDarkMode(modeStore.mode);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: $scrollbar !important;
+  background: var(--scrollbar);
   border-radius: 10px;
-  border: 3px solid $primary !important;
-
-  body.body--light & {
-    background: $l-scrollbar !important;
-    border: 3px solid $l-primary !important;
-  }
+  border: 3px solid var(--primary);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: $scrollbar-hover !important;
-
-  body.body--light & {
-    background: $l-scrollbar-hover !important;
-  }
+  background: var(--scrollbar-hover);
 }
 </style>

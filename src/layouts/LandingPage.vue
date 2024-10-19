@@ -35,11 +35,7 @@ import FooterLayout from 'src/components/FooterLayout.vue';
 
 <style scoped lang="scss">
 * {
-  color: $font !important;
-
-  body.body--light & {
-    color: $l-font !important;
-  }
+  color: var(--font);
 }
 
 .q-layout {
@@ -49,15 +45,11 @@ import FooterLayout from 'src/components/FooterLayout.vue';
 }
 
 .q-page-container {
-  background-color: $primary;
+  background-color: var(--primary);
   display: flex;
   flex-direction: row;
   flex-grow: 1;
   align-items: center;
-
-  body.body--light & {
-    background-color: $l-primary !important;
-  }
 
   .left-container {
     width: 720px;
@@ -71,17 +63,11 @@ import FooterLayout from 'src/components/FooterLayout.vue';
     .title {
       font-size: 56px;
       font-weight: bolder;
-      background: $title !important;
-      -webkit-background-clip: text !important;
-      -webkit-text-fill-color: transparent !important;
+      background: var(--title);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       line-height: 1.3;
       padding-bottom: 30px;
-
-      body.body--light & {
-        background: $l-title !important;
-        -webkit-background-clip: text !important;
-        -webkit-text-fill-color: transparent !important;
-      }
     }
 
     .paragraph {
@@ -108,14 +94,10 @@ import FooterLayout from 'src/components/FooterLayout.vue';
     }
 
     .join-btn {
-      background: $chat-bubble-outgoing;
+      background: var(--chat-bubble-outgoing);
       margin-right: 10px;
       padding-left: 20px;
       padding-right: 20px;
-
-      body.body--light & {
-        background: $l-chat-bubble-outgoing !important;
-      }
     }
 
     .log-btn {

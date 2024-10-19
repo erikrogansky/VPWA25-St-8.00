@@ -11,7 +11,7 @@
 
 <style scoped lang="scss">
 * {
-  color: $font;
+  color: var(--font);
 }
 
 .q-footer {
