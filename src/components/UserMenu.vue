@@ -251,7 +251,7 @@ updateDarkMode(modeStore.mode);
 
   .delete-account {
     font-size: 14px;
-    color: var(--negtive);
+    color: var(--negative);
     text-decoration: underline;
 
     display: flex;

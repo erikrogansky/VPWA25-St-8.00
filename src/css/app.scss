@@ -134,16 +134,18 @@ body {
 .q-input,
 .q-select {
   * {
-    color: var(--font);
+    color: var(--font) !important;
   }
 
   .q-field__control {
-    background-color: var(--primary-lighter);
+    background-color: var(--primary-lighter) !important;
+    color: var(--font) !important;
   }
 
   &:focus-within .q-field__control {
-    background-color: var(--primary-lighter);
+    background-color: var(--primary-lighter) !important;
     box-shadow: none;
+    color: var(--font) !important;
   }
 
   i {
