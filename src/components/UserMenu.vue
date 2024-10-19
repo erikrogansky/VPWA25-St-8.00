@@ -7,12 +7,12 @@
         <q-item-section avatar><i class="fas fa-user"></i></q-item-section>
         <q-item-section>Account</q-item-section>
 
-        <q-dialog v-model="accountDialog" @hide="accountSettings = false">
+        <q-dialog v-model="accountDialog" @hide="menuOpen = false">
           <q-card class="account">
 
             <q-card-section class="header">
               <q-label class="h">Account settings</q-label>
-              <q-btn flat round dense><i class="fas fa-close"></i></q-btn>
+              <q-btn flat round dense v-close-popup><i class="fas fa-close"></i></q-btn>
             </q-card-section>
 
             <q-card-section class="section">
@@ -38,7 +38,7 @@
 
             <q-card-section class="header">
               <q-label class="h">Preferences</q-label>
-              <q-btn flat round dense><i class="fas fa-close"></i></q-btn>
+              <q-btn flat round dense v-close-popup><i class="fas fa-close"></i></q-btn>
             </q-card-section>
 
             <q-card-section class="section">
@@ -66,12 +66,6 @@
               <div class="section-item"><q-label class="name">System preferences</q-label><q-radio keep-color dense size="sm" v-model="mode" val="sp" color="white" /></div>
               <div class="section-item-description">The display will be automatically adjusted based on your system preferences.</div>
             </q-card-section>
-
-            <q-separator />
-
-
-
-            <q-separator />
 
             <!-- <q-card-actions align="right">
               <q-btn flat label="Decline" color="primary" v-close-popup />
@@ -121,7 +115,6 @@ const $q = useQuasar();
 const accountDialog = ref(false);
 const preferencesDialog = ref(false);
 const menuOpen = ref(false);
-const accountSettings = ref(false);
 const activeStatus = ref('on');
 const modeStore = useModeStore();
 const notifications = ref(['display', 'sound']);

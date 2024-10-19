@@ -5,6 +5,7 @@
         <q-item class="chat-header-info">
           <q-item-section avatar>
             <i class="fas fa-circle-user"></i>
+            <i class="fas fa-circle" style="position: absolute; font-size: 13px; bottom: 7px; left: 44px; color: lime;" />
           </q-item-section>
           <q-item-section>
             <div>

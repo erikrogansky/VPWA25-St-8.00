@@ -2,6 +2,7 @@
   <q-item class="chat-item" @mouseover="hover" @mouseleave="unhover">
     <q-item-section avatar>
       <i class="fas fa-circle-user"></i>
+      <i class="fas fa-circle" style="position: absolute; font-size: 12px; bottom: 14px; left: 34px; color: lime;" />
     </q-item-section>
     <q-item-section>
       <div class="chat-item-content">

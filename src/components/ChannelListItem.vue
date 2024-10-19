@@ -2,6 +2,7 @@
   <q-item class="chat-item" @mouseover="hover" @mouseleave="unhover">
     <q-item-section avatar>
       <i class="fas fa-circle-user"></i>
+      <img src="/src/assets/padlock.svg" style="position: absolute; width: 20px; bottom: 12px; left: 30px;" />
     </q-item-section>
     <q-item-section>
       <div class="chat-item-content">
