@@ -23,7 +23,7 @@
 
       <!-- Chat content (messages) -->
       <div class="chat-content" ref="chatContent">
-        <q-infinite-scroll @load="loadMoreMessages" reverse :offset="200" :disable="allMessagesLoaded">
+        <q-infinite-scroll @load="loadMoreMessages" reverse :offset="1000" :disable="allMessagesLoaded">
           <!-- Messages -->
           <div v-for="(group, index) in groupedMessages" :key="index" class="chat-bubble-row" :class="group.type">
             <i v-if="group.type === 'incoming'" class="fas fa-circle-user profile-picture" />
@@ -38,10 +38,17 @@
                 <img v-if="message.image" :src="message.image" alt="Sent image" class="chat-image"/>
               </q-bubble>
             </div>
-
           </div>
 
-          <transition name="fade" appear>
+          <!-- Loading animation (infnite scroll) -->
+          <template #loading>
+            <div class="loading-container">
+              <q-spinner-dots color="primary" size="40px" />
+            </div>
+          </template>
+        </q-infinite-scroll>
+
+        <transition name="fade" appear>
             <div class="chat-bubble-row incoming">
               <i v-if="text.length > 0" class="fas fa-circle-user profile-picture" />
               <div v-if="text.length > 0" style="display: flex; flex-direction: column;">
@@ -53,14 +60,6 @@
               </div>
             </div>
           </transition>
-
-          <!-- Loading animation (infnite scroll) -->
-          <template #loading>
-            <div class="loading-container">
-              <q-spinner-dots color="primary" size="40px" />
-            </div>
-          </template>
-        </q-infinite-scroll>
       </div>
 
       <!-- Chat footer (typing bar) -->
