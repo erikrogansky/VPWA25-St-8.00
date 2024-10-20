@@ -1,6 +1,8 @@
 <template>
   <q-page id="chat-page">
     <div class="chat-container">
+
+      <!-- Chat header -->
       <div class="chat-header">
         <q-item class="chat-header-info">
           <q-item-section avatar>
@@ -19,6 +21,7 @@
         </q-item>
       </div>
 
+      <!-- Chat content (messages) -->
       <div class="chat-content">
         <transition name="fade" appear>
           <div class="chat-bubble-row incoming">
@@ -46,6 +49,7 @@
         </div>
       </div>
 
+      <!-- Chat footer (typing bar) -->
       <div class="chat-footer">
         <q-item class="photos">
           <q-item-section>
@@ -53,19 +57,12 @@
             <input type="file" ref="fileInput" @change="handleImageUpload" style="display:none" accept="image/*" />
           </q-item-section>
         </q-item>
-        <q-input
-          rounded
-          standout
-          dense
-          v-model="text"
-          placeholder="Aa"
-          class="text-bar"
-          @keyup.enter="() => { sendMessage(); showTypingText = false; }"
-        />
+        <q-input rounded standout dense v-model="text" placeholder="Aa" class="text-bar" @keyup.enter="() => { sendMessage(); showTypingText = false; }" />
         <transition name="fade" appear>
           <q-btn v-if="text.length > 0" icon="send" @click="() => { sendMessage(); showTypingText = false; }" flat round dense class="send" />
         </transition>
       </div>
+
     </div>
   </q-page>
 </template>
@@ -74,17 +71,20 @@
 <script setup scoped lang="ts">
 import { ref, computed } from 'vue';
 
+// Message interface
 interface Message {
   text?: string;
   image?: string;
   type: string;
 }
 
+// Message group interface
 interface MessageGroup {
   type: string;
   messages: Message[];
 }
 
+// Chat data
 const text = ref<string>('');
 const messages = ref<Message[]>([]);
 const showTypingText = ref<boolean>(false);
@@ -108,6 +108,7 @@ const groupedMessages = computed<MessageGroup[]>(() => {
   return groups;
 });
 
+// Sending a message
 const sendMessage = () => {
   if (text.value.trim()) {
     messages.value.push({
