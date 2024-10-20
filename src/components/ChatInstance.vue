@@ -36,14 +36,35 @@
           </div>
         </transition>
 
-        <div v-for="(group, index) in [...groupedMessages].reverse()" :key="index" class="chat-bubble-row" :class="group.type">
-          <i v-if="group.type === 'incoming'" class="fas fa-circle-user profile-picture" />
-
+        <div
+          v-for="(group, index) in [...groupedMessages].reverse()"
+          :key="index"
+          class="chat-bubble-row"
+          :class="group.type"
+        >
+          <i
+            v-if="group.type === 'incoming'"
+            class="fas fa-circle-user profile-picture"
+          />
           <div class="messages" :class="group.type">
             <span v-if="group.type === 'incoming'" class="sender">Name</span>
-            <q-bubble v-for="(message, i) in group.messages" :key="i" class="bubble" :class="{'text-message': message.text,'image-message': message.image}">
-              <div v-if="message.text">{{ message.text }}</div>
-              <img v-if="message.image" :src="message.image" alt="Sent image" class="chat-image" />
+            <q-bubble
+              v-for="(message, i) in group.messages"
+              :key="i"
+              class="bubble"
+              :class="{
+                'text-message': message.text,
+                'image-message': message.image,
+                'highlighted-message': message.mentioned, // Apply class if mentioned
+              }"
+            >
+              <div v-if="message.text" v-html="formatMessageText(message.text)"></div>
+              <img
+                v-if="message.image"
+                :src="message.image"
+                alt="Sent image"
+                class="chat-image"
+              />
             </q-bubble>
           </div>
         </div>
@@ -67,7 +88,6 @@
   </q-page>
 </template>
 
-
 <script setup scoped lang="ts">
 import { ref, computed } from 'vue';
 
@@ -76,6 +96,7 @@ interface Message {
   text?: string;
   image?: string;
   type: string;
+  mentioned?: boolean; // New property to indicate a mention
 }
 
 // Message group interface
@@ -85,6 +106,9 @@ interface MessageGroup {
 }
 
 // Chat data
+const userName = 'name'; // User name - TEMPORARY (replace in backend phase)
+const mentionTag = `@${userName}`;
+
 const text = ref<string>('');
 const messages = ref<Message[]>([]);
 const showTypingText = ref<boolean>(false);
@@ -108,35 +132,60 @@ const groupedMessages = computed<MessageGroup[]>(() => {
   return groups;
 });
 
+const formatMessageText = (text: string) => {
+  const regex = new RegExp(`(${mentionTag})`, 'g');
+  const formattedText = text.replace(regex, '<strong>$1</strong>');
+  return formattedText;
+};
+
 // Sending a message
 const sendMessage = () => {
   if (text.value.trim()) {
+    const messageText = text.value.trim();
+    const isMentioned = messageText.includes('@name'); // Detect mention
+
     messages.value.push({
-      text: text.value,
+      text: messageText,
       type: 'outgoing',
+      mentioned: isMentioned,
     });
 
     text.value = '';
+    showTypingText.value = false;
 
     // Simulating incoming messages
     if (Math.random() < 0.5) {
       setTimeout(() => {
-        messages.value.push({
-          text: 'This is a reply!',
-          type: 'incoming',
-        });
+        simulateIncomingMessage();
       }, 1000);
 
       if (Math.random() < 0.65) {
         setTimeout(() => {
-          messages.value.push({
-            text: 'This is another reply!',
-            type: 'incoming',
-          });
+          simulateIncomingMessage();
         }, 2000);
       }
     }
   }
+};
+
+// Function to simulate incoming messages
+const simulateIncomingMessage = () => {
+  const incomingMessages = [
+    'This is a reply!',
+    '@name, you have a new message.',
+    'Hello!',
+    '@name, don\'t forget our meeting.',
+  ];
+
+  const randomMessage =
+    incomingMessages[Math.floor(Math.random() * incomingMessages.length)];
+  const isIncomingMentioned = randomMessage.includes('@name'); // Detect mention
+
+  messages.value.push({
+    text: randomMessage,
+    type: 'incoming',
+    mentioned: isIncomingMentioned,
+  });
 };
 
 // Handling image selection
@@ -200,6 +249,10 @@ const handleImageUpload = (event: Event) => {
   bottom: 7px;
   left: 44px;
   color: lime;
+}
+
+.highlighted-message {
+  box-shadow: 0 0 8px rgba(255, 196, 20, 0.664);
 }
 
 </style>
