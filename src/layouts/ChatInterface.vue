@@ -13,6 +13,8 @@
     >
       <div class="left-panel-content">
         <q-list class="left-panel-list">
+
+          <!-- Chats -->
           <q-item clickable v-ripple @click="setActivePanel('chats')" :class="{'active-button': activePanel === 'chats'}">
             <q-item-section avatar>
               <i class="fas fa-comment left-panel-icon"></i>
@@ -21,6 +23,8 @@
               <q-item-label class="left-panel-text">Chats</q-item-label>
             </q-item-section>
           </q-item>
+
+          <!-- Channels -->
           <q-item clickable v-ripple @click="setActivePanel('channels')" :class="{'active-button': activePanel === 'channels'}">
             <q-item-section avatar>
               <i class="fas fa-users left-panel-icon channel"></i>
@@ -29,6 +33,8 @@
               <q-item-label class="left-panel-text">Channels</q-item-label>
             </q-item-section>
           </q-item>
+
+          <!-- Requests -->
           <q-item clickable v-ripple @click="setActivePanel('requests')" :class="{'active-button': activePanel === 'requests'}">
             <q-item-section avatar>
               <i class="fas fa-comment-dots left-panel-icon"></i>
@@ -37,6 +43,8 @@
               <q-item-label class="left-panel-text">Requests</q-item-label>
             </q-item-section>
           </q-item>
+
+          <!-- Archive -->
           <q-item clickable v-ripple @click="setActivePanel('archive')" :class="{'active-button': activePanel === 'archive'}">
             <q-item-section avatar>
               <i class="fas fa-archive left-panel-icon"></i>
@@ -45,8 +53,12 @@
               <q-item-label class="left-panel-text">Archive</q-item-label>
             </q-item-section>
           </q-item>
+
         </q-list>
+
         <q-space />
+
+        <!-- User Expanded -->
         <template v-if="isWideScreen">
           <div :class="['bottom-section', { collapsed: !expanded }]">
             <q-item clickable v-ripple class="user-item">
@@ -71,6 +83,7 @@
             </q-item>
           </div>
         </template>
+        <!-- User -->
         <template v-else>
           <q-item clickable v-ripple class="user-item">
             <q-item-section avatar>
@@ -85,6 +98,7 @@
       </div>
     </q-drawer>
 
+    <!-- Chat Content -->
     <q-page-container>
 
       <ChatList v-if="activePanel === 'chats'" />
