@@ -132,6 +132,12 @@ body {
   }
 }
 
+@media (max-width: 850px) {
+  #list.q-page {
+    width: 100%;
+  }
+}
+
 #chat-page.q-page {
   background-color: var(--primary);
   width: 100%;
@@ -331,6 +337,16 @@ body {
   }
 }
 
+@media (max-width: 1200px) {
+  .bubble.image-message {
+    max-width: 300px;
+  }
+
+  .bubble.text-message {
+    max-width: 300px;
+  }
+}
+
 .chat-bubble-row.incoming {
   padding-right: 250px;
 
@@ -362,6 +378,26 @@ body {
     }
   }
 }
+
+
+@media (max-width: 500px) {
+  .bubble.image-message {
+    max-width: 400px;
+  }
+
+  .bubble.text-message {
+    max-width: 400px;
+  }
+
+  .chat-bubble-row.outgoing {
+    padding-left: 100px;
+  }
+
+  .chat-bubble-row.incoming {
+    padding-right: 100px;
+  }
+}
+
 
 .typing-indicator {
   cursor: pointer;
