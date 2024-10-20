@@ -40,6 +40,20 @@
             </div>
 
           </div>
+
+          <transition name="fade" appear>
+            <div class="chat-bubble-row incoming">
+              <i v-if="text.length > 0" class="fas fa-circle-user profile-picture" />
+              <div v-if="text.length > 0" style="display: flex; flex-direction: column;">
+                <span v-if="showTypingText" class="sender">Name</span>
+                <q-bubble v-if="text.length > 0" class="bubble text-message typing-indicator" @click="showTypingText = !showTypingText">
+                  <span v-if="!showTypingText"><q-spinner-dots size="20px" /></span>
+                  <span v-else>{{ text }}</span>
+                </q-bubble>
+              </div>
+            </div>
+          </transition>
+
           <!-- Loading animation (infnite scroll) -->
           <template #loading>
             <div class="loading-container">
