@@ -46,7 +46,7 @@
               <i v-if="text.length > 0" class="fas fa-circle-user profile-picture" />
               <div v-if="text.length > 0" style="display: flex; flex-direction: column;">
                 <span v-if="showTypingText" class="sender">Name</span>
-                <q-bubble v-if="text.length > 0" class="bubble text-message typing-indicator" @click="showTypingText = !showTypingText">
+                <q-bubble v-if="text.length > 0" class="bubble text-message typing-indicator" @click="() => {showTypingText = !showTypingText; nextTick(() => {scrollToBottom();});}">
                   <span v-if="!showTypingText"><q-spinner-dots size="20px" /></span>
                   <span v-else>{{ text }}</span>
                 </q-bubble>
@@ -82,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick } from 'vue';
+import { ref, computed, onMounted, nextTick, watch } from 'vue';
 import { QInfiniteScroll } from 'quasar';
 
 // Message interface
@@ -141,6 +141,20 @@ const scrollToBottom = () => {
     chatContent.value.scrollTop = chatContent.value.scrollHeight;
   }
 };
+
+watch(displayedMessages, () => {
+  nextTick(() => {
+    scrollToBottom();
+  });
+});
+
+watch(text, (newText) => {
+  if (newText.length > 0) {
+    nextTick(() => {
+      scrollToBottom();
+    });
+  }
+});
 
 // Load more messages when scrolling up
 const loadMoreMessages = (index: number, done: (stop?: boolean) => void) => {
