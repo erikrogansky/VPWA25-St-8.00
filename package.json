@@ -1,5 +1,7 @@
 {
     "scripts": {
-        "start": "pnpm -r run dev"
+        "start": "pnpm -r run dev",
+        "frontend": "pnpm --filter Frontend run dev",
+        "backend": "pnpm --filter Backend run dev"
     }
 }
