@@ -1,7 +1,24 @@
 {
+    "name": "convo",
+    "private": true,
+    "workspaces": [
+        "Backend",
+        "Frontend"
+    ],
+    "resolutions": {
+        "strtok3": "8.0.1"
+    },
+    "pnpm": {
+        "overrides": {
+            "strtok3": "8.0.1"
+        }
+    },
+    "dependencies": {
+        
+    },
     "scripts": {
         "start": "pnpm -r run dev",
-        "frontend": "pnpm --filter Frontend run dev",
-        "backend": "pnpm --filter Backend run dev"
+        "frontend": "pnpm --filter ./Frontend run dev",
+        "backend": "pnpm --filter ./Backend run dev"
     }
 }
