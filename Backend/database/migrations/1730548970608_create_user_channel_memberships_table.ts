@@ -7,8 +7,9 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
 
-      table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE');
-      table.integer('channel_id').unsigned().references('id').inTable('channels').onDelete('CASCADE');
+      table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
+      // eslint-disable-next-line prettier/prettier
+      table.integer('channel_id').unsigned().references('id').inTable('channels').onDelete('CASCADE')
       table.integer('unread_messages')
 
       table.timestamp('created_at')

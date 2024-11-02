@@ -4,7 +4,6 @@ import { BaseModel, column, hasOne, hasMany } from '@adonisjs/lucid/orm'
 import User from '#models/user'
 import UserChannelMembership from '#models/user_channel_membership'
 
-
 export default class Channel extends BaseModel {
   @column({ isPrimary: true })
   declare id: number

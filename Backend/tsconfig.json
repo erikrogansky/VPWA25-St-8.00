@@ -8,7 +8,8 @@
       "#exceptions/*": ["./app/exceptions/*"],
       "#middleware/*": ["./app/middleware/*"],
       "#controllers/*": ["./app/controllers/*"],
-      "#models/*": ["./app/models/*"]
+      "#models/*": ["./app/models/*"],
+      "@ioc/*": ["./*"]
     }
   }
 }
