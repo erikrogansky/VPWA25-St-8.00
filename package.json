@@ -1,24 +1,7 @@
 {
-    "name": "convo",
-    "private": true,
-    "workspaces": [
-        "Backend",
-        "Frontend"
-    ],
-    "resolutions": {
-        "strtok3": "8.0.1"
-    },
-    "pnpm": {
-        "overrides": {
-            "strtok3": "8.0.1"
-        }
-    },
-    "dependencies": {
-        
-    },
-    "scripts": {
-        "start": "pnpm -r run dev",
-        "frontend": "pnpm --filter ./Frontend run dev",
-        "backend": "pnpm --filter ./Backend run dev"
-    }
+  "scripts": {
+    "start": "concurrently -n \"Backend,Frontend\" -c \"bgBlue.bold,bgGreen.bold\" \"cd Backend && node ace serve --watch\" \"cd frontend && quasar dev\"",
+    "be": "cd Backend && node ace serve --watch",
+    "fe": "cd frontend && quasar dev"
+  }
 }
