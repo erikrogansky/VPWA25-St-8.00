@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon'
 import type { HasOne } from '@adonisjs/lucid/types/relations'
 import { BaseModel, column, hasOne } from '@adonisjs/lucid/orm'
-import User from 'app/models/user.js'
-import Channel from 'app/models/channel.js'
+import User from '#models/user'
+import Channel from '#models/channel'
 
 export default class UserChannelMembership extends BaseModel {
   @column({ isPrimary: true })

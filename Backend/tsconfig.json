@@ -4,11 +4,11 @@
     "rootDir": ".",
     "outDir": "./build",
     "paths": {
-      "app/*": ["./app/*"],
-      "config/*": ["./config/*"],
-      "database/*": ["./database/*"],
-      "modules/*": ["./modules/*"],
-      "providers/*": ["./providers/*"]
-    },
+      "#providers/*": ["./app/providers/*"],
+      "#exceptions/*": ["./app/exceptions/*"],
+      "#middleware/*": ["./app/middleware/*"],
+      "#controllers/*": ["./app/controllers/*"],
+      "#models/*": ["./app/models/*"]
+    }
   }
 }
