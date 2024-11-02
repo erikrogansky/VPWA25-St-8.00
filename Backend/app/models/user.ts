@@ -6,6 +6,7 @@ import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
 import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
 import UserChannelMembership from '#models/user_channel_membership'
+import { AccessToken } from '@adonisjs/auth/access_tokens'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
@@ -64,5 +65,13 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @hasMany(() => UserChannelMembership)
   declare memberships: HasMany<typeof UserChannelMembership>
 
-  static accessTokens = DbAccessTokensProvider.forModel(User)
+  static accessTokens = DbAccessTokensProvider.forModel(User, {
+    expiresIn: '30 days',
+    prefix: 'oat_',
+    table: 'auth_access_tokens',
+    type: 'auth_token',
+    tokenSecretLength: 40,
+  })
+
+  currentAccessToken?: AccessToken
 }

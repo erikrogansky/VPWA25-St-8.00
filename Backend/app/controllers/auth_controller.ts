@@ -1,5 +1,6 @@
 import { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
+import hash from '@adonisjs/core/services/hash'
 
 export default class AuthController {
   public async register({ request, response }: HttpContext) {
@@ -65,18 +66,31 @@ export default class AuthController {
     }
   }
 
-  public async login({ auth, request, response }: HttpContext) {
+  public async login({ request, response }: HttpContext) {
     const { email, password } = request.only(['email', 'password'])
-    try {
-      const token = await auth.use('api').verifyCredentials(email, password)
-      return token
-    } catch {
-      return response.unauthorized('Invalid credentials')
+
+    const user = await User.findBy('email', email)
+    if (!user) {
+      return response.abort('Invalid credentials')
+    }
+
+    const isPasswordValid = await hash.verify(user.password, password)
+    if (!isPasswordValid) {
+      return response.abort('Invalid credentials')
+    }
+
+    const token = await User.accessTokens.create(user)
+
+    return {
+      type: 'bearer',
+      value: token.value!.release(),
     }
   }
 
   public async logout({ auth }: HttpContext) {
-    await auth.use('api').logout()
+    const user = await auth.getUserOrFail()
+    await User.accessTokens.delete(user, user.currentAccessToken.identifier)
+
     return { message: 'Logged out successfully' }
   }
 }
