@@ -7,7 +7,7 @@
     </q-item-section>
     <q-item-section>
       <div class="chat-item-content">
-        <q-item-label class="chat-name">Chat name</q-item-label>
+        <q-item-label class="chat-name">{{ title }}</q-item-label>
         <q-item-label class="chat-message">Last message</q-item-label>
       </div>
     </q-item-section>
@@ -46,6 +46,10 @@ import { ref } from 'vue';
 const show = ref(false);
 const hovering = ref(false);
 const menuOpen = ref(false);
+
+defineProps<{
+  title: string
+}>()
 
 const hover = () => {
   hovering.value = true;

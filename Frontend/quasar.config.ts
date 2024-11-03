@@ -26,6 +26,7 @@ export default configure(async (ctx) => {
     boot: [
       'i18n',
       'axios',
+      'socket',
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css

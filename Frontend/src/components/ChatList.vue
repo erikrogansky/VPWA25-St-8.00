@@ -13,11 +13,11 @@
     </q-input>
 
 
-    <ChatListItem />
-    <ChatListItem />
-    <ChatListItem />
-    <ChatListItem />
-    <ChatListItem />
+    <ChatListItem title="First Chat"/>
+    <ChatListItem title="First Chat"/>
+    <ChatListItem title="First Chat"/>
+    <ChatListItem title="First Chat"/>
+    <ChatListItem title="First Chat"/>
 
   </q-page>
 </template>
