@@ -15,6 +15,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/app',
     component: () => import('layouts/ChatInterface.vue'),
+    meta: { requiresAuth: true }, 
   },
 
   {

@@ -54,6 +54,8 @@ import { ref, computed } from 'vue';
 import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
 import FooterLayout from 'src/components/FooterLayout.vue';
+import { api } from 'src/boot/axios';
+import axios from 'axios';
 
 const email = ref<string>('');
 const password = ref<string>('');
@@ -69,7 +71,7 @@ const logoSource = computed(() => {
     : '/src/assets/l-logo.png';
 });
 
-const validateAndSubmit = () => {
+const validateAndSubmit = async () => {
   emailError.value = '';
   passwordError.value = '';
 
@@ -85,24 +87,46 @@ const validateAndSubmit = () => {
     passwordError.value = 'Password must be at least 6 characters long';
   }
 
-  if (emailError.value || passwordError.value) {
-    // do not allow submit if errors occur
-    return;
-  }
+  if (emailError.value || passwordError.value) return;
 
-  if (email.value !== 'test@example.com' || password.value !== 'password') {
-    $q.notify({
-      type: 'negative',
-      message: 'Incorrect credentials',
-      position: 'top'
+  try {
+    const response = await api.post('/login', {
+      email: email.value,
+      password: password.value,
     });
-  } else {
-    $q.notify({
-      type: 'positive',
-      message: 'Login successful',
-      position: 'top'
-    });
-    router.push('/app');
+
+    if (response.data.success) {
+        $q.notify({
+          type: 'positive',
+          message: 'Login successful',
+          position: 'top',
+        });
+
+        const token = response.data.token;
+        localStorage.setItem('authToken', token);
+
+        router.push('/app');
+      } else {
+        $q.notify({
+          type: 'negative',
+          message: response.data.error || 'Registration failed. Please check your input.',
+          position: 'top',
+        });
+      }
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+        $q.notify({
+          type: 'negative',
+          message: error.response.data?.error || 'Registration failed due to a server error.',
+          position: 'top',
+        });
+      } else {
+        $q.notify({
+          type: 'negative',
+          message: 'Incorrect credentials',
+          position: 'top',
+        });
+      }
   }
 };
 

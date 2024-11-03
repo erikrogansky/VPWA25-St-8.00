@@ -36,8 +36,6 @@ export default class AuthController {
       }
     }
 
-    userData.password = await hash.make(userData.password)
-
     const dateOfBirth = new Date(userData.dateOfBirth)
     if (Number.isNaN(dateOfBirth.getTime())) {
       return response.badRequest({ error: 'Invalid date format for dateOfBirth' })
@@ -76,17 +74,22 @@ export default class AuthController {
 
     const user = await User.findBy('email', email)
     if (!user) {
-      return response.abort('Invalid credentials')
+      return response.badRequest({
+        error: 'You are not registered',
+      })
     }
 
     const isPasswordValid = await hash.verify(user.password, password)
     if (!isPasswordValid) {
-      return response.abort('Invalid credentials')
+      return response.badRequest({
+        error: 'You have entered an invalid password',
+      })
     }
 
     const token = await User.accessTokens.create(user)
 
     return {
+      success: true,
       type: 'bearer',
       value: token.value!.release(),
     }
