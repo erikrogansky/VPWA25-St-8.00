@@ -36,6 +36,8 @@ export default class AuthController {
       }
     }
 
+    userData.password = await hash.make(userData.password)
+
     const dateOfBirth = new Date(userData.dateOfBirth)
     if (Number.isNaN(dateOfBirth.getTime())) {
       return response.badRequest({ error: 'Invalid date format for dateOfBirth' })
@@ -59,8 +61,11 @@ export default class AuthController {
     }
 
     try {
-      const user = await User.create(userData)
-      return response.created({ user })
+      await User.create(userData)
+      return response.created({
+        success: true,
+        message: 'User registered successfully',
+      })
     } catch (error) {
       return response.badRequest({ error: 'Registration failed', message: error.message })
     }

@@ -95,6 +95,9 @@ import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import FooterLayout from 'src/components/FooterLayout.vue';
 import { useQuasar } from 'quasar';
+import axios from 'axios';
+import { api } from 'src/boot/axios'
+
 
 const nick_name = ref<string>('');
 const first_name = ref<string>('');
@@ -125,7 +128,7 @@ const logoSource = computed(() => {
     : '/src/assets/l-logo.png';
 });
 
-const validateAndSubmit = () => {
+const validateAndSubmit = async () => {
   nickError.value = '';
   firstNameError.value = '';
   lastNameError.value = '';
@@ -138,42 +141,34 @@ const validateAndSubmit = () => {
   if (!nick_name.value) {
     nickError.value = 'Nickname is required';
   }
-
   if (!first_name.value) {
     firstNameError.value = 'First name is required';
   }
-
   if (!last_name.value) {
     lastNameError.value = 'Last name is required';
   }
-
   if (!date_of_birth.value) {
     dateError.value = 'Date of birth is required';
   }
-
   if (!gender.value) {
     genderError.value = 'Gender is required';
   }
-
   if (!phone_number.value) {
     phoneError.value = 'Phone number is required';
   } else if (!validatePhoneNumber(phone_number.value)) {
     phoneError.value = 'Please enter a valid phone number';
   }
-
   if (!email.value) {
     emailError.value = 'Email is required';
   } else if (!validateEmail(email.value)) {
     emailError.value = 'Please enter a valid email';
   }
-
   if (!password.value) {
     passwordError.value = 'Password is required';
   } else if (password.value.length < 6) {
     passwordError.value = 'Password must be at least 6 characters long';
   }
 
-  // Check for errors
   if (
     !nickError.value &&
     !firstNameError.value &&
@@ -184,12 +179,49 @@ const validateAndSubmit = () => {
     !emailError.value &&
     !passwordError.value
   ) {
-    $q.notify({
-      type: 'positive',
-      message: 'Registration successful',
-      position: 'top',
-    });
-    router.push('/app');
+    console.log(nickError.value)
+
+    try {
+      const response = await api.post('/register', {
+        nick: nick_name.value,
+        firstName: first_name.value,
+        lastName: last_name.value,
+        dateOfBirth: date_of_birth.value,
+        gender: gender.value ? gender.value.toLowerCase() : null, 
+        phoneNumber: phone_number.value,
+        email: email.value,
+        password: password.value
+      });
+
+      if (response.data.success) {
+        $q.notify({
+          type: 'positive',
+          message: response.data.message || 'Registration successful! Please log in.',
+          position: 'top',
+        });
+        router.push('/login');
+      } else {
+        $q.notify({
+          type: 'negative',
+          message: response.data.message || 'Registration failed. Please check your input.',
+          position: 'top',
+        });
+      }
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response) {
+        $q.notify({
+          type: 'negative',
+          message: error.response.data?.error || 'Registration failed due to a server error.',
+          position: 'top',
+        });
+      } else {
+        $q.notify({
+          type: 'negative',
+          message: 'An unknown error occurred. Please try again later.',
+          position: 'top',
+        });
+      }
+    }
   } else {
     $q.notify({
       type: 'negative',
