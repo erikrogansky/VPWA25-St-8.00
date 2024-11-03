@@ -102,7 +102,7 @@ const validateAndSubmit = async () => {
           position: 'top',
         });
 
-        const token = response.data.token;
+        const token = response.data.value;
         localStorage.setItem('authToken', token);
 
         router.push('/app');

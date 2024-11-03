@@ -97,7 +97,7 @@
         <q-item-section>Cookie Policy</q-item-section>
       </q-item>
       <q-separator />
-      <q-item clickable v-close-popup to="/">
+      <q-item clickable v-close-popup @click="logout">
         <q-item-section avatar><i class="fas fa-right-from-bracket"></i></q-item-section>
         <q-item-section>Log out</q-item-section>
       </q-item>
@@ -109,8 +109,13 @@
 import { ref, watch } from 'vue';
 import { useModeStore } from '../stores/mode-store';
 import { useQuasar } from 'quasar';
+import { api } from 'src/boot/axios'
+import { useRouter } from 'vue-router';
+import axios from 'axios';
+
 
 const $q = useQuasar();
+const router = useRouter();
 
 const accountDialog = ref(false);
 const preferencesDialog = ref(false);
@@ -163,6 +168,47 @@ if (storedMode && (storedMode === 'on' || storedMode === 'sp' || storedMode === 
   updateDarkMode(defaultMode);
 }
 
+async function logout() {
+  try {
+    const token = localStorage.getItem('authToken');
+    if (token)
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+    const response = await api.post('/logout');
+
+    if (response.data.success) {
+        $q.notify({
+          type: 'positive',
+          message: response.data.message || 'You have been succesfully logged out',
+          position: 'top',
+        });
+
+        localStorage.removeItem('authToken');
+
+        router.push('/');
+      } else {
+        $q.notify({
+          type: 'negative',
+          message: response.data.error || 'Logout failed',
+          position: 'top',
+        });
+      }
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+        $q.notify({
+          type: 'negative',
+          message: error.response.data?.error || 'Logout failed due to a server error',
+          position: 'top',
+        });
+      } else {
+        $q.notify({
+          type: 'negative',
+          message: 'Logout failed unexpectedly',
+          position: 'top',
+        });
+      }
+  }
+}
 </script>
 
 

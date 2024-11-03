@@ -99,6 +99,19 @@ export default class AuthController {
     const user = await auth.getUserOrFail()
     await User.accessTokens.delete(user, user.currentAccessToken.identifier)
 
-    return { message: 'Logged out successfully' }
+    return {
+      success: true,
+      message: 'Logged out successfully',
+    }
+  }
+
+  public async getUserName({ auth }: HttpContext) {
+    const user = await auth.getUserOrFail()
+
+    return {
+      success: true,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    }
   }
 }

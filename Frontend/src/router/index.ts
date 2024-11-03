@@ -6,6 +6,7 @@ import {
   createWebHistory,
 } from 'vue-router';
 import routes from './routes';
+import { api } from 'src/boot/axios';
 
 /*
  * If not building with SSR mode, you can
@@ -31,14 +32,29 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
 
-  Router.beforeEach((to, from, next) => {
-    const token = localStorage.getItem('authToken');
+  async function validateToken() {
+    try {
+      const response = await api.get('/verifyToken');
+      return response.data.valid;
+    } catch (error) {
+      return false;
+    }
+  }
+
+
+  Router.beforeEach(async (to, from, next) => {
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
-    if (requiresAuth && !token) {
-      next('/login'); // Redirect to login page if not authenticated
+    if (requiresAuth) {
+      const isTokenValid = await validateToken();
+      if (isTokenValid) {
+        next();
+      } else {
+        localStorage.removeItem('authToken');
+        next('/login');
+      }
     } else {
-      next(); // Proceed to the route
+      next();
     }
   });
 

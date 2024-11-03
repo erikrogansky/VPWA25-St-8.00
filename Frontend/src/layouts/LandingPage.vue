@@ -12,8 +12,14 @@
           Discover a new way to chat and share moments with friends and family—effortless, engaging, and always at your fingertips.
         </q-paragraph>
         <div class="buttons">
-          <q-btn unelevated rounded label="Join now" to="/register" no-caps class="join-btn" />
-          <q-btn flat rounded label="Log in" to="/login" no-caps class="log-btn" />
+          <template v-if="isAuthenticated">
+            <q-btn unelevated rounded :label="`Continue as ${userName || 'Guest'}`" to="/app" no-caps class="join-btn" />
+            <q-btn flat rounded label="Log out" @click="logout" no-caps class="log-btn" />
+          </template>
+          <template v-else>
+            <q-btn unelevated rounded label="Join now" to="/register" no-caps class="join-btn" />
+            <q-btn flat rounded label="Log in" to="/login" no-caps class="log-btn" />
+          </template>
         </div>
       </div>
       <div class="right-container">
@@ -29,6 +35,74 @@
 
 import HeaderLayout from 'src/components/HeaderLayout.vue';
 import FooterLayout from 'src/components/FooterLayout.vue';
+import { computed, ref } from 'vue';
+import axios from 'axios'
+import { api } from 'src/boot/axios'
+import { useQuasar } from 'quasar';
+import { onBeforeMount } from 'vue';
+
+const $q = useQuasar()
+
+const hasToken = computed(() => !!localStorage.getItem('authToken'));
+const isAuthenticated = hasToken.value ? ref(true) : ref(false);
+
+const userName = ref('');
+
+onBeforeMount(async () => {
+  if (isAuthenticated.value) {
+    try {
+      const response = await api.get('/get-user-name');
+      if (response.data && response.data.firstName) {
+        userName.value = response.data.firstName + response.data.lastName;
+      }
+    } catch (error) {
+      console.error('Failed to fetch user data:', error);
+    }
+  }
+});
+
+async function logout() {
+  try {
+    const token = localStorage.getItem('authToken');
+    if (token)
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+    const response = await api.post('/logout');
+
+    if (response.data.success) {
+        $q.notify({
+          type: 'positive',
+          message: response.data.message || 'You have been succesfully logged out',
+          position: 'top',
+        });
+
+        localStorage.removeItem('authToken');
+
+        isAuthenticated.value = false;
+        userName.value = '';
+      } else {
+        $q.notify({
+          type: 'negative',
+          message: response.data.error || 'Logout failed',
+          position: 'top',
+        });
+      }
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+        $q.notify({
+          type: 'negative',
+          message: error.response.data?.error || 'Logout failed due to a server error',
+          position: 'top',
+        });
+      } else {
+        $q.notify({
+          type: 'negative',
+          message: 'Logout failed unexpectedly',
+          position: 'top',
+        });
+      }
+  }
+}
 
 </script>
 
