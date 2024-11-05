@@ -5,12 +5,12 @@
 
     <q-page-container>
       <div class="left-container">
-        <q-label class="title">
+        <label class="title q-label">
           Stay connected anytime,<br />anywhere
-        </q-label>
-        <q-paragraph class="paragraph">
+        </label>
+        <p class="paragraph">
           Discover a new way to chat and share moments with friends and family—effortless, engaging, and always at your fingertips.
-        </q-paragraph>
+        </p>
         <div class="buttons">
           <template v-if="isAuthenticated">
             <q-btn unelevated rounded :label="`Continue as ${userName || 'Guest'}`" to="/app" no-caps class="join-btn" />

@@ -1,6 +1,6 @@
 <template>
   <q-footer>
-    <q-label class="copyright">Convo © 2024 Erik Roganský, Peter Sartoris. All rights reserved.</q-label>
+    <label class="copyright q-label">Convo © 2024 Erik Roganský, Peter Sartoris. All rights reserved.</label>
     <div class="footer-links">
       <router-link to="/cookie-policy">Cookie Policy</router-link>
       <router-link to="/privacy-policy">Privacy Policy</router-link>
