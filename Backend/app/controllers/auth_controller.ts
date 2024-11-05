@@ -1,6 +1,5 @@
 import { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
-import hash from '@adonisjs/core/services/hash'
 
 export default class AuthController {
   public async register({ request, response }: HttpContext) {
@@ -72,26 +71,25 @@ export default class AuthController {
   public async login({ request, response }: HttpContext) {
     const { email, password } = request.only(['email', 'password'])
 
-    const user = await User.findBy('email', email)
-    if (!user) {
+    try {
+      const user = await User.verifyCredentials(email, password)
+      if (!user) {
+        return response.badRequest({
+          error: 'You have entered invalid credentials',
+        })
+      } else {
+        const token = await User.accessTokens.create(user)
+
+        return {
+          success: true,
+          type: 'bearer',
+          value: token.value!.release(),
+        }
+      }
+    } catch (error) {
       return response.badRequest({
-        error: 'You are not registered',
+        error: 'You have entered invalid credentials',
       })
-    }
-
-    const isPasswordValid = await hash.verify(user.password, password)
-    if (!isPasswordValid) {
-      return response.badRequest({
-        error: 'You have entered an invalid password',
-      })
-    }
-
-    const token = await User.accessTokens.create(user)
-
-    return {
-      success: true,
-      type: 'bearer',
-      value: token.value!.release(),
     }
   }
 
