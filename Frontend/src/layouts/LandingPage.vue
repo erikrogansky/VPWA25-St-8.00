@@ -53,7 +53,7 @@ onBeforeMount(async () => {
     try {
       const response = await api.get('/get-user-name');
       if (response.data && response.data.firstName) {
-        userName.value = response.data.firstName + response.data.lastName;
+        userName.value = response.data.firstName + ' ' + response.data.lastName;
       }
     } catch (error) {
       console.error('Failed to fetch user data:', error);
