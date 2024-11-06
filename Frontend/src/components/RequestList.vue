@@ -10,11 +10,11 @@
     </q-input>
 
 
-    <ChatListItem title="First Request"/>
-    <ChatListItem title="First Request"/>
-    <ChatListItem title="First Request"/>
-    <ChatListItem title="First Request"/>
-    <ChatListItem title="First Request"/>
+    <ChatListItem title="First Request"  lastMessage="dfghjkl" unread/>
+    <ChatListItem title="First Request"  lastMessage="dfghjkl"/>
+    <ChatListItem title="First Request"  lastMessage="dfghjkl" unread/>
+    <ChatListItem title="First Request"  lastMessage="dfghjkl"/>
+    <ChatListItem title="First Request"  lastMessage="dfghjkl"/>
 
   </q-page>
 </template>

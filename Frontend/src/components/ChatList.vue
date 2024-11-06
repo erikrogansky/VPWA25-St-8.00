@@ -12,18 +12,29 @@
       </template>
     </q-input>
 
-
-    <ChatListItem title="First Chat"/>
-    <ChatListItem title="First Chat"/>
-    <ChatListItem title="First Chat"/>
-    <ChatListItem title="First Chat"/>
-    <ChatListItem title="First Chat"/>
-
+    <ChatListItem
+      v-for="(chat, index) in filteredChatItems"
+      :key="index"
+      :title="chat.title"
+      :lastMessage="chat.lastMessage"
+      :unread="chat.unread"
+    />
   </q-page>
 </template>
 
 <script setup scoped lang="ts">
-import { ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import ChatListItem from './ChatListItem.vue';
-  const search = ref<string>('')
+const search = ref<string>('')
+
+import { useChatStore } from 'src/stores/chat_store';
+const chatStore = useChatStore();
+
+const filteredChatItems = computed(() => {
+  return chatStore.filteredChatItems(search.value);
+});
+
+onMounted(() => {
+  chatStore.fetchChatItems();
+});
 </script>

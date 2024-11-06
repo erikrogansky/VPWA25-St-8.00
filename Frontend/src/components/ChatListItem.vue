@@ -8,7 +8,7 @@
     <q-item-section>
       <div class="chat-item-content">
         <q-item-label class="chat-name">{{ title }}</q-item-label>
-        <q-item-label class="chat-message">Last message</q-item-label>
+        <q-item-label class="chat-message" :class="unread ? 'unread' : ''">{{ lastMessage }}</q-item-label>
       </div>
     </q-item-section>
     <transition name="fade" appear>
@@ -49,6 +49,8 @@ const menuOpen = ref(false);
 
 defineProps<{
   title: string
+  lastMessage: string
+  unread?: boolean
 }>()
 
 const hover = () => {
@@ -101,5 +103,9 @@ const onMenuItemClick = () => {
   bottom: 14px;
   left: 34px;
   color: lime;
+}
+
+.unread {
+  font-weight: 600;
 }
 </style>
