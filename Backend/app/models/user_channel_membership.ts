@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
-import type { HasOne } from '@adonisjs/lucid/types/relations'
-import { BaseModel, column, hasOne } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
 import User from '#models/user'
 import Channel from '#models/channel'
 
@@ -26,9 +26,9 @@ export default class UserChannelMembership extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
 
-  @hasOne(() => User)
-  declare user: HasOne<typeof User>
+  @belongsTo(() => User)
+  declare user: BelongsTo<typeof User>
 
-  @hasOne(() => Channel)
-  declare channel: HasOne<typeof Channel>
+  @belongsTo(() => Channel)
+  declare channel: BelongsTo<typeof Channel>
 }

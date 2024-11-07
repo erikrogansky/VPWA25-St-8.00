@@ -2,35 +2,35 @@ import { defineStore } from 'pinia';
 import { api } from 'src/boot/axios';
 import axios from 'axios';
 
-export interface ChatItem {
+export interface RequestItem {
   title: string;
   lastMessage: string;
   unread: boolean;
 }
 
-export const useChatStore = defineStore('chat', {
+export const useRequestStore = defineStore('request', {
   state: () => ({
-    chatItems: [] as ChatItem[],
+    requestItems: [] as RequestItem[],
   }),
   actions: {
     async fetchChats() {
       try {
         const response = await api.get('/get-channels', {
           params: {
-            type: 'chat'
+            type: 'request'
           }
         });
         if (Array.isArray(response.data.chats)) {
-          this.chatItems = response.data.chats.map((chat: { channel: { name: string }; unreadMessages: number }) => ({
+          this.requestItems = response.data.chats.map((chat: { channel: { name: string }; unreadMessages: number }) => ({
             title: chat.channel.name,
             lastMessage: 'Last message.',
             unread: chat.unreadMessages > 0,
           }));
         } else {
-          this.chatItems = [];
+          this.requestItems = [];
         }
       } catch (error: unknown) {
-        this.chatItems = [];
+        this.requestItems = [];
         if (axios.isAxiosError(error) && error.response) {
           if (error.response.data.message !== 'No chats found') {
             console.error('Error fetching chats:', error);
@@ -44,7 +44,7 @@ export const useChatStore = defineStore('chat', {
   },
   getters: {
     filteredChatItems: (state) => (search: string) => {
-      return state.chatItems.filter((chat) =>
+      return state.requestItems.filter((chat) =>
         chat.title.toLowerCase().includes(search.toLowerCase())
       );
     },

@@ -10,18 +10,29 @@
     </q-input>
 
 
-    <ChatListItem title="First Request"  lastMessage="dfghjkl" unread/>
-    <ChatListItem title="First Request"  lastMessage="dfghjkl"/>
-    <ChatListItem title="First Request"  lastMessage="dfghjkl" unread/>
-    <ChatListItem title="First Request"  lastMessage="dfghjkl"/>
-    <ChatListItem title="First Request"  lastMessage="dfghjkl"/>
-
+    <ChatListItem
+      v-for="(request, index) in filteredRequestItems"
+      :key="index"
+      :title="request.title"
+      :lastMessage="request.lastMessage"
+      :unread="request.unread"
+    />
   </q-page>
 </template>
 
 <script setup scoped lang="ts">
-import { ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import ChatListItem from './ChatListItem.vue';
-  const search = ref<string>('')
-</script>
+import { useRequestStore } from 'src/stores/request-store';
 
+const search = ref<string>('');
+const requestStore = useRequestStore();
+
+const filteredRequestItems = computed(() => {
+  return requestStore.filteredChatItems(search.value);
+});
+
+onMounted(() => {
+  requestStore.fetchChats();
+});
+</script>

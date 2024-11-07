@@ -1,7 +1,9 @@
 {
   "scripts": {
     "start": "concurrently -n \"Backend,Frontend\" -c \"bgBlue.bold,bgGreen.bold\" \"cd Backend && node ace serve --watch\" \"cd frontend && quasar dev\"",
-    "be": "cd Backend && node ace serve --watch",
-    "fe": "cd frontend && quasar dev"
+    "start:be": "cd Backend && node ace serve --watch",
+    "start:fe": "cd frontend && quasar dev",
+    "be": "cd Backend && ",
+    "fe": "cd frontend && "
   }
 }

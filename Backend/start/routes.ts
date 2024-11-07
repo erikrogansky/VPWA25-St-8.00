@@ -35,5 +35,5 @@ router.get('/api/get-user-name', async ({ auth }) => {
   }
 })
 
-router.get('/api/channels/chats', [ChannelsController, 'getChats'])
+router.get('/api/get-channels', [ChannelsController, 'getChats'])
 router.post('/api/add-channel', [ChannelsController, 'addChannel'])

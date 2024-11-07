@@ -15,9 +15,6 @@ export default class Channel extends BaseModel {
   declare isPublic: boolean
 
   @column()
-  declare type: 'chat' | 'channel' | 'archived' | 'request'
-
-  @column()
   declare ownerId: number
 
   @column.dateTime({ autoCreate: true })

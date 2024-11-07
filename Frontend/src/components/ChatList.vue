@@ -48,8 +48,10 @@
 <script setup scoped lang="ts">
 import { computed, ref, onMounted, toRaw } from 'vue';
 import ChatListItem from './ChatListItem.vue';
-import axios from 'axios';
+import { api } from 'src/boot/axios';
+import { useQuasar } from 'quasar';
 
+const $q = useQuasar();
 const search = ref<string>('');
 const showCreateChat = ref<boolean>(false);
 const newChatUser = ref<string>('');
@@ -76,14 +78,25 @@ const removeUser = (index: number) => {
 };
 
 const createChat = async () => {
+  if (!newChatTitle.value && newChatUsers.value.length === 0) {
+    $q.notify({
+      type: 'negative',
+      message: 'Please provide a nickname or select users.',
+    });
+    return;
+  }
+
   try {
-    console.log('Users:', toRaw(newChatUsers.value));
-    const response = await axios.post('/api/add-channel', {
+    const response = await api.post('/add-channel', {
       users: toRaw(newChatUsers.value),
       isPublic: isPublic.value,
-      title: newChatTitle.value ? newChatTitle.value : newChatUsers.value,
+      title: newChatTitle.value ? newChatTitle.value : newChatUsers.value[0],
     });
     console.log('Chat created:', response.data);
+    $q.notify({
+      type: 'positive',
+      message: 'Chat created successfully!',
+    });
     showCreateChat.value = false;
     newChatUsers.value = [];
     isPublic.value = false;
@@ -91,6 +104,10 @@ const createChat = async () => {
     chatStore.fetchChats();
   } catch (error) {
     console.error('Error creating chat:', error);
+    $q.notify({
+      type: 'negative',
+      message: 'Error creating chat: ' + ((error as unknown as { response?: { data?: { message?: string } } }).response?.data?.message || (error as Error).message),
+    });
   }
 };
 
