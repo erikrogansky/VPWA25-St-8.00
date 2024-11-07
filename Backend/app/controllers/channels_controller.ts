@@ -9,7 +9,9 @@ export default class ChannelsController {
       const user = await auth.getUserOrFail()
       try {
         await user.load('memberships', (query) => {
-          query.preload('channel')
+          query.preload('channel', (channelQuery: { preload: (arg0: string) => void }) => {
+            channelQuery.preload('owner')
+          })
         })
       } catch (error) {
         return response.status(200).json({ success: true, message: 'No chats found' })
@@ -29,6 +31,9 @@ export default class ChannelsController {
           continue
         }
         const unreadMessages = membership.unreadMessages
+        if (channel.name === user.nick) {
+          channel.name = channel.owner.nick
+        }
         chats.push({
           channel,
           unreadMessages,
@@ -66,7 +71,7 @@ export default class ChannelsController {
     const newChannel = await Channel.create({
       isPublic: channelData.isPublic,
       name: channelData.title,
-      ownerId: user.id,
+      userId: user.id,
     })
 
     await Membership.create({
