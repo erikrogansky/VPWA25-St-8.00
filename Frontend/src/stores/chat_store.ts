@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import axios from 'axios';
 
 export interface ChatItem {
   title: string;
@@ -11,14 +12,13 @@ export const useChatStore = defineStore('chat', {
     chatItems: [] as ChatItem[],
   }),
   actions: {
-    fetchChatItems() {
-      this.chatItems = [
-        { title: 'First Chat', lastMessage: 'dfghjkl', unread: true },
-        { title: 'Second Chat', lastMessage: 'dfghjkl', unread: false },
-      ];
-    },
-    createChatItem(chatItem: ChatItem) {
-      this.chatItems.push(chatItem);
+    async fetchChats() {
+      try {
+        const response = await axios.get('/api/channels/chats');
+        this.chatItems = response.data;
+      } catch (error) {
+        console.error('Error fetching chats:', error);
+      }
     },
   },
   getters: {

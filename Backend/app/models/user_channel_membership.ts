@@ -17,6 +17,9 @@ export default class UserChannelMembership extends BaseModel {
   @column()
   declare unreadMessages: number
 
+  @column()
+  declare type: 'chat' | 'channel' | 'archived' | 'request'
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
