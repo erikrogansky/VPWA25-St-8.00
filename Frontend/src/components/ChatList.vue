@@ -41,6 +41,7 @@
       :title="chat.title"
       :lastMessage="chat.lastMessage"
       :unread="chat.unread"
+      chat
     />
   </q-page>
 </template>

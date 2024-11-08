@@ -77,7 +77,7 @@ export default class ChannelsController {
     await Membership.create({
       userId: user.id,
       channelId: newChannel.id,
-      type: 'chat',
+      type: !newChannel.isPublic && users.length === 1 ? 'chat' : 'channel',
       unreadMessages: 0,
     })
 
@@ -91,5 +91,33 @@ export default class ChannelsController {
     }
 
     return response.status(201).json({ success: true, channel: newChannel })
+  }
+
+  public async acceptRequest({ auth, request, response }: HttpContext) {
+    const user = await auth.getUserOrFail()
+    const channelData = request.only(['title'] as any)
+    const channel = await Channel.find(
+      // eslint-disable-next-line @typescript-eslint/no-shadow
+      (channel: { name: string }) => channel.name === channelData.title
+    )
+    const membership = user.memberships.find(
+      // eslint-disable-next-line @typescript-eslint/no-shadow
+      (membership) => membership.channel.name === channelData.title
+    )
+
+    if (!membership) {
+      return response.status(400).json({ success: false, message: 'Membership not found' })
+    }
+
+    if (channel && channel.memberships.length === 2 && !channel.isPublic) {
+      membership.type = 'chat'
+    } else {
+      membership.type = 'channel'
+    }
+
+    // Save the updated membership if necessary
+    await membership.save()
+
+    return response.status(200).json({ success: true, message: 'Request accepted', membership })
   }
 }

@@ -16,6 +16,7 @@
       :title="request.title"
       :lastMessage="request.lastMessage"
       :unread="request.unread"
+      request
     />
   </q-page>
 </template>
