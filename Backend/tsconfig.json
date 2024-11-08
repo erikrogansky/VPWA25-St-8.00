@@ -9,6 +9,8 @@
       "#middleware/*": ["./app/middleware/*"],
       "#controllers/*": ["./app/controllers/*"],
       "#models/*": ["./app/models/*"],
+      "#seeders/*": ["./database/seeders/*"],
+      "#commands/*": ["./commands/*"],
       "@ioc/*": ["./*"]
     }
   }
