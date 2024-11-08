@@ -85,6 +85,9 @@ const hovering = ref(false);
 const menuOpen = ref(false);
 
 import { api } from 'src/boot/axios';
+import { useRequestStore } from 'src/stores/request-store';
+
+const requestStore = useRequestStore();
 
 const props = withDefaults(defineProps<{
   title: string
@@ -143,13 +146,17 @@ const acceptRequest = async () => {
   menuOpen.value = false;
   show.value = false;
   try {
-    const response = await api.post('/accept-request', {
+    await api.post('/accept-request', {
       title: props.title
     });
-    console.log('Request accepted:', response.data);
+
+    await requestStore.fetchChats();
+
   } catch (error) {
     console.error('Error accepting request:', error);
   }
+
+
 };
 </script>
 
