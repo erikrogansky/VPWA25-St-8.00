@@ -8,6 +8,7 @@ import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
 import UserChannelMembership from '#models/user_channel_membership'
 import Channel from '#models/channel'
 import { AccessToken } from '@adonisjs/auth/access_tokens'
+import Message from '#models/message'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
@@ -68,6 +69,12 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   @hasMany(() => Channel)
   declare channelOwnership: HasMany<typeof Channel>
+
+  @hasMany(() => Message, { foreignKey: 'createdBy' })
+  declare messages: HasMany<typeof Message>
+
+  @hasMany(() => Message, { foreignKey: 'mentionedUserId' })
+  declare mentionedMessages: HasMany<typeof Message>
 
   static accessTokens = DbAccessTokensProvider.forModel(User, {
     expiresIn: '30 days',

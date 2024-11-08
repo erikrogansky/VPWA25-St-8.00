@@ -3,6 +3,7 @@ import type { HasMany, BelongsTo } from '@adonisjs/lucid/types/relations'
 import { BaseModel, column, hasMany, belongsTo } from '@adonisjs/lucid/orm'
 import User from '#models/user'
 import UserChannelMembership from '#models/user_channel_membership'
+import Message from '#models/message'
 
 export default class Channel extends BaseModel {
   @column({ isPrimary: true })
@@ -28,4 +29,7 @@ export default class Channel extends BaseModel {
 
   @hasMany(() => UserChannelMembership)
   declare memberships: HasMany<typeof UserChannelMembership>
+
+  @hasMany(() => Message)
+  declare messages: HasMany<typeof Message>
 }
