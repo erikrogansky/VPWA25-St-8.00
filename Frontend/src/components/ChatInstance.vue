@@ -81,21 +81,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick, watch } from 'vue';
+import { ref, computed, nextTick, watch } from 'vue';
 import { useMessageStore } from 'src/stores/message_store';
 
 const messageStore = useMessageStore();
 
 const messages = ref(messageStore.messages);
-const displayedMessages = ref(messageStore.messages);
+const displayedMessages = ref(messageStore.allMessages);
 
 const props = defineProps<{
   title: string
 }>();
 
-onMounted(() => {
-  messageStore.initializeSocket();
-  messageStore.fetchMessages(props.title);
+import { useQuasar } from 'quasar';
+const $q = useQuasar();
+
+watch(() => props.title, (newTitle) => {
+  messageStore.fetchMessages(newTitle);
+
+  $q.notify(displayedMessages.value.length > 0 ? 'Chat loaded' : 'No messages found');
 });
 
 const scrollToBottom = () => {
@@ -217,14 +221,13 @@ const sendMessage = () => {
     const isMentioned = messageText.includes(`@${userName}`);
 
     const newMessage: Message = {
-      createdBy: userName, // Assuming userName is a string representing the current user
+      createdBy: userName,
       text: messageText,
       type: 'outgoing',
       isMentioned: isMentioned,
     };
 
-    messages.value.push(newMessage);
-    displayedMessages.value.push(newMessage);
+    messageStore.sendMessage(newMessage, props.title);
 
     text.value = '';
     showTypingText.value = false;
@@ -233,47 +236,7 @@ const sendMessage = () => {
     nextTick(() => {
       scrollToBottom();
     });
-
-    // Simulating incoming messages (remove in backend phase)
-    if (Math.random() < 0.5) {
-      setTimeout(() => {
-        simulateIncomingMessage();
-      }, 1000);
-      if (Math.random() < 0.65) {
-        setTimeout(() => {
-          simulateIncomingMessage();
-        }, 2000);
-      }
-    }
   }
-};
-
-// Function to simulate incoming messages
-const simulateIncomingMessage = () => {
-  const incomingMessages = [
-    'This is a reply!',
-    `@${userName}, you have a new message.`,
-    'Hello!',
-  ];
-
-  const randomMessage =
-    incomingMessages[Math.floor(Math.random() * incomingMessages.length)];
-  const isIncomingMentioned = randomMessage.includes(`@${userName}`);
-
-  const newMessage: Message = {
-    createdBy: 'system', // or any default value
-    text: randomMessage,
-    type: 'incoming',
-    isMentioned: isIncomingMentioned,
-  };
-
-  messages.value.push(newMessage);
-  displayedMessages.value.push(newMessage);
-
-  // Scroll to bottom after receiving a message
-  nextTick(() => {
-    scrollToBottom();
-  });
 };
 
 // Handling image selection

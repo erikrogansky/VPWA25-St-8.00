@@ -1,6 +1,7 @@
 // FILE: message_store.ts
 import { defineStore } from 'pinia';
 import { socket } from 'src/boot/socket';
+import { api } from 'src/boot/axios';
 
 export interface MessageItem {
   createdBy: string;
@@ -14,15 +15,6 @@ export const useMessageStore = defineStore('message', {
     messages: [] as MessageItem[],
   }),
   actions: {
-    initializeSocket() {
-      socket.on('message', (message: MessageItem) => {
-        this.addMessage(message);
-      });
-
-      socket.on('messages', (messages: MessageItem[]) => {
-        this.setMessages(messages);
-      });
-    },
     fetchMessages(title: string) {
       socket.emit('fetchMessages', { title });
     },
@@ -30,19 +22,16 @@ export const useMessageStore = defineStore('message', {
       this.messages.push(message);
     },
     setMessages(messages: MessageItem[]) {
-      this.messages = messages;
+      this.messages.push(...messages);
     },
-    addDummyMessages(count: number) {
-      for (let i = 1; i <= count; i++) {
-        const dummyMessage: MessageItem = {
-          createdBy: 'rtyuu',
-          text: `Dummy message ${i}`,
-          isMentioned: false,
-          type: (['incoming', 'outgoing'] as ('incoming' | 'outgoing')[])[Math.floor(Math.random() * ['incoming', 'outgoing'].length)],
-        };
-        this.addMessage(dummyMessage);
+    sendMessage(message: MessageItem, title: string) {
+      this.messages.push(message);
+      try {
+        api.post('/send-messages', { title: title, text: message.text});
+      } catch (error) {
+        console.error('Error sending message:', error);
       }
-    }
+    },
   },
   getters: {
     allMessages: (state) => state.messages,

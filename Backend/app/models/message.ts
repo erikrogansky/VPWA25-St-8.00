@@ -18,7 +18,7 @@ export default class Message extends BaseModel {
   declare message: string
 
   @column()
-  declare mentionedUserId: number
+  declare mentionedUserId: number | null
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

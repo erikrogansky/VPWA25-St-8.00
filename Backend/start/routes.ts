@@ -26,6 +26,10 @@ router.post('/api/logout', [AuthController, 'logout'])
 //Verification
 // eslint-disable-next-line prettier/prettier
 router.get('/api/verifyToken', async ({ response }) => { response.status(200).json({ valid: true })})
+router.get('/api/verifyTokenAndGetUser', async ({ auth, response }) => {
+  const user = await auth.getUserOrFail()
+  return { user: user }
+})
 
 router.get('/api/get-user-name', async ({ auth }) => {
   const user = await auth.getUserOrFail()
@@ -40,4 +44,4 @@ router.get('/api/get-channels', [ChannelsController, 'getChats'])
 router.post('/api/add-channel', [ChannelsController, 'addChannel'])
 router.post('/api/accept-request', [ChannelsController, 'acceptRequest'])
 
-router.get('/api/get-messages', [MessagesController, 'getMessages'])
+router.post('/api/send-messages', [MessagesController, 'writeMessages'])

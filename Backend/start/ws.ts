@@ -1,6 +1,10 @@
 import app from '@adonisjs/core/services/app'
 import { Server } from 'socket.io'
 import server from '@adonisjs/core/services/server'
+import MessagesController from '#controllers/messages_controller'
+import SocketAuthMiddleware from '#middleware/socket_auth_middleware'
+const messagesController = new MessagesController()
+const socketAuthMiddleware = new SocketAuthMiddleware()
 
 app.ready(() => {
   const io = new Server(server.getNodeServer(), {
@@ -9,16 +13,27 @@ app.ready(() => {
     },
   })
 
-  io.on('connection', (socket) => {
-    console.log('A new connection', socket.id)
+  io.use((socket, next) => socketAuthMiddleware.handle(socket, next))
 
-    socket.on('message', (data) => {
-      console.log('Received message:', data)
-      socket.broadcast.emit('message', data)
-    })
+  io.on('connection', (socket) => {
+    console.log('a user connected')
 
     socket.on('disconnect', () => {
-      console.log('Client disconnected', socket.id)
+      console.log('user disconnected')
+    })
+
+    socket.on('acknowledgment', (data) => {
+      console.log('Acknowledgment received:', data)
+    })
+
+    socket.on('fetchMessages', async (data) => {
+      data.user = socket.data.user
+      try {
+        const messages = await messagesController.getMessages(data)
+        socket.emit('messages', messages)
+      } catch (error) {
+        console.error('Error fetching messages:', error)
+      }
     })
   })
 })

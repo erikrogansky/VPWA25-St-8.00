@@ -11,6 +11,7 @@
       "#models/*": ["./app/models/*"],
       "#database/*": ["./database/*"],
       "#commands/*": ["./commands/*"],
+      "#start/*": ["./start/*"],
       "@ioc/*": ["./*"]
     }
   }
