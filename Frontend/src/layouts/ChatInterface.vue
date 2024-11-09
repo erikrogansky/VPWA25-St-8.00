@@ -96,13 +96,13 @@
     <!-- Chat Content -->
     <q-page-container>
       <!-- Show panel content or chat instance based on screen size and state -->
-      <ChatList v-if="activePanel === 'chats' && (isWideScreen || showPanel)" />
+      <ChatList v-if="activePanel === 'chats' && (isWideScreen || showPanel)" @chat-item-click="handleChatItemClick" />
       <ChannelList v-if="activePanel === 'channels' && (isWideScreen || showPanel)" />
       <RequestList v-if="activePanel === 'requests' && (isWideScreen || showPanel)" />
       <ArchiveList v-if="activePanel === 'archive' && (isWideScreen || showPanel)" />
 
       <!-- Always show ChatInstance on wide screens or when showPanel is false on small screens -->
-      <ChatInstance v-if="isWideScreen || !showPanel" />
+      <ChatInstance v-if="isWideScreen || !showPanel" :title="titleChat" />
     </q-page-container>
   </q-layout>
 </template>
@@ -121,6 +121,7 @@ const expanded = ref(false);
 const isWideScreen = ref(window.innerWidth > 850);
 const activePanel = ref<'chats' | 'channels' | 'requests' | 'archive'>('chats');
 const showPanel = ref(false);
+const titleChat = ref('New chat');
 
 function updateScreenWidth() {
   isWideScreen.value = window.innerWidth > 850;
@@ -149,5 +150,9 @@ function handlePanelClick(panel: 'chats' | 'channels' | 'requests' | 'archive') 
 
 function toggleExpand() {
   expanded.value = !expanded.value;
+}
+
+function handleChatItemClick(title: string) {
+  titleChat.value = title;
 }
 </script>

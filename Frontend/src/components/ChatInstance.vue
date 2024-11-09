@@ -12,7 +12,7 @@
           </q-item-section>
           <q-item-section>
             <div>
-              <q-item-label class="chat-header-chat-name">Chat name</q-item-label>
+              <q-item-label class="chat-header-chat-name">{{ title }}</q-item-label>
             </div>
             <div>
               <q-item-label class="chat-header-active-status">Active</q-item-label>
@@ -89,11 +89,13 @@ const messageStore = useMessageStore();
 const messages = ref(messageStore.messages);
 const displayedMessages = ref(messageStore.messages);
 
+const props = defineProps<{
+  title: string
+}>();
+
 onMounted(() => {
   messageStore.initializeSocket();
-  // messageStore.fetchMessages(1);
-  messageStore.addDummyMessages(150);
-  displayedMessages.value = messageStore.allMessages;
+  messageStore.fetchMessages(props.title);
 });
 
 const scrollToBottom = () => {

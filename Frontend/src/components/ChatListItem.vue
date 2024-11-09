@@ -156,7 +156,6 @@ const acceptRequest = async () => {
     console.error('Error accepting request:', error);
   }
 
-
 };
 </script>
 
@@ -164,7 +163,7 @@ const acceptRequest = async () => {
 .active-status-help {
   position: absolute;
   font-size: 17px;
-  bottom: 11.5px;
+  bottom: 3.5px;
   left: 31.5px;
   color: var(--primary-darker-15);
 }
@@ -172,7 +171,7 @@ const acceptRequest = async () => {
 .active-status {
   position: absolute;
   font-size: 12px;
-  bottom: 14px;
+  bottom: 6px;
   left: 34px;
   color: lime;
 }
@@ -184,7 +183,7 @@ const acceptRequest = async () => {
 .public-private-help {
   position: absolute;
   font-size: 17px;
-  bottom: 11.5px;
+  bottom: 3.5px;
   left: 31.5px;
   color: var(--primary-darker-15);
 }
@@ -192,7 +191,7 @@ const acceptRequest = async () => {
 .public-private {
   position: absolute;
   width: 12px;
-  bottom: 14px;
+  bottom: 6px;
   left: 34px;
 }
 </style>

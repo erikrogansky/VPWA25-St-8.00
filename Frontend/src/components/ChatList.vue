@@ -42,12 +42,15 @@
       :lastMessage="chat.lastMessage"
       :unread="chat.unread"
       chat
+      @click="handleChatItemClick(chat.title)"
+      clickable
     />
   </q-page>
 </template>
 
 <script setup scoped lang="ts">
 import { computed, ref, onMounted, toRaw } from 'vue';
+import { defineEmits } from 'vue';
 import ChatListItem from './ChatListItem.vue';
 import { api } from 'src/boot/axios';
 import { useQuasar } from 'quasar';
@@ -61,6 +64,8 @@ const isPublic = ref<boolean>(false);
 const newChatTitle = ref<string>('');
 
 import { useChatStore } from 'src/stores/chat_store';
+
+const emit = defineEmits(['chat-item-click']);
 const chatStore = useChatStore();
 
 const filteredChatItems = computed(() => {
@@ -119,6 +124,10 @@ const showTitleInput = computed(() => {
 onMounted(() => {
   chatStore.fetchChats();
 });
+
+const handleChatItemClick = (title: string) => {
+  emit('chat-item-click', title);
+};
 </script>
 
 <style scoped>

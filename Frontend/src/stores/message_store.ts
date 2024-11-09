@@ -23,8 +23,8 @@ export const useMessageStore = defineStore('message', {
         this.setMessages(messages);
       });
     },
-    fetchMessages(channelId: number) {
-      socket.emit('fetchMessages', { channelId });
+    fetchMessages(title: string) {
+      socket.emit('fetchMessages', { title });
     },
     addMessage(message: MessageItem) {
       this.messages.push(message);
@@ -33,7 +33,7 @@ export const useMessageStore = defineStore('message', {
       this.messages = messages;
     },
     addDummyMessages(count: number) {
-      for (let i = 0; i < count; i++) {
+      for (let i = 1; i <= count; i++) {
         const dummyMessage: MessageItem = {
           createdBy: 'rtyuu',
           text: `Dummy message ${i}`,
