@@ -17,6 +17,8 @@
       :lastMessage="request.lastMessage"
       :unread="request.unread"
       request
+      @click="handleChatItemClick(request.title)"
+      clickable
     />
   </q-page>
 </template>
@@ -32,6 +34,12 @@ const requestStore = useRequestStore();
 const filteredRequestItems = computed(() => {
   return requestStore.filteredChatItems(search.value);
 });
+
+const emit = defineEmits(['chat-item-click']);
+
+const handleChatItemClick = (title: string) => {
+  emit('chat-item-click', title);
+};
 
 onMounted(() => {
   requestStore.fetchChats();

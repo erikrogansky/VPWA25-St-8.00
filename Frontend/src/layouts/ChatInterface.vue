@@ -97,9 +97,9 @@
     <q-page-container>
       <!-- Show panel content or chat instance based on screen size and state -->
       <ChatList v-if="activePanel === 'chats' && (isWideScreen || showPanel)" @chat-item-click="handleChatItemClick" />
-      <ChannelList v-if="activePanel === 'channels' && (isWideScreen || showPanel)" />
-      <RequestList v-if="activePanel === 'requests' && (isWideScreen || showPanel)" />
-      <ArchiveList v-if="activePanel === 'archive' && (isWideScreen || showPanel)" />
+      <ChannelList v-if="activePanel === 'channels' && (isWideScreen || showPanel)" @chat-item-click="handleChatItemClick" />
+      <RequestList v-if="activePanel === 'requests' && (isWideScreen || showPanel)" @chat-item-click="handleChatItemClick" />
+      <ArchiveList v-if="activePanel === 'archive' && (isWideScreen || showPanel)" @chat-item-click="handleChatItemClick" />
 
       <!-- Always show ChatInstance on wide screens or when showPanel is false on small screens -->
       <ChatInstance v-if="isWideScreen || !showPanel" :title="titleChat" />

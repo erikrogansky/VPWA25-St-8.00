@@ -43,6 +43,8 @@
       :unread="channel.unread"
       channel
       :isPublic="channel.isPublic"
+      @click="handleChatItemClick(channel.title)"
+      clickable
     />
   </q-page>
 </template>
@@ -120,6 +122,12 @@ const showTitleInput = computed(() => {
 onMounted(() => {
   channelStore.fetchChannels();
 });
+
+const emit = defineEmits(['chat-item-click']);
+
+const handleChatItemClick = (title: string) => {
+  emit('chat-item-click', title);
+};
 </script>
 
 <style scoped>
