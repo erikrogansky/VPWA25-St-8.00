@@ -93,13 +93,15 @@ const props = defineProps<{
   title: string
 }>();
 
-import { useQuasar } from 'quasar';
-const $q = useQuasar();
 
 watch(() => props.title, (newTitle) => {
   messageStore.fetchMessages(newTitle);
+});
 
-  $q.notify(displayedMessages.value.length > 0 ? 'Chat loaded' : 'No messages found');
+watch(messageStore.allMessages, () => {
+  nextTick(() => {
+    scrollToBottom();
+  });
 });
 
 const scrollToBottom = () => {
@@ -107,10 +109,6 @@ const scrollToBottom = () => {
     chatContent.value.scrollTop = chatContent.value.scrollHeight;
   }
 };
-
-nextTick(() => {
-  scrollToBottom();
-});
 
 // Message interface
 interface Message {
@@ -138,12 +136,6 @@ const showTypingText = ref<boolean>(false);
 const allMessagesLoaded = ref<boolean>(false);
 
 const chatContent = ref<HTMLElement | null>(null);
-
-watch(displayedMessages, () => {
-  nextTick(() => {
-    scrollToBottom();
-  });
-});
 
 watch(text, (newText) => {
   if (newText.length > 0) {
