@@ -2,8 +2,10 @@
 import { defineStore } from 'pinia';
 import { socket } from 'src/boot/socket';
 import { api } from 'src/boot/axios';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface MessageItem {
+  id: string;
   createdBy: string;
   text: string;
   isMentioned: boolean;
@@ -13,21 +15,27 @@ export interface MessageItem {
 export const useMessageStore = defineStore('message', {
   state: () => ({
     messages: [] as MessageItem[],
+    sentMessageIds: new Set<string>(), // Track sent message IDs
   }),
   actions: {
     fetchMessages(title: string) {
       socket.emit('fetchMessages', { title });
     },
     addMessage(message: MessageItem) {
-      this.messages.push(message);
+      if (!this.sentMessageIds.has(message.id)) {
+        this.messages.push(message);
+      }
     },
     setMessages(messages: MessageItem[]) {
       this.messages.push(...messages);
     },
     sendMessage(message: MessageItem, title: string) {
+      const messageId = uuidv4();
+      message.id = messageId;
       this.messages.push(message);
+      this.sentMessageIds.add(messageId); // Track sent message ID
       try {
-        api.post('/send-messages', { title: title, text: message.text});
+        api.post('/send-messages', { title: title, text: message.text, id: messageId });
       } catch (error) {
         console.error('Error sending message:', error);
       }

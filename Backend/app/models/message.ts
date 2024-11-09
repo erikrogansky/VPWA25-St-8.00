@@ -20,6 +20,9 @@ export default class Message extends BaseModel {
   @column()
   declare mentionedUserId: number | null
 
+  @column()
+  declare uuid: string
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

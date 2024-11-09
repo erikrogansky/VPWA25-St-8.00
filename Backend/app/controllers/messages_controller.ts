@@ -5,7 +5,7 @@ import User from '#models/user'
 import { io } from '#start/ws'
 
 export default class MessagesController {
-  public async getMessages(data: { title: string; user: User }) {
+  public async getMessages(data: { title: string; user: User; id: string }) {
     try {
       const channel = await Channel.query()
         .where('name', data.title)
@@ -18,6 +18,7 @@ export default class MessagesController {
       const messages = channel.messages
 
       const messageItems = messages.map((message: Message) => ({
+        messageId: message.uuid,
         createdBy: message.user.nick,
         text: message.message,
         isMentioned: !!message.mentionedUserId,
@@ -33,7 +34,7 @@ export default class MessagesController {
   public async writeMessages({ auth, request }: HttpContext) {
     try {
       const user = await auth.user
-      const data = request.only(['text', 'title'])
+      const data = request.only(['text', 'title', 'id'])
 
       const channel = await Channel.query()
         .where('name', data.title)
@@ -41,12 +42,14 @@ export default class MessagesController {
         .firstOrFail()
 
       await channel.related('messages').create({
+        uuid: data.id,
         message: data.text,
         mentionedUserId: null,
         createdBy: user?.id,
       })
 
       const newMessageToBeEmitted = {
+        messageId: data.id,
         createdBy: user?.nick,
         text: data.text,
         isMentioned: false,

@@ -20,6 +20,7 @@ export default class Messages extends BaseSchema {
         .references('id')
         .inTable('users')
         .onDelete('SET NULL')
+      table.string('uuid').notNullable()
       table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(this.now())
       table.timestamp('updated_at', { useTz: true }).notNullable().defaultTo(this.now())
     })

@@ -114,6 +114,7 @@ nextTick(() => {
 
 // Message interface
 interface Message {
+  id: string;
   image?: string;
   createdBy: string;
   text: string;
@@ -221,6 +222,7 @@ const sendMessage = () => {
     const isMentioned = messageText.includes(`@${userName}`);
 
     const newMessage: Message = {
+      id: '',
       createdBy: userName,
       text: messageText,
       type: 'outgoing',
@@ -254,6 +256,7 @@ const handleImageUpload = (event: Event) => {
     const reader = new FileReader();
     reader.onload = () => {
       const newMessage: Message = {
+        id: '',
         createdBy: userName,
         text: '',
         isMentioned: false,

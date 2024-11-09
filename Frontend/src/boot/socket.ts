@@ -29,8 +29,9 @@ socket.on('disconnect', () => {
   state.connected = false;
 });
 
-socket.on('message', (message: {text: string, createdBy: string, isMentioned: boolean}) => {
+socket.on('message', (message: {text: string, createdBy: string, isMentioned: boolean, messageId: string}) => {
   const newMessage: MessageItem = {
+    id: message.messageId,
     createdBy: message.createdBy,
     text: message.text,
     isMentioned: message.isMentioned,
