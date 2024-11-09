@@ -9,6 +9,8 @@ export const state = reactive({
   barEvents: []
 });
 
+let currentRoom: string | null = null;
+
 const URL = process.env.VUE_APP_SOCKET_URL || 'http://localhost:3333';
 
 export const socket = io(URL, {
@@ -45,7 +47,11 @@ socket.on('messages', (messages: MessageItem[]) => {
 });
 
 export const subscribeToMessages = (title: string) => {
+  if (currentRoom) {
+    socket.emit('unsubscribeFromMessages', { title: currentRoom });
+  }
   socket.emit('subscribeToMessages', { title });
+  currentRoom = title;
 };
 
 export default { state, socket, subscribeToMessages };

@@ -36,14 +36,15 @@ app.ready(() => {
     })
 
     socket.on('subscribeToMessages', async (data) => {
-      try {
-        // eslint-disable-next-line prettier/prettier
-        const results = await Channel.query().where('name', data.title).orWhere('nameIfChat', data.title).firstOrFail()
-        socket.join(results.name)
-        console.log('Title 1:', results.name)
-      } catch (error) {
-        console.error('Error fetching messages:', error)
-      }
+      // eslint-disable-next-line prettier/prettier
+      const results = await Channel.query().where('name', data.title).orWhere('nameIfChat', data.title).firstOrFail()
+      socket.join(results.name)
+    })
+
+    socket.on('unsubscribeFromMessages', async (data) => {
+      // eslint-disable-next-line prettier/prettier
+      const results = await Channel.query().where('name', data.title).orWhere('nameIfChat', data.title).firstOrFail()
+      socket.leave(results.name)
     })
   })
 })
