@@ -1,4 +1,5 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
+import User from '#models/user'
 
 export default class Messages extends BaseSchema {
   protected tableName = 'messages'

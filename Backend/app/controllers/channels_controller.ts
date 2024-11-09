@@ -129,7 +129,6 @@ export default class ChannelsController {
       membership.type = 'channel'
     }
 
-    // Save the updated membership if necessary
     await membership.save()
 
     return response.status(200).json({ success: true, message: 'Request accepted', membership })
