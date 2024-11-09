@@ -44,4 +44,8 @@ socket.on('messages', (messages: MessageItem[]) => {
   messageStore.setMessages(messages);
 });
 
-export default { state, socket };
+export const subscribeToMessages = (title: string) => {
+  socket.emit('subscribeToMessages', { title });
+};
+
+export default { state, socket, subscribeToMessages };

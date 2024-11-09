@@ -5,6 +5,7 @@ import MessagesController from '#controllers/messages_controller'
 import SocketAuthMiddleware from '#middleware/socket_auth_middleware'
 const messagesController = new MessagesController()
 const socketAuthMiddleware = new SocketAuthMiddleware()
+import Channel from '#models/channel'
 
 let io: Server
 
@@ -29,6 +30,17 @@ app.ready(() => {
       try {
         const messages = await messagesController.getMessages(data)
         socket.emit('messages', messages)
+      } catch (error) {
+        console.error('Error fetching messages:', error)
+      }
+    })
+
+    socket.on('subscribeToMessages', async (data) => {
+      try {
+        // eslint-disable-next-line prettier/prettier
+        const results = await Channel.query().where('name', data.title).orWhere('nameIfChat', data.title).firstOrFail()
+        socket.join(results.name)
+        console.log('Title 1:', results.name)
       } catch (error) {
         console.error('Error fetching messages:', error)
       }

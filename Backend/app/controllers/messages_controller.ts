@@ -55,7 +55,10 @@ export default class MessagesController {
         isMentioned: false,
       }
 
-      io.emit('message', newMessageToBeEmitted)
+      // eslint-disable-next-line prettier/prettier
+      const results = await Channel.query().where('name', data.title).orWhere('nameIfChat', data.title).firstOrFail()
+      console.log('Title 2:', results.name)
+      io.to(results.name).emit('message', newMessageToBeEmitted)
     } catch (error) {
       console.error('Error writing messages:', error)
     }

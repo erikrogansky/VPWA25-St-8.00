@@ -83,6 +83,7 @@
 <script setup lang="ts">
 import { ref, computed, nextTick, watch } from 'vue';
 import { useMessageStore } from 'src/stores/message_store';
+import { subscribeToMessages } from 'src/boot/socket';
 
 const messageStore = useMessageStore();
 
@@ -96,6 +97,7 @@ const props = defineProps<{
 
 watch(() => props.title, (newTitle) => {
   messageStore.fetchMessages(newTitle);
+  subscribeToMessages(newTitle);
 });
 
 watch(messageStore.allMessages, () => {
