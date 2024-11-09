@@ -1,54 +1,50 @@
+// FILE: message_store.ts
 import { defineStore } from 'pinia';
-import { api } from 'src/boot/axios';
-import axios from 'axios';
+import { socket } from 'src/boot/socket';
 
 export interface MessageItem {
-  title: string;
-  lastMessage: string;
-  unread: boolean;
-  isPublic: boolean;
+  createdBy: string;
+  text: string;
+  isMentioned: boolean;
+  type: 'incoming' | 'outgoing';
 }
 
-export const useChannelStore = defineStore('channel', {
+export const useMessageStore = defineStore('message', {
   state: () => ({
-    channelItems: [] as MessageItem[],
+    messages: [] as MessageItem[],
   }),
   actions: {
-    async fetchChannels() {
-      try {
-        const response = await api.get('/get-channels', {
-          params: {
-            type: 'channel'
-          }
-        });
-        if (Array.isArray(response.data.chats)) {
-          this.channelItems = response.data.chats.map((channel: { channel: { name: string, isPublic: boolean }; unreadMessages: number }) => ({
-            title: channel.channel.name,
-            lastMessage: 'Last message.',
-            unread: channel.unreadMessages > 0,
-            isPublic: channel.channel.isPublic,
-          }));
-        } else {
-          this.channelItems = [];
-        }
-      } catch (error: unknown) {
-        this.channelItems = [];
-        if (axios.isAxiosError(error) && error.response) {
-          if (error.response.data.message !== 'No chats found') {
-            console.error('Error fetching chats:', error);
-            console.error('Error response data:', error.response.data);
-          }
-        } else {
-          console.error('Error fetching chats:', error);
-        }
-      }
+    initializeSocket() {
+      socket.on('message', (message: MessageItem) => {
+        this.addMessage(message);
+      });
+
+      socket.on('messages', (messages: MessageItem[]) => {
+        this.setMessages(messages);
+      });
     },
+    fetchMessages(channelId: number) {
+      socket.emit('fetchMessages', { channelId });
+    },
+    addMessage(message: MessageItem) {
+      this.messages.push(message);
+    },
+    setMessages(messages: MessageItem[]) {
+      this.messages = messages;
+    },
+    addDummyMessages(count: number) {
+      for (let i = 0; i < count; i++) {
+        const dummyMessage: MessageItem = {
+          createdBy: 'rtyuu',
+          text: `Dummy message ${i}`,
+          isMentioned: false,
+          type: (['incoming', 'outgoing'] as ('incoming' | 'outgoing')[])[Math.floor(Math.random() * ['incoming', 'outgoing'].length)],
+        };
+        this.addMessage(dummyMessage);
+      }
+    }
   },
   getters: {
-    filteredChannelItems: (state) => (search: string) => {
-      return state.channelItems.filter((channel) =>
-        channel.title.toLowerCase().includes(search.toLowerCase())
-      );
-    },
+    allMessages: (state) => state.messages,
   },
 });

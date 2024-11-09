@@ -32,7 +32,7 @@
               <span v-if="group.type === 'incoming'" class="sender">Name</span>
               <q-bubble
                 v-for="(message, i) in group.messages" :key="i" class="bubble"
-                :class="{ 'text-message': message.text, 'image-message': message.image,'highlighted-message': message.mentioned }">
+                :class="{ 'text-message': message.text, 'image-message': message.image,'highlighted-message': message.isMentioned }">
 
                 <div v-if="message.text" v-html="formatMessageText(message.text)"></div>
                 <img v-if="message.image" :src="message.image" alt="Sent image" class="chat-image"/>
@@ -82,14 +82,37 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, nextTick, watch } from 'vue';
-import { QInfiniteScroll } from 'quasar';
+import { useMessageStore } from 'src/stores/message_store';
+
+const messageStore = useMessageStore();
+
+const messages = ref(messageStore.messages);
+const displayedMessages = ref(messageStore.messages);
+
+onMounted(() => {
+  messageStore.initializeSocket();
+  // messageStore.fetchMessages(1);
+  messageStore.addDummyMessages(150);
+  displayedMessages.value = messageStore.allMessages;
+});
+
+const scrollToBottom = () => {
+  if (chatContent.value) {
+    chatContent.value.scrollTop = chatContent.value.scrollHeight;
+  }
+};
+
+nextTick(() => {
+  scrollToBottom();
+});
 
 // Message interface
 interface Message {
-  text?: string;
   image?: string;
-  type: string;
-  mentioned?: boolean;
+  createdBy: string;
+  text: string;
+  isMentioned: boolean;
+  type: 'incoming' | 'outgoing';
 }
 
 // Message group interface
@@ -104,42 +127,10 @@ const mentionTag = `@${userName}`;
 
 // Chat data
 const text = ref<string>('');
-const messages = ref<Message[]>([]);
-const displayedMessages = ref<Message[]>([]);
 const showTypingText = ref<boolean>(false);
 const allMessagesLoaded = ref<boolean>(false);
 
 const chatContent = ref<HTMLElement | null>(null);
-
-// Generate initial messages (for simulation, replace in backend phase)
-const generateMessages = () => {
-  for (let i = 0; i < 100; i++) {
-    const isIncoming = Math.random() < 0.5;
-    const messageText = `Message ${i + 1}`;
-    messages.value.push({
-      text: messageText,
-      type: isIncoming ? 'incoming' : 'outgoing',
-      mentioned: messageText.includes(`@${userName}`),
-    });
-  }
-  // init last 20 messages
-  displayedMessages.value = messages.value.slice(-20);
-};
-
-generateMessages();
-
-onMounted(() => {
-  nextTick(() => {
-    scrollToBottom();
-  });
-});
-
-// Function to scroll to bottom
-const scrollToBottom = () => {
-  if (chatContent.value) {
-    chatContent.value.scrollTop = chatContent.value.scrollHeight;
-  }
-};
 
 watch(displayedMessages, () => {
   nextTick(() => {
@@ -167,7 +158,6 @@ const loadMoreMessages = (index: number, done: (stop?: boolean) => void) => {
 
   // Simulate loading delay (replace in backend phase)
   setTimeout(() => {
-
     const loadCount = 20;
     const remainingMessages = messages.value.length - currentLength;
     const loadAmount = remainingMessages >= loadCount ? loadCount : remainingMessages;
@@ -225,9 +215,10 @@ const sendMessage = () => {
     const isMentioned = messageText.includes(`@${userName}`);
 
     const newMessage: Message = {
+      createdBy: userName, // Assuming userName is a string representing the current user
       text: messageText,
       type: 'outgoing',
-      mentioned: isMentioned,
+      isMentioned: isMentioned,
     };
 
     messages.value.push(newMessage);
@@ -246,7 +237,6 @@ const sendMessage = () => {
       setTimeout(() => {
         simulateIncomingMessage();
       }, 1000);
-
       if (Math.random() < 0.65) {
         setTimeout(() => {
           simulateIncomingMessage();
@@ -269,9 +259,10 @@ const simulateIncomingMessage = () => {
   const isIncomingMentioned = randomMessage.includes(`@${userName}`);
 
   const newMessage: Message = {
+    createdBy: 'system', // or any default value
     text: randomMessage,
     type: 'incoming',
-    mentioned: isIncomingMentioned,
+    isMentioned: isIncomingMentioned,
   };
 
   messages.value.push(newMessage);
@@ -298,11 +289,13 @@ const handleImageUpload = (event: Event) => {
     const reader = new FileReader();
     reader.onload = () => {
       const newMessage: Message = {
+        createdBy: userName,
+        text: '',
+        isMentioned: false,
         image: reader.result as string,
         type: 'outgoing',
       };
-      messages.value.push(newMessage);
-      displayedMessages.value.push(newMessage);
+      messageStore.addMessage(newMessage);
 
       // Scroll to bottom after sending an image
       nextTick(() => {
