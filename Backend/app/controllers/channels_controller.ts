@@ -69,9 +69,12 @@ export default class ChannelsController {
     }
 
     // Check if the channel name is unique
-    const existingChannel = await Channel.query().where('name', channelData.title).first()
+    const existingChannel = await Channel.query()
+      .where('name', channelData.title)
+      .orWhere('nameIfChat', channelData.title)
+      .first()
     if (existingChannel) {
-      return response.status(400).json({ success: false, message: 'Channel name already exists' })
+      return response.status(400).json({ success: false, message: 'Channel already exists' })
     }
 
     const newChannel = await Channel.create({
