@@ -20,7 +20,8 @@ export default class IndexSeeder extends BaseSeeder {
     console.log('Running IndexSeeder...')
     await this.seed(await import('#database/seeders/user_seeder'))
     await this.seed(await import('#database/seeders/channel_seeder'))
+    await this.seed(await import('#database/seeders/user_channel_membership_seeder'))
     await this.seed(await import('#database/seeders/message_seeder'))
-    console.log('IndexSeeder finished.')
+    console.log('Seeders finished.')
   }
 }
