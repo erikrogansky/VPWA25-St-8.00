@@ -2,6 +2,7 @@ import { HttpContext } from '@adonisjs/core/http'
 import Channel from '#models/channel'
 import Message from '#models/message'
 import User from '#models/user'
+import { io } from '#start/ws'
 
 export default class MessagesController {
   public async getMessages(data: { title: string; user: User }) {
@@ -44,6 +45,14 @@ export default class MessagesController {
         mentionedUserId: null,
         createdBy: user?.id,
       })
+
+      const newMessageToBeEmitted = {
+        createdBy: user?.nick,
+        text: data.text,
+        isMentioned: false,
+      }
+
+      io.emit('message', newMessageToBeEmitted)
     } catch (error) {
       console.error('Error writing messages:', error)
     }

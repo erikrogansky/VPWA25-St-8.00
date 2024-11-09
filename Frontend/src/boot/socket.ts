@@ -29,8 +29,14 @@ socket.on('disconnect', () => {
   state.connected = false;
 });
 
-socket.on('message', (message: MessageItem) => {
-  messageStore.addMessage(message);
+socket.on('message', (message: {text: string, createdBy: string, isMentioned: boolean}) => {
+  const newMessage: MessageItem = {
+    createdBy: message.createdBy,
+    text: message.text,
+    isMentioned: message.isMentioned,
+    type: 'incoming'
+  };
+  messageStore.addMessage(newMessage);
 });
 
 socket.on('messages', (messages: MessageItem[]) => {

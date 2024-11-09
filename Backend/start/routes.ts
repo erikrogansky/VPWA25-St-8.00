@@ -26,7 +26,7 @@ router.post('/api/logout', [AuthController, 'logout'])
 //Verification
 // eslint-disable-next-line prettier/prettier
 router.get('/api/verifyToken', async ({ response }) => { response.status(200).json({ valid: true })})
-router.get('/api/verifyTokenAndGetUser', async ({ auth, response }) => {
+router.get('/api/verifyTokenAndGetUser', async ({ auth }) => {
   const user = await auth.getUserOrFail()
   return { user: user }
 })

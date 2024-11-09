@@ -6,8 +6,10 @@ import SocketAuthMiddleware from '#middleware/socket_auth_middleware'
 const messagesController = new MessagesController()
 const socketAuthMiddleware = new SocketAuthMiddleware()
 
+let io: Server
+
 app.ready(() => {
-  const io = new Server(server.getNodeServer(), {
+  io = new Server(server.getNodeServer(), {
     cors: {
       origin: 'http://localhost:9000',
     },
@@ -16,11 +18,7 @@ app.ready(() => {
   io.use((socket, next) => socketAuthMiddleware.handle(socket, next))
 
   io.on('connection', (socket) => {
-    console.log('a user connected')
-
-    socket.on('disconnect', () => {
-      console.log('user disconnected')
-    })
+    socket.on('disconnect', () => {})
 
     socket.on('acknowledgment', (data) => {
       console.log('Acknowledgment received:', data)
@@ -37,3 +35,5 @@ app.ready(() => {
     })
   })
 })
+
+export { io }
