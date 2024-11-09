@@ -59,6 +59,12 @@ export default class ChannelsController {
       return response.status(400).json({ success: false, message: 'Channel name is required' })
     }
 
+    if (channelData.users.length === 0) {
+      return response
+        .status(400)
+        .json({ success: false, message: 'Please specify at least one user' })
+    }
+
     const userNicks = channelData.users
     const users = await User.query().whereIn('nick', userNicks)
 
