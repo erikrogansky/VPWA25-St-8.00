@@ -1,7 +1,12 @@
 import User from '#models/user'
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+import { DateTime } from 'luxon'
 
-export default class UserSeeder {
+export default class UserSeeder extends BaseSeeder {
+  //static environment = ['development', 'testing']
+
   public static async run() {
+    console.log('Running UserSeeder...')
     await User.createMany([
       {
         nick: 'user1',
@@ -9,12 +14,13 @@ export default class UserSeeder {
         password: 'password1',
         firstName: 'User',
         lastName: 'One',
-        dateOfBirth: new Date(2001, 1, 1),
+        dateOfBirth: DateTime.local(2001, 1, 1),
         gender: 'male',
         phoneNumber: '+421911111111',
         mode: 'dark',
         notifications: 'sound',
         activeStatus: 'active',
+        fullName: 'User One',
       },
       {
         nick: 'user2',
@@ -22,12 +28,13 @@ export default class UserSeeder {
         password: 'password2',
         firstName: 'User',
         lastName: 'Two',
-        dateOfBirth: new Date(2002, 2, 2),
+        dateOfBirth: DateTime.local(2002, 2, 2),
         gender: 'female',
         phoneNumber: '+421922222222',
         mode: 'dark',
-        notifications: 'nosound',
+        notifications: 'sound',
         activeStatus: 'active',
+        fullName: 'User Two',
       },
     ])
   }
