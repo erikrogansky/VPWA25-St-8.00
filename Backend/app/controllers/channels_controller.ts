@@ -32,7 +32,7 @@ export default class ChannelsController {
         }
         const unreadMessages = membership.unreadMessages
         if (channel.name === user.nick) {
-          channel.name = channel.owner.nick
+          channel.name = channel.nameIfChat
         }
         chats.push({
           channel,
@@ -79,6 +79,12 @@ export default class ChannelsController {
       name: channelData.title,
       userId: user.id,
     })
+
+    if (newChannel && users.length === 1) {
+      newChannel.nameIfChat = user.nick
+
+      newChannel.save()
+    }
 
     await Membership.create({
       userId: user.id,

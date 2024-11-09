@@ -8,6 +8,7 @@ export default class extends BaseSchema {
       table.increments('id')
 
       table.text('name')
+      table.text('name_if_chat')
       table.boolean('is_public')
       table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
 

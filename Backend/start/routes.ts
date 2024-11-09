@@ -10,6 +10,7 @@
 import router from '@adonisjs/core/services/router'
 const AuthController = () => import('#controllers/auth_controller')
 const ChannelsController = () => import('#controllers/channels_controller')
+const MessagesController = () => import('#controllers/messages_controller')
 
 router.get('/', async () => 'It works!')
 
@@ -37,5 +38,6 @@ router.get('/api/get-user-name', async ({ auth }) => {
 
 router.get('/api/get-channels', [ChannelsController, 'getChats'])
 router.post('/api/add-channel', [ChannelsController, 'addChannel'])
-
 router.post('/api/accept-request', [ChannelsController, 'acceptRequest'])
+
+router.get('/api/get-messages', [MessagesController, 'getMessages'])

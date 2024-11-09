@@ -13,6 +13,9 @@ export default class Channel extends BaseModel {
   declare name: string
 
   @column()
+  declare nameIfChat: string
+
+  @column()
   declare isPublic: boolean
 
   @column()
