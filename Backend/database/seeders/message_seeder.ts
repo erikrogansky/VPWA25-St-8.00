@@ -1,12 +1,12 @@
-import Message from '#models/message'
-import Channel from '#models/channel'
-import User from '#models/user'
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
+import User from '#models/user'
+import Channel from '#models/channel'
+import Message from '#models/message'
 
 export default class MessageSeeder extends BaseSeeder {
-  //static environment = ['development', 'testing']
+  static environment = ['development', 'testing']
 
-  public static async run() {
+  async run() {
     console.log('Running MessageSeeder...')
     const user1 = await User.findByOrFail('nick', 'user1')
     const user2 = await User.findByOrFail('nick', 'user2')

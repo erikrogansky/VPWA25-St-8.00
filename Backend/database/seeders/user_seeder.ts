@@ -1,11 +1,11 @@
-import User from '#models/user'
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import { DateTime } from 'luxon'
+import User from '#models/user'
 
 export default class UserSeeder extends BaseSeeder {
-  //static environment = ['development', 'testing']
+  static environment = ['development', 'testing']
 
-  public static async run() {
+  async run() {
     console.log('Running UserSeeder...')
     await User.createMany([
       {
@@ -20,7 +20,6 @@ export default class UserSeeder extends BaseSeeder {
         mode: 'dark',
         notifications: 'sound',
         activeStatus: 'active',
-        fullName: 'User One',
       },
       {
         nick: 'user2',
@@ -34,7 +33,6 @@ export default class UserSeeder extends BaseSeeder {
         mode: 'dark',
         notifications: 'sound',
         activeStatus: 'active',
-        fullName: 'User Two',
       },
     ])
   }
