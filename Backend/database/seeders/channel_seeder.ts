@@ -1,11 +1,11 @@
-import Channel from '#models/channel'
-import User from '#models/user'
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
+import User from '#models/user'
+import Channel from '#models/channel'
 
 export default class ChannelSeeder extends BaseSeeder {
-  //static environment = ['development', 'testing']
+  static environment = ['development', 'testing']
 
-  public static async run() {
+  async run() {
     console.log('Running ChannelSeeder...')
     const user1 = await User.findByOrFail('nick', 'user1')
     const user2 = await User.findByOrFail('nick', 'user2')
