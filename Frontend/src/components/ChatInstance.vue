@@ -29,7 +29,7 @@
             <i v-if="group.type === 'incoming'" class="fas fa-circle-user profile-picture" />
 
             <div class="messages" :class="group.type">
-              <span v-if="group.type === 'incoming'" class="sender">Name</span>
+              <span v-if="group.type === 'incoming'" class="sender">{{ group.messages[0].createdBy }}</span>
               <q-bubble
                 v-for="(message, i) in group.messages" :key="i" class="bubble"
                 :class="{ 'text-message': message.text, 'image-message': message.image,'highlighted-message': message.isMentioned }">
