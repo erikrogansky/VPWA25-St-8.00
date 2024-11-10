@@ -81,11 +81,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick, watch } from 'vue';
+import { ref, computed, nextTick, watch, onMounted } from 'vue';
 import { useMessageStore } from 'src/stores/message_store';
+import { useUserStore } from 'src/stores/user_store';
 import { subscribeToMessages } from 'src/boot/socket';
 
 const messageStore = useMessageStore();
+const userStore = useUserStore();
 
 const messages = ref(messageStore.messages);
 const displayedMessages = ref(messageStore.allMessages);
@@ -128,9 +130,16 @@ interface MessageGroup {
   messages: Message[];
 }
 
+
 // User data
-const userName = 'name'; // User name - TEMPORARY (replace in backend phase)
-const mentionTag = `@${userName}`;
+const userName = ref('');
+const mentionTag = ref('');
+
+onMounted(async () => {
+  await userStore.fetchUser();
+  userName.value = userStore.user?.nick || '';
+  mentionTag.value = `@${userName.value}`;
+});
 
 // Chat data
 const text = ref<string>('');
@@ -204,7 +213,7 @@ const groupedMessages = computed<MessageGroup[]>(() => {
 
 // Format message (@mention highlighting)
 const formatMessageText = (text: string) => {
-  const regex = new RegExp(`(${mentionTag})`, 'g');
+  const regex = new RegExp(`(${mentionTag.value})`, 'g');
   const formattedText = text.replace(regex, '<strong>$1</strong>');
   return formattedText;
 };
@@ -213,11 +222,11 @@ const formatMessageText = (text: string) => {
 const sendMessage = () => {
   if (text.value.trim()) {
     const messageText = text.value.trim();
-    const isMentioned = messageText.includes(`@${userName}`);
+    const isMentioned = messageText.includes(`@${userName.value}`);
 
     const newMessage: Message = {
       id: '',
-      createdBy: userName,
+      createdBy: userName.value,
       text: messageText,
       type: 'outgoing',
       isMentioned: isMentioned,
@@ -251,7 +260,7 @@ const handleImageUpload = (event: Event) => {
     reader.onload = () => {
       const newMessage: Message = {
         id: '',
-        createdBy: userName,
+        createdBy: userName.value,
         text: '',
         isMentioned: false,
         image: reader.result as string,
