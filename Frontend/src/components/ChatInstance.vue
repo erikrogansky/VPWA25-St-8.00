@@ -211,11 +211,12 @@ const groupedMessages = computed<MessageGroup[]>(() => {
   return groups;
 });
 
-// Format message (@mention highlighting)
 const formatMessageText = (text: string) => {
   const regex = new RegExp(`(${mentionTag.value})`, 'g');
-  const formattedText = text.replace(regex, '<strong>$1</strong>');
-  return formattedText;
+  if (text.includes(mentionTag.value)) {
+    return text.replace(regex, '<strong>$1</strong>');
+  }
+  return text;
 };
 
 // Sending a message
