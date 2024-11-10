@@ -32,7 +32,7 @@
               <span v-if="group.type === 'incoming'" class="sender">{{ group.messages[0].createdBy }}</span>
               <q-bubble
                 v-for="(message, i) in group.messages" :key="i" class="bubble"
-                :class="{ 'text-message': message.text, 'image-message': message.image,'highlighted-message': message.isMentioned }">
+                :class="{ 'text-message': message.text, 'image-message': message.image, 'highlighted-message': message.text.includes(mentionTag) }">
 
                 <div v-if="message.text" v-html="formatMessageText(message.text)"></div>
                 <img v-if="message.image" :src="message.image" alt="Sent image" class="chat-image"/>
