@@ -19,6 +19,9 @@ export const useMessageStore = defineStore('message', {
   }),
   actions: {
     fetchMessages(title: string) {
+      if (this.messages.length !== 0) {
+        this.messages = [];
+      }
       socket.emit('fetchMessages', { title });
     },
     addMessage(message: MessageItem) {

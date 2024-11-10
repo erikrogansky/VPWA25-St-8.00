@@ -15,6 +15,9 @@ export const useChannelStore = defineStore('channel', {
   }),
   actions: {
     async fetchChannels() {
+      if (this.channelItems.length !== 0) {
+        this.channelItems = [];
+      }
       try {
         const response = await api.get('/get-channels', {
           params: {

@@ -66,7 +66,7 @@
               <q-item-section avatar><i class="fas fa-check"></i></q-item-section>
               <q-item-section>Accept request</q-item-section>
             </q-item>
-            <q-item clickable @click="onMenuItemClick" v-close-popup>
+            <q-item clickable @click="declineRequest" v-close-popup>
               <q-item-section avatar><i class="fas fa-xmark"></i></q-item-section>
               <q-item-section>Decline request</q-item-section>
             </q-item>
@@ -155,7 +155,25 @@ const acceptRequest = async () => {
   } catch (error) {
     console.error('Error accepting request:', error);
   }
+};
 
+const declineRequest = async () => {
+  menuOpen.value = false;
+  show.value = false;
+  try {
+    const response = await api.post('/decline-request', {
+      title: props.title
+    });
+
+    if (response.data.success === false) {
+      console.error('Error declining request:', response.data.message);
+    } else {
+      await requestStore.fetchChats();
+    }
+
+  } catch (error) {
+    console.error('Error declining request:', error);
+  }
 };
 </script>
 

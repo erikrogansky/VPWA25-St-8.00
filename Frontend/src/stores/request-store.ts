@@ -14,6 +14,9 @@ export const useRequestStore = defineStore('request', {
   }),
   actions: {
     async fetchChats() {
+      if (this.requestItems.length !== 0) {
+        this.requestItems = [];
+      }
       try {
         const response = await api.get('/get-channels', {
           params: {

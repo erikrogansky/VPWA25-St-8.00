@@ -148,4 +148,37 @@ export default class ChannelsController {
 
     return response.status(200).json({ success: true, message: 'Request accepted', membership })
   }
+
+  public async declineRequest({ auth, request, response }: HttpContext) {
+    const user = await auth.getUserOrFail()
+    const channelData = request.only(['title'] as any)
+
+    const channel = await Channel.query()
+      .where('name', channelData.title)
+      .orWhere('name', user.nick)
+      .preload('memberships')
+      .orderByRaw(`CASE WHEN name = ? THEN 1 ELSE 2 END`, [channelData.title])
+      .first()
+
+    if (!channel) {
+      return response.status(400).json({ success: false, message: 'Channel not found' })
+    }
+
+    const membership = await Membership.query()
+      .where('channelId', channel.id)
+      .andWhere('userId', user.id)
+      .first()
+
+    if (!membership) {
+      return response.status(400).json({ success: false, message: 'Membership not found' })
+    }
+
+    await membership.delete()
+
+    if (channel.memberships.length - 1 < 2) {
+      await channel.delete()
+    }
+
+    return response.status(200).json({ success: true, message: 'Request accepted', membership })
+  }
 }
