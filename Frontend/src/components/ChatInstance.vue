@@ -65,8 +65,8 @@
 
         <transition name="fade" appear>
             <div class="chat-bubble-row incoming">
-              <i v-if="text.length > 0" class="fas fa-circle-user profile-picture" />
-              <div v-if="text.length > 0" style="display: flex; flex-direction: column;">
+              <i v-if="text.length > 0 && !text.startsWith('/')" class="fas fa-circle-user profile-picture" />
+              <div v-if="text.length > 0 && !text.startsWith('/')" style="display: flex; flex-direction: column;">
                 <span v-if="showTypingText" class="sender">Name</span>
                 <q-bubble v-if="text.length > 0" class="bubble text-message typing-indicator" @click="() => {showTypingText = !showTypingText; nextTick(() => {scrollToBottom();});}">
                   <span v-if="!showTypingText"><q-spinner-dots size="20px" /></span>
@@ -85,9 +85,9 @@
             <input type="file" ref="fileInput" @change="handleImageUpload" style="display:none" accept="image/*" />
           </q-item-section>
         </q-item>
-        <q-input rounded standout dense v-model="text" placeholder="Aa" class="text-bar" @keyup.enter="() => { sendMessage(); showTypingText = false; }" />
+        <q-input rounded standout dense v-model="text" placeholder="Aa" class="text-bar" @keyup.enter="handleMessage" />
         <transition name="fade" appear>
-          <q-btn v-if="text.length > 0" icon="send" @click="() => { sendMessage(); showTypingText = false; }" flat round dense class="send" />
+          <q-btn v-if="text.length > 0" icon="send" @click="handleMessage" flat round dense class="send" />
         </transition>
       </div>
 
@@ -280,6 +280,38 @@ const sendMessage = () => {
     nextTick(() => {
       scrollToBottom();
     });
+  }
+};
+
+import { useQuasar } from 'quasar';
+const $q = useQuasar();
+
+// Command handling
+const parseCommand = (command: string) => {
+  const parsedArray = command.split(' ');
+
+  if (parsedArray[0] === '/abc') {
+    $q.notify({
+      position: 'top',
+      type: 'positive',
+      message: 'Command executed successfully!',
+    });
+  } else {
+    $q.notify({
+      position: 'top',
+      type: 'negative',
+      message: 'Invalid command!',
+    });
+  }
+};
+
+const handleMessage = () => {
+  if (text.value.startsWith('/')) {
+    parseCommand(text.value);
+    text.value = '';
+  } else {
+    sendMessage();
+    showTypingText.value = false;
   }
 };
 

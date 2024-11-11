@@ -41,6 +41,7 @@
     "@swc/core": "1.7.42",
     "@types/luxon": "^3.4.2",
     "@types/node": "^22.8.6",
+    "@types/node-cron": "^3.0.11",
     "eslint": "^9.14.0",
     "hot-hook": "^0.3.1",
     "pino-pretty": "^11.3.0",
