@@ -48,6 +48,9 @@ export default class MessagesController {
         createdBy: user?.id,
       })
 
+      channel.updatedAt = DateTime.now()
+      await channel.save()
+
       const newMessageToBeEmitted = {
         messageId: data.id,
         createdBy: user?.nick,
