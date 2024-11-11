@@ -10,13 +10,28 @@
             <i class="fas fa-circle active-status-help" />
             <i class="fas fa-circle active-status" />
           </q-item-section>
-          <q-item-section>
+          <q-item-section class="fill">
             <div>
               <q-item-label class="chat-header-chat-name">{{ title }}</q-item-label>
             </div>
             <div>
               <q-item-label class="chat-header-active-status">Active</q-item-label>
             </div>
+          </q-item-section>
+          <q-item-section class="menu">
+            <q-item-label>
+              <q-btn>
+                <i class="fas fa-ellipsis-v" style="font-size: 20px;"></i>
+              </q-btn>
+              <q-menu class="user-popup">
+                <q-list>
+                  <q-item clickable v-close-popup @click="openChannelMembersModal">
+                    <q-item-section avatar><i class="fas fa-users"></i></q-item-section>
+                    <q-item-section>Channel Members</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-item-label>
           </q-item-section>
         </q-item>
       </div>
@@ -76,6 +91,27 @@
         </transition>
       </div>
 
+      <!-- Channel Members Modal -->
+      <q-dialog v-model="isChannelMembersModalOpen">
+        <q-card class="dialog">
+          <q-card-section class="header">
+            <q-label class="h">Channel Members</q-label>
+          </q-card-section>
+
+          <q-list>
+            <q-item v-for="member in channelMembers" :key="member">
+              <q-item-section>{{ member }}</q-item-section>
+              <q-item-section side>
+                <q-btn color="negative" label="Kick" @click="kickMember(member)" />
+              </q-item-section>
+            </q-item>
+          </q-list>
+
+          <q-card-actions align="right" style="padding-top: 25px;">
+            <q-btn flat label="Close" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
     </div>
   </q-page>
 </template>
@@ -96,6 +132,8 @@ const props = defineProps<{
   title: string
 }>();
 
+const channelMembers = ref<string[]>([]);
+const isChannelMembersModalOpen = ref(false);
 
 watch(() => props.title, (newTitle) => {
   messageStore.fetchMessages(newTitle);
@@ -269,13 +307,21 @@ const handleImageUpload = (event: Event) => {
       };
       messageStore.addMessage(newMessage);
 
-      // Scroll to bottom after sending an image
       nextTick(() => {
         scrollToBottom();
       });
     };
     reader.readAsDataURL(file);
   }
+};
+
+const openChannelMembersModal = () => {
+  channelMembers.value = ['Member 1', 'Member 2', 'Member 3'];
+  isChannelMembersModalOpen.value = true;
+};
+
+const kickMember = (member: string) => {
+  alert(`Kicked ${member}`);
 };
 </script>
 
@@ -300,6 +346,22 @@ const handleImageUpload = (event: Event) => {
   background: var(--scrollbar-hover);
 }
 
+.fill {
+  width: 100%;
+}
+
+.menu {
+  display: flex;
+  align-items: flex-end;
+
+  .q-btn {
+    padding: 0 5px;
+  }
+}
+
+.user-popup > div {
+  width: 225px !important;
+}
 
 .active-status-help {
   position: absolute;
@@ -339,4 +401,155 @@ const handleImageUpload = (event: Event) => {
   width: 100%;
 }
 
+.dialog {
+  background-color: var(--popup);
+  color: var(--font);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 14px;
+  width: 450px;
+  height: auto;
+
+  i {
+    font-size: 18px;
+  }
+
+  .q-separator {
+    background-color:var(--popup-separator);
+    margin: 0 12px;
+  }
+
+  .q-item--active {
+    color: var(--font);
+    opacity: 0.8;
+  }
+
+
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: bold;
+
+    :deep(.q-focus-helper) {
+      display: none;
+    }
+
+    .h {
+      font-size: 20px;
+    }
+
+    .q-btn {
+      position: absolute;
+      right: 10px;
+      top: 15px;
+      min-height: min-content;
+      padding: 0;
+
+
+      :hover {
+        color: var(--font-hover);
+      }
+    }
+  }
+  :deep(.q-toggle__thumb) {
+    height: 15px;
+    width: 15px;
+  }
+
+  :deep(.q-toggle__inner) {
+    height: 18px;
+    width: 28.5px;
+  }
+
+  :deep(.q-toggle__inner--truthy .q-toggle__track) {
+    opacity: 1;
+  }
+
+  :deep(.q-toggle__track) {
+    height: 18px;
+    width: 28px;
+    border-radius: 100px;
+    background: var(--toggle);
+
+    position: absolute;
+    bottom: 1.25px;
+    right: 2px
+  }
+
+  .section {
+    .q-btn {
+      font-weight: 400;
+    }
+  }
+
+  .delete-account {
+    font-size: 14px;
+    color: var(--negative);
+    text-decoration: underline;
+
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-end;
+
+    padding-top: 4px;
+
+    .action-btn {
+      :deep(.q-focus-helper) {
+        display: none;
+      }
+      :hover {
+        opacity: 0.8;
+      }
+      padding: 0;
+    }
+  }
+
+  .section-name {
+    font-size: 14px;
+    opacity: 0.5;
+    font-weight: 400;
+  }
+
+  .section-item-description {
+    font-size: 11px;
+    opacity: 0.5;
+    font-weight: 300;
+    margin-right: 80px;
+    padding-top: 2px;
+  }
+
+  .section-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 4px;
+
+    .action-btn {
+      :deep(.q-focus-helper) {
+        display: none;
+      }
+
+      :hover {
+        color: var(--font-hover);
+      }
+
+      padding: 0;
+
+
+      .action {
+        font-size: 12px;
+        padding-right: 8px;
+        padding-top: 3px;
+      }
+
+      i {
+        font-size: 16px;
+      }
+    }
+  }
+
+}
 </style>

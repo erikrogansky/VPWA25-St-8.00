@@ -50,7 +50,6 @@
 
 <script setup scoped lang="ts">
 import { computed, ref, onMounted, toRaw } from 'vue';
-import { defineEmits } from 'vue';
 import ChatListItem from './ChatListItem.vue';
 import { api } from 'src/boot/axios';
 import { useQuasar } from 'quasar';
