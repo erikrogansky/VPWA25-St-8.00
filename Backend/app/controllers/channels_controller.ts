@@ -217,4 +217,26 @@ export default class ChannelsController {
       return response.status(200).json({ success: true, message: 'Left channel' })
     }
   }
+
+  public async getPublicChannels({ request, response }: HttpContext) {
+    try {
+      const channelData = request.only(['search'] as const)
+
+      if (!channelData.search) {
+        return response
+          .status(400)
+          .json({ success: false, message: 'Search parameter is required' })
+      }
+
+      const channels = await Channel.query()
+        .where('isPublic', true)
+        .andWhere('name', 'like', `%${channelData.search}%`)
+
+      return response.status(200).json({ success: true, channels })
+    } catch (error) {
+      return response
+        .status(500)
+        .json({ success: false, message: 'Server Error', error: error.message })
+    }
+  }
 }

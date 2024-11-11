@@ -55,5 +55,7 @@ export const useChannelStore = defineStore('channel', {
         channel.title.toLowerCase().includes(search.toLowerCase())
       );
     },
+
+    channelItemsForSearch: (state) => state.channelItems,
   },
 });

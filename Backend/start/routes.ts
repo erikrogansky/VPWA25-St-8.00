@@ -47,6 +47,8 @@ router.post('/api/leave-channel', [ChannelsController, 'leaveChannel'])
 router.post('/api/accept-request', [ChannelsController, 'acceptRequest'])
 router.post('/api/decline-request', [ChannelsController, 'declineRequest'])
 
+router.get('/api/get-public-channels', [ChannelsController, 'getPublicChannels'])
+
 router.post('/api/send-messages', [MessagesController, 'writeMessages'])
 
 router.get('/api/get-user', [UsersController, 'getUser'])

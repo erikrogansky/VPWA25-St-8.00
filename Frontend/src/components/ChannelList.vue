@@ -6,7 +6,15 @@
         <i class="fas fa-edit chat-panel-icon edit"></i>
       </q-item>
     </div>
-    <q-input rounded standout bottom-slots v-model="search" label="Search" dense>
+    <q-input
+      rounded
+      standout
+      bottom-slots
+      v-model="search"
+      label="Search"
+      dense
+      @input="updateSearch"
+    >
       <template v-slot:append>
         <q-icon name="search" @click="search = ''" class="cursor-pointer" />
       </template>
@@ -45,13 +53,29 @@
       :isPublic="channel.isPublic"
       @click="handleChatItemClick(channel.title)"
       clickable
-      :isOwner = "channel.isOwner"
+      :isOwner="channel.isOwner"
     />
+
+    <template v-if="filteredChannelItemsFromDB.length !== 0">
+      <q-separator />
+      <ChatListItem
+        v-for="(channel, index) in filteredChannelItemsFromDB"
+        :key="index"
+        :title="channel.title"
+        :lastMessage="channel.lastMessage"
+        :unread="channel.unread"
+        channel
+        :isPublic="channel.isPublic"
+        @click="handleChatItemClick(channel.title)"
+        clickable
+        :isOwner="channel.isOwner"
+      />
+    </template>
   </q-page>
 </template>
 
 <script setup scoped lang="ts">
-import { computed, ref, onMounted, toRaw } from 'vue';
+import { computed, ref, onMounted, toRaw, watchEffect } from 'vue';
 import ChatListItem from './ChatListItem.vue';
 import { api } from 'src/boot/axios';
 import { useQuasar } from 'quasar';
@@ -70,6 +94,54 @@ const channelStore = useChannelStore();
 const filteredChannelItems = computed(() => {
   return channelStore.filteredChannelItems(search.value);
 });
+
+interface Channel {
+  title: string;
+  lastMessage: string;
+  unread: boolean;
+  isPublic: boolean;
+  isOwner: boolean;
+}
+
+const filteredChannelItemsFromDB = ref<Channel[]>([]);
+
+const fetchFilteredChannelItems = async () => {
+  try {
+    if (!search.value) {
+      filteredChannelItemsFromDB.value = [];
+      return;
+    }
+    const response = await api.get('/get-public-channels', {
+      params: {
+        search: search.value,
+      },
+    });
+
+    if (response.data.success && Array.isArray(response.data.channels)) {
+      filteredChannelItemsFromDB.value = response.data.channels.map((channel: { name: string; lastMessage: string; isOwner: boolean; }) => ({
+        title: channel.name,
+        lastMessage: channel.lastMessage || 'No messages yet',
+        unread: false,
+        isPublic: true,
+        isOwner: channel.isOwner,
+      }));
+    } else {
+      console.error('Unexpected response format:', response.data);
+      filteredChannelItemsFromDB.value = [];
+    }
+  } catch (error) {
+    console.error('Error fetching channels:', error);
+  }
+};
+
+// Watch for changes in dependencies and fetch data
+watchEffect(() => {
+  fetchFilteredChannelItems();
+});
+
+const updateSearch = (value: string) => {
+  search.value = value;
+};
 
 const addUser = () => {
   if (newChannelUser.value.trim() !== '') {
