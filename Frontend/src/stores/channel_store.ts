@@ -7,6 +7,7 @@ export interface ChannelItem {
   lastMessage: string;
   unread: boolean;
   isPublic: boolean;
+  isOwner: boolean;
 }
 
 export const useChannelStore = defineStore('channel', {
@@ -25,11 +26,12 @@ export const useChannelStore = defineStore('channel', {
           }
         });
         if (Array.isArray(response.data.chats)) {
-          this.channelItems = response.data.chats.map((channel: { channel: { name: string, isPublic: boolean }; unreadMessages: number }) => ({
+          this.channelItems = response.data.chats.map((channel: { channel: { name: string, isPublic: boolean }; unreadMessages: number, channelOwner: boolean }) => ({
             title: channel.channel.name,
             lastMessage: 'Last message.',
             unread: channel.unreadMessages > 0,
             isPublic: channel.channel.isPublic,
+            isOwner: channel.channelOwner,
           }));
         } else {
           this.channelItems = [];

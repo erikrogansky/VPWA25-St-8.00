@@ -45,6 +45,7 @@
       :isPublic="channel.isPublic"
       @click="handleChatItemClick(channel.title)"
       clickable
+      :isOwner = "channel.isOwner"
     />
   </q-page>
 </template>

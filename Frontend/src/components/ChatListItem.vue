@@ -31,7 +31,7 @@
               <q-item-section avatar><i class="fas fa-box-archive"></i></q-item-section>
               <q-item-section>Archive chat</q-item-section>
             </q-item>
-            <q-item clickable @click="onMenuItemClick" v-close-popup>
+            <q-item clickable @click="leaveChannel('delete')" v-close-popup>
               <q-item-section avatar><i class="fas fa-trash"></i></q-item-section>
               <q-item-section>Delete chat</q-item-section>
             </q-item>
@@ -53,7 +53,11 @@
               <q-item-section avatar><i class="fas fa-box-archive"></i></q-item-section>
               <q-item-section>Archive channel</q-item-section>
             </q-item>
-            <q-item clickable @click="onMenuItemClick" v-close-popup>
+            <q-item v-if="isOwner" clickable @click="leaveChannel('delete')" v-close-popup>
+              <q-item-section avatar><i class="fas fa-right-from-bracket"></i></q-item-section>
+              <q-item-section>Delete channel</q-item-section>
+            </q-item>
+            <q-item v-else clickable @click="leaveChannel()" v-close-popup>
               <q-item-section avatar><i class="fas fa-right-from-bracket"></i></q-item-section>
               <q-item-section>Leave channel</q-item-section>
             </q-item>
@@ -86,8 +90,10 @@ const menuOpen = ref(false);
 
 import { api } from 'src/boot/axios';
 import { useRequestStore } from 'src/stores/request-store';
+import { useChannelStore } from 'src/stores/channel_store';
 
 const requestStore = useRequestStore();
+const channelStore = useChannelStore();
 
 const props = withDefaults(defineProps<{
   title: string
@@ -97,6 +103,7 @@ const props = withDefaults(defineProps<{
   request?: boolean
   channel?: boolean
   isPublic?: boolean
+  isOwner?: boolean
 }>(), {
   isPublic: false
 });
@@ -169,6 +176,26 @@ const declineRequest = async () => {
       console.error('Error declining request:', response.data.message);
     } else {
       await requestStore.fetchChats();
+    }
+
+  } catch (error) {
+    console.error('Error declining request:', error);
+  }
+};
+
+const leaveChannel = async (request: string = '') => {
+  menuOpen.value = false;
+  show.value = false;
+  try {
+    const response = await api.post('/leave-channel', {
+      title: props.title,
+      action: request
+    });
+
+    if (response.data.success === false) {
+      console.error('Error declining request:', response.data.message);
+    } else {
+      await channelStore.fetchChannels();
     }
 
   } catch (error) {

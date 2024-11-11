@@ -37,6 +37,7 @@ export default class ChannelsController {
         chats.push({
           channel,
           unreadMessages,
+          channelOwner: channel.owner.id === user.id,
         })
       }
 
@@ -180,5 +181,40 @@ export default class ChannelsController {
     }
 
     return response.status(200).json({ success: true, message: 'Request accepted', membership })
+  }
+
+  public async leaveChannel({ auth, request, response }: HttpContext) {
+    const user = auth.getUserOrFail()
+    const channelData = request.only(['title', 'action'] as any)
+
+    const channel = await Channel.query()
+      .where('name', channelData.title)
+      .orWhere('name', user.nick)
+      .preload('memberships')
+      .orderByRaw(`CASE WHEN name = ? THEN 1 ELSE 2 END`, [channelData.title])
+      .first()
+
+    if (channelData.action === 'delete') {
+      channel?.delete()
+
+      return response.status(200).json({ success: true, message: 'Channel deleted' })
+    } else {
+      const memberships = channel?.memberships.filter((m) => m.userId === user.id)
+
+      if (!memberships) {
+        return response.status(400).json({ success: false, message: 'Could not delete' })
+      }
+
+      if (memberships.length <= 2) {
+        channel?.delete()
+        return response.status(400).json({ success: false, message: 'Left channel' })
+      }
+
+      for (const membership of memberships) {
+        await membership.delete()
+      }
+
+      return response.status(200).json({ success: true, message: 'Left channel' })
+    }
   }
 }
