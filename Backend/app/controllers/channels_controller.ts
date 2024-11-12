@@ -239,4 +239,54 @@ export default class ChannelsController {
         .json({ success: false, message: 'Server Error', error: error.message })
     }
   }
+
+  public async joinChannel({ auth, request, response }: HttpContext) {
+    const { channelName } = request.only(['channelName'])
+    console.log(channelName)
+    try {
+      // Find the channel by name
+      const channel = await Channel.query().where('name', channelName).firstOrFail()
+
+      // Check if the channel is public
+      if (!channel.isPublic) {
+        return response.status(403).json({
+          message: 'Cannot join a private channel directly.',
+        })
+      }
+
+      // Find the user by ID
+      const user = await auth.getUserOrFail()
+      // Check if the user is already a member of the channel
+      const existingMembership = await Membership.query()
+        .where('userId', user.id)
+        .andWhere('channelId', channel.id)
+        .first()
+
+      if (existingMembership) {
+        console.log('User is already a member of the channel.')
+        return response.status(400).json({
+          message: 'Already a member',
+        })
+      }
+
+      //Create a new membership record
+      await Membership.create({
+        userId: user.id,
+        channelId: channel.id,
+        unreadMessages: 0,
+        type: 'channel',
+      })
+
+      // Return response
+      return response.status(200).json({
+        message: 'Joined channel successfully!',
+        channel,
+      })
+    } catch (error) {
+      return response.status(500).json({
+        message: 'An error occurred while joining the channel.',
+        error: error.message,
+      })
+    }
+  }
 }

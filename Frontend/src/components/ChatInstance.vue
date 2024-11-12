@@ -121,6 +121,8 @@ import { ref, computed, nextTick, watch, onMounted } from 'vue';
 import { useMessageStore } from 'src/stores/message_store';
 import { useUserStore } from 'src/stores/user_store';
 import { subscribeToMessages } from 'src/boot/socket';
+import { api } from 'src/boot/axios';
+import axios from 'axios';
 
 const messageStore = useMessageStore();
 const userStore = useUserStore();
@@ -286,22 +288,82 @@ const sendMessage = () => {
 import { useQuasar } from 'quasar';
 const $q = useQuasar();
 
-// Command handling
-const parseCommand = (command: string) => {
+// Command handling - Parser
+const parseCommand = async (command: string) => {
   const parsedArray = command.split(' ');
+  const action = parsedArray[0];
+  const entityName = parsedArray[1];
 
-  if (parsedArray[0] === '/abc') {
-    $q.notify({
-      position: 'top',
-      type: 'positive',
-      message: 'Command executed successfully!',
-    });
-  } else {
+  if (!entityName) {
     $q.notify({
       position: 'top',
       type: 'negative',
-      message: 'Invalid command!',
+      message: 'Please provide a nickname.',
     });
+    return;
+  }
+  let response;
+  try {
+
+    switch (action) {
+      // Invite
+      case '/invite':
+        //response = await api.post('/invite', { entityName });
+        $q.notify({
+          position: 'top',
+          type: 'positive',
+          message: /*response.data.message ||*/ 'User invited successfully!',
+        });
+        break;
+      // Revoke
+      case '/revoke':
+        //response = await api.post('/revoke', { entityName });
+        $q.notify({
+          position: 'top',
+          type: 'positive',
+          message: /*response.data.message ||*/ 'Invitation revoked successfully!',
+        });
+        break;
+      // Kick
+      case '/kick':
+        //response = await api.post('/kick', { entityName });
+        $q.notify({
+          position: 'top',
+          type: 'positive',
+          message: /*response.data.message ||*/ 'User kicked successfully!',
+        });
+        break;
+      case '/join':
+        response = await api.post('/join-channel', { channelName: entityName });
+        $q.notify({
+          position: 'top',
+          type: 'positive',
+          message: response.data.message || 'Joined channel successfully!',
+        });
+        break;
+      default:
+
+        $q.notify({
+          position: 'top',
+          type: 'negative',
+          message: 'Invalid command!',
+        });
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response && error.response.status === 400 && error.response.data.message === 'Already a member') {
+
+      $q.notify({
+        position: 'top',
+        type: 'negative',
+        message: 'You are already a member of this channel.',
+      });
+    } else {
+      $q.notify({
+        position: 'top',
+        type: 'negative',
+        message: 'An error occurred while processing the commandos.',
+      });
+    }
   }
 };
 
@@ -314,6 +376,19 @@ const handleMessage = () => {
     showTypingText.value = false;
   }
 };
+
+// Open channel members
+const openChannelMembersModal = () => {
+  channelMembers.value = ['Member 1', 'Member 2', 'Member 3'];
+  isChannelMembersModalOpen.value = true;
+};
+
+// Kick member
+const kickMember = (member: string) => {
+  alert(`Kicked ${member}`);
+};
+
+
 
 // Handling image selection
 const fileInput = ref<HTMLInputElement | null>(null);
@@ -347,14 +422,7 @@ const handleImageUpload = (event: Event) => {
   }
 };
 
-const openChannelMembersModal = () => {
-  channelMembers.value = ['Member 1', 'Member 2', 'Member 3'];
-  isChannelMembersModalOpen.value = true;
-};
-
-const kickMember = (member: string) => {
-  alert(`Kicked ${member}`);
-};
+// End of script
 </script>
 
 
