@@ -350,13 +350,30 @@ const parseCommand = async (command: string) => {
         });
     }
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response && error.response.status === 400 && error.response.data.message === 'Already a member') {
-
-      $q.notify({
-        position: 'top',
-        type: 'negative',
-        message: 'You are already a member of this channel.',
-      });
+    // potom mozno zmenit na swtich a zmenit poradie
+    if (axios.isAxiosError(error) && error.response ) {
+      // Already a member
+      if(error.response.status === 400 && error.response.data.message === 'Already a member') {
+        $q.notify({
+          position: 'top',
+          type: 'negative',
+          message: 'You are already a member of this channel.',
+        });
+      // Private channel
+      } else if (error.response.status === 403 && error.response.data.message === 'Private channel') {
+        $q.notify({
+          position: 'top',
+          type: 'negative',
+          message: 'Cannot join a private channel.',
+        });
+      // Channel not found
+      } else if (error.response.status === 404 && error.response.data.message === 'Channel not found') {
+        $q.notify({
+          position: 'top',
+          type: 'negative',
+          message: 'Channel not found.',
+        });
+      }
     } else {
       $q.notify({
         position: 'top',

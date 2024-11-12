@@ -242,20 +242,28 @@ export default class ChannelsController {
 
   public async joinChannel({ auth, request, response }: HttpContext) {
     const { channelName } = request.only(['channelName'])
-    console.log(channelName)
-    try {
-      // Find the channel by name
-      const channel = await Channel.query().where('name', channelName).firstOrFail()
 
-      // Check if the channel is public
-      if (!channel.isPublic) {
-        return response.status(403).json({
-          message: 'Cannot join a private channel directly.',
+    try {
+      const channel = await Channel.query().where('name', channelName).first()
+
+      // Check if the channel exists
+      if (!channel) {
+        console.log('Channel not found.')
+        return response.status(404).json({
+          message: 'Channel not found',
         })
       }
 
-      // Find the user by ID
+      // Check if the channel is public
+      if (!channel.isPublic) {
+        console.log('Channel is private.')
+        return response.status(403).json({
+          message: 'Private channel',
+        })
+      }
+
       const user = await auth.getUserOrFail()
+
       // Check if the user is already a member of the channel
       const existingMembership = await Membership.query()
         .where('userId', user.id)
@@ -263,13 +271,12 @@ export default class ChannelsController {
         .first()
 
       if (existingMembership) {
-        console.log('User is already a member of the channel.')
         return response.status(400).json({
           message: 'Already a member',
         })
       }
 
-      //Create a new membership record
+      //Create a new membership
       await Membership.create({
         userId: user.id,
         channelId: channel.id,
@@ -277,12 +284,13 @@ export default class ChannelsController {
         type: 'channel',
       })
 
-      // Return response
+      // Join the channel
       return response.status(200).json({
         message: 'Joined channel successfully!',
         channel,
       })
     } catch (error) {
+      // Error joining the channel
       return response.status(500).json({
         message: 'An error occurred while joining the channel.',
         error: error.message,
