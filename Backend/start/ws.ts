@@ -36,9 +36,19 @@ app.ready(() => {
     })
 
     socket.on('subscribeToMessages', async (data) => {
-      // eslint-disable-next-line prettier/prettier
-      const results = await Channel.query().where('name', data.title).orWhere('nameIfChat', data.title).firstOrFail()
-      socket.join(results.name)
+      try {
+        const results = await Channel.query()
+          .where('name', data.title)
+          .orWhere('nameIfChat', data.title)
+          .firstOrFail()
+        socket.join(results.name)
+      } catch (error) {
+        if (error.code === 'E_ROW_NOT_FOUND') {
+          console.error('Channel not found:', data.title)
+        } else {
+          console.error('Error subscribing to messages:', error)
+        }
+      }
     })
 
     socket.on('unsubscribeFromMessages', async (data) => {
