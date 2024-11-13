@@ -380,4 +380,46 @@ export default class ChannelsController {
 
     return response.status(200).json({ success: true, message: 'Invitation sent successfully' })
   }
+
+  public async revokeUser({ auth, request, response }: HttpContext) {
+    const user = await auth.getUserOrFail()
+    const { userName, channelName } = request.only(['userName', 'channelName'])
+
+    // Validate the request data
+    if (!userName || !channelName) {
+      return response.status(400).json({ message: 'Invalid request data' })
+    }
+
+    // Check if the channel exists
+    const channel = await Channel.query().where('name', channelName).first()
+    if (!channel) {
+      return response.status(404).json({ message: 'Channel not found' })
+    }
+
+    // Check if the user exists
+    const member = await User.query().where('nick', userName).first()
+    if (!member) {
+      return response.status(404).json({ message: 'User not found' })
+    }
+
+    // Check if the user is the channel admin
+    if (channel.userId !== user.id) {
+      return response.status(403).json({ message: 'OnlyAdminRevoke' })
+    }
+
+    // Check if the member is part of the channel
+    const membership = await Membership.query()
+      .where('channel_id', channel.id)
+      .andWhere('user_id', member.id)
+      .first()
+
+    if (!membership) {
+      return response.status(400).json({ message: 'UserNotInChannel' })
+    }
+
+    // Remove the user from the channel
+    await membership.delete()
+
+    return response.status(200).json({ success: true, message: 'User removed from channel' })
+  }
 }

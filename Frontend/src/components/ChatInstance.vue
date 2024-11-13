@@ -327,11 +327,11 @@ const parseCommand = async (command: string) => {
         break;
       // Revoke
       case '/revoke':
-        //response = await api.post('/revoke', { entityName });
+        response = await api.post('/revoke-user', { userName: entityName, channelName: props.title });
         $q.notify({
           position: 'top',
           type: 'positive',
-          message: /*response.data.message ||*/ 'Invitation revoked successfully!',
+          message: response.data.message || 'User revoked successfully!',
         });
         break;
       // Kick
@@ -404,11 +404,25 @@ const parseCommand = async (command: string) => {
           type: 'negative',
           message: 'You are not a member of this channel',
         });
+      // Invites - User error - already a member
       } else if (error.response.status === 400 && error.response.data.message === 'InviteAlreadyMember') {
         $q.notify({
           position: 'top',
           type: 'negative',
           message: 'User is already a member of this channel',
+        });
+      // Revoke - Only admin revokes
+      } else if (error.response.status === 403 && error.response.data.message === 'OnlyAdminRevoke') {
+        $q.notify({
+          position: 'top',
+          type: 'negative',
+          message: 'Only the channel admin can revoke users.',
+        });
+      } else if (error.response.status === 400 && error.response.data.message === 'UserNotInChannel') {
+        $q.notify({
+          position: 'top',
+          type: 'negative',
+          message: 'User is not in this channel.',
         });
       }
     } else {
