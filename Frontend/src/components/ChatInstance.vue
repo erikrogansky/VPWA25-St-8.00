@@ -438,6 +438,12 @@ const parseCommand = async (command: string) => {
           type: 'negative',
           message: 'User is already banned from this channel.',
         });
+      } else if (error.response.status === 403 && error.response.data.message === 'UserBanned') {
+        $q.notify({
+          position: 'top',
+          type: 'negative',
+          message: 'User is banned from the channel.',
+        });
       }
     } else {
       $q.notify({

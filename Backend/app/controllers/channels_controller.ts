@@ -341,6 +341,21 @@ export default class ChannelsController {
       return response.status(404).json({ message: 'User not found' })
     }
 
+    // Check if the user has a ban
+    const existingBan = await Ban.query()
+      .where('banned_user_id', invitee.id)
+      .andWhere('channel_id', channel.id)
+      .first()
+
+    if (existingBan) {
+      if (channel.userId !== user.id && existingBan.kickFinalizedBy) {
+        return response.status(403).json({ message: 'UserBanned' })
+      } else if (existingBan.kickFinalizedBy) {
+        // Remove the ban if the invitation is sent by the channel admin
+        await existingBan.delete()
+      }
+    }
+
     if (channel.isPublic) {
       const membership = await Membership.query()
         .where('channel_id', channel.id)
