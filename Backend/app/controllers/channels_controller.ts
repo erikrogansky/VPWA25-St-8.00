@@ -407,6 +407,11 @@ export default class ChannelsController {
       return response.status(403).json({ message: 'OnlyAdminRevoke' })
     }
 
+    // Prevent the admin from revoking themselves
+    if (member.id === user.id) {
+      return response.status(400).json({ message: 'AdminCannotRevokeSelf' })
+    }
+
     // Check if the member is part of the channel
     const membership = await Membership.query()
       .where('channel_id', channel.id)

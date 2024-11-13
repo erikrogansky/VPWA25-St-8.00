@@ -424,6 +424,12 @@ const parseCommand = async (command: string) => {
           type: 'negative',
           message: 'User is not in this channel.',
         });
+      } else if (error.response.status === 400 && error.response.data.message === 'AdminCannotRevokeSelf') {
+        $q.notify({
+          position: 'top',
+          type: 'negative',
+          message: 'Unable to remove user. (Channel Admin)',
+        });
       }
     } else {
       $q.notify({
