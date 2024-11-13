@@ -2,6 +2,7 @@ import { HttpContext } from '@adonisjs/core/http'
 import Channel from '#models/channel'
 import Membership from '#models/user_channel_membership'
 import User from '#models/user'
+import Ban from '#models/ban'
 
 export default class ChannelsController {
   public async getChats({ auth, response, request }: HttpContext) {
@@ -426,5 +427,118 @@ export default class ChannelsController {
     await membership.delete()
 
     return response.status(200).json({ success: true, message: 'User removed from channel' })
+  }
+
+  public async kickUser({ auth, request, response }: HttpContext) {
+    const user = await auth.getUserOrFail()
+    const { userName, channelName } = request.only(['userName', 'channelName'])
+
+    // Validate the request data
+    if (!userName || !channelName) {
+      return response.status(400).json({ message: 'Invalid request data' })
+    }
+
+    // Check if the channel exists
+    const channel = await Channel.query().where('name', channelName).first()
+    if (!channel) {
+      return response.status(404).json({ message: 'Channel not found' })
+    }
+
+    // Check if the user exists
+    const member = await User.query().where('nick', userName).first()
+    if (!member) {
+      return response.status(404).json({ message: 'User not found' })
+    }
+
+    // Check if the member is part of the channel
+    const membership = await Membership.query()
+      .where('channel_id', channel.id)
+      .andWhere('user_id', member.id)
+      .first()
+
+    if (!membership) {
+      return response.status(400).json({ message: 'UserNotInChannel' })
+    }
+
+    // Check if the user is the channel admin
+    if (channel.userId === user.id) {
+      // Check if there is an existing ban entry
+      const existingKick = await Ban.query()
+        .where('banned_user_id', member.id)
+        .andWhere('channel_id', channel.id)
+        .first()
+
+      if (existingKick) {
+        // Update the existing entry
+        existingKick.kickInitiatedBy = user.id
+        existingKick.kickConfirmedBy = user.id
+        existingKick.kickFinalizedBy = user.id
+        await existingKick.save()
+      } else {
+        // Create a new entry
+        await Ban.create({
+          bannedUserId: member.id,
+          channelId: channel.id,
+          kickInitiatedBy: user.id,
+          kickConfirmedBy: user.id,
+          kickFinalizedBy: user.id,
+        })
+      }
+
+      // Remove the user from the channel
+      await membership.delete()
+
+      return response.status(200).json({ success: true, message: 'User banned from channel' })
+    }
+
+    // Check if the user is already banned
+    const existingKick = await Ban.query()
+      .where('banned_user_id', member.id)
+      .andWhere('channel_id', channel.id)
+      .andWhere((query) => {
+        query
+          .where('kick_initiated_by', user.id)
+          .orWhere('kick_confirmed_by', user.id)
+          .orWhere('kick_finalized_by', user.id)
+      })
+      .first()
+
+    if (existingKick) {
+      return response.status(400).json({ message: 'KickAlreadyInitiatedByUser' })
+    }
+
+    const existingBan = await Ban.query()
+      .where('banned_user_id', member.id)
+      .andWhere('channel_id', channel.id)
+      .andWhereNotNull('kick_initiated_by')
+      .first()
+    if (existingBan) {
+      // Confirm kick (second vote)
+      if (!existingBan.kickConfirmedBy) {
+        existingBan.kickConfirmedBy = user.id
+        await existingBan.save()
+        return response.status(200).json({ success: true, message: 'Kick confirmed' })
+        // Finalize kick (third vote)
+      } else if (!existingBan.kickFinalizedBy) {
+        existingBan.kickFinalizedBy = user.id
+        await existingBan.save()
+
+        // Remove the user from the channel
+        await membership.delete()
+
+        return response.status(200).json({ success: true, message: 'User banned from channel' })
+      } else {
+        return response.status(400).json({ message: 'UserAlreadyBanned' })
+      }
+    }
+
+    // Initiate kick (first vote)
+    await Ban.create({
+      bannedUserId: member.id,
+      channelId: channel.id,
+      kickInitiatedBy: user.id,
+    })
+
+    return response.status(200).json({ success: true, message: 'Kick initiated' })
   }
 }

@@ -336,11 +336,11 @@ const parseCommand = async (command: string) => {
         break;
       // Kick
       case '/kick':
-        //response = await api.post('/kick', { entityName });
+        response = await api.post('/kick-user', { userName: entityName, channelName: props.title });
         $q.notify({
           position: 'top',
           type: 'positive',
-          message: /*response.data.message ||*/ 'User kicked successfully!',
+          message: response.data.message || 'User kicked successfully!',
         });
         break;
       case '/join':
@@ -418,17 +418,25 @@ const parseCommand = async (command: string) => {
           type: 'negative',
           message: 'Only the channel admin can revoke users.',
         });
+      // User not in channel
       } else if (error.response.status === 400 && error.response.data.message === 'UserNotInChannel') {
         $q.notify({
           position: 'top',
           type: 'negative',
           message: 'User is not in this channel.',
         });
+      // Admin cannot revoke self
       } else if (error.response.status === 400 && error.response.data.message === 'AdminCannotRevokeSelf') {
         $q.notify({
           position: 'top',
           type: 'negative',
           message: 'Unable to remove user. (Channel Admin)',
+        });
+      } else if (error.response.status === 400 && error.response.data.message === 'UserAlreadyBanned') {
+        $q.notify({
+          position: 'top',
+          type: 'negative',
+          message: 'User is already banned from this channel.',
         });
       }
     } else {
