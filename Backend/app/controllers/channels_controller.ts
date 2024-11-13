@@ -241,28 +241,41 @@ export default class ChannelsController {
   }
 
   public async joinChannel({ auth, request, response }: HttpContext) {
-    const { channelName } = request.only(['channelName'])
+    const { channelName, channelSettings } = request.only(['channelName', 'channelSettings'])
 
     try {
-      const channel = await Channel.query().where('name', channelName).first()
+      const channel = await Channel.query()
+        .where('name', channelName)
+        .orWhere('nameIfChat', channelName)
+        .first()
+
+      const user = await auth.getUserOrFail()
 
       // Check if the channel exists
       if (!channel) {
-        console.log('Channel not found.')
-        return response.status(404).json({
+        /*return response.status(404).json({
           message: 'Channel not found',
+        })*/
+        const isPublic = channelSettings !== 'private'
+        const newChannel = await Channel.create({
+          isPublic: isPublic,
+          name: channelName,
+          userId: user.id,
+        })
+        newChannel.save()
+
+        await Membership.create({
+          userId: user.id,
+          channelId: newChannel.id,
+          type: 'channel',
+          unreadMessages: 0,
+        })
+        // PRIDAT ESTE LOGIKU PRE CHAT / CHANNEL? - user problems
+        return response.status(200).json({
+          message: 'Channel created successfully!',
+          channel: newChannel,
         })
       }
-
-      // Check if the channel is public
-      if (!channel.isPublic) {
-        console.log('Channel is private.')
-        return response.status(403).json({
-          message: 'Private channel',
-        })
-      }
-
-      const user = await auth.getUserOrFail()
 
       // Check if the user is already a member of the channel
       const existingMembership = await Membership.query()
@@ -273,6 +286,14 @@ export default class ChannelsController {
       if (existingMembership) {
         return response.status(400).json({
           message: 'Already a member',
+        })
+      }
+
+      // Check if the channel is public
+      if (!channel.isPublic) {
+        console.log('Channel is private.')
+        return response.status(403).json({
+          message: 'Private channel',
         })
       }
 

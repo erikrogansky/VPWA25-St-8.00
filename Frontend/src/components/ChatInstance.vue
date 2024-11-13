@@ -293,15 +293,25 @@ const parseCommand = async (command: string) => {
   const parsedArray = command.split(' ');
   const action = parsedArray[0];
   const entityName = parsedArray[1];
+  const channelSettings = parsedArray[2];
 
   if (!entityName) {
     $q.notify({
       position: 'top',
       type: 'negative',
-      message: 'Please provide a nickname.',
+      message: 'Please provide a name.',
     });
     return;
   }
+  if (channelSettings && !['private'].includes(channelSettings)) {
+    $q.notify({
+      position: 'top',
+      type: 'negative',
+      message: 'Invalid channel settings.',
+    });
+    return;
+  }
+
   let response;
   try {
 
@@ -334,7 +344,7 @@ const parseCommand = async (command: string) => {
         });
         break;
       case '/join':
-        response = await api.post('/join-channel', { channelName: entityName });
+        response = await api.post('/join-channel', { channelName: entityName, channelSettings: channelSettings });
         $q.notify({
           position: 'top',
           type: 'positive',
