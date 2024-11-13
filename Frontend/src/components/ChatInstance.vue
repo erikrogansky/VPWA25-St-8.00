@@ -138,11 +138,13 @@ const channelMembers = ref<string[]>([]);
 const isChannelMembersModalOpen = ref(false);
 
 watch(() => props.title, (newTitle) => {
-  messageStore.fetchMessages(newTitle);
   subscribeToMessages(newTitle);
+  messageStore.fetchMessages(newTitle);
+  displayedMessages.value = messageStore.allMessages
 });
 
 watch(messageStore.allMessages, () => {
+  displayedMessages.value = messageStore.allMessages
   nextTick(() => {
     scrollToBottom();
   });
@@ -180,7 +182,6 @@ onMounted(async () => {
   userName.value = userStore.user?.nick || '';
   mentionTag.value = `@${userName.value}`;
 });
-
 // Chat data
 const text = ref<string>('');
 const showTypingText = ref<boolean>(false);
