@@ -54,3 +54,4 @@ router.post('/api/send-messages', [MessagesController, 'writeMessages'])
 router.get('/api/get-user', [UsersController, 'getUser'])
 
 router.post('/api/join-channel', [ChannelsController, 'joinChannel'])
+router.post('/api/send-invite', [ChannelsController, 'sendInvite'])

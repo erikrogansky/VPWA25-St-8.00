@@ -318,4 +318,66 @@ export default class ChannelsController {
       })
     }
   }
+
+  public async sendInvite({ auth, request, response }: HttpContext) {
+    const user = await auth.getUserOrFail()
+    const { userName, channelName } = request.only(['userName', 'channelName'])
+
+    // Validate the request data
+    if (!userName || !channelName) {
+      return response.status(400).json({ message: 'Invalid request data' })
+    }
+
+    // Check if the channel exists
+    const channel = await Channel.query().where('name', channelName).first()
+    if (!channel) {
+      return response.status(404).json({ message: 'Channel not found' })
+    }
+
+    // Check if the user exists
+    const invitee = await User.query().where('nick', userName).first()
+    if (!invitee) {
+      return response.status(404).json({ message: 'User not found' })
+    }
+
+    if (channel.isPublic) {
+      const membership = await Membership.query()
+        .where('channel_id', channel.id)
+        .andWhere('user_id', user.id)
+        .first()
+
+      if (!membership) {
+        return response.status(403).json({
+          success: false,
+          message: 'You are not a member of this channel',
+        })
+      }
+    } else {
+      if (channel.userId !== user.id) {
+        return response.status(403).json({
+          success: false,
+          message: 'OnlyAdminInvites',
+        })
+      }
+    }
+
+    // Check if the invitee is already a member
+    const existingMembership = await Membership.query()
+      .where('channel_id', channel.id)
+      .andWhere('user_id', invitee.id)
+      .first()
+
+    if (existingMembership) {
+      return response.status(400).json({ message: 'InviteAlreadyMember' })
+    }
+
+    // Create the invite
+    await Membership.create({
+      channelId: channel.id,
+      userId: invitee.id,
+      type: 'request',
+    })
+
+    return response.status(200).json({ success: true, message: 'Invitation sent successfully' })
+  }
 }

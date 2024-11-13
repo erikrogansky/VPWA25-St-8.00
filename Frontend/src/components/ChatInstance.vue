@@ -312,17 +312,17 @@ const parseCommand = async (command: string) => {
     return;
   }
 
-  let response;
-  try {
 
+  try {
+    let response;
     switch (action) {
       // Invite
       case '/invite':
-        //response = await api.post('/invite', { entityName });
+        response = await api.post('/send-invite', { userName: entityName, channelName: props.title });
         $q.notify({
           position: 'top',
           type: 'positive',
-          message: /*response.data.message ||*/ 'User invited successfully!',
+          message: response.data.message || 'Invitation sent!',
         });
         break;
       // Revoke
@@ -382,6 +382,33 @@ const parseCommand = async (command: string) => {
           position: 'top',
           type: 'negative',
           message: 'Channel not found.',
+        });
+      // User not found
+      } else if (error.response.status === 404 && error.response.data.message === 'User not found') {
+        $q.notify({
+          position: 'top',
+          type: 'negative',
+          message: 'User not found',
+        });
+      // Invites - Only admin invites (private channel)
+      } else if (error.response.status === 403 && error.response.data.message === 'OnlyAdminInvites') {
+        $q.notify({
+          position: 'top',
+          type: 'negative',
+          message: 'Only the channel admin can send invites.',
+        });
+      // Invites - User error - not a member
+      } else if (error.response.status === 403 && error.response.data.message === 'You are not a member of this channel') {
+        $q.notify({
+          position: 'top',
+          type: 'negative',
+          message: 'You are not a member of this channel',
+        });
+      } else if (error.response.status === 400 && error.response.data.message === 'InviteAlreadyMember') {
+        $q.notify({
+          position: 'top',
+          type: 'negative',
+          message: 'User is already a member of this channel',
         });
       }
     } else {
