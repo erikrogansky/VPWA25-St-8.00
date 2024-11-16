@@ -157,6 +157,12 @@ export const parseCommand = async (command: string, props: { title: string }, $q
           type: 'negative',
           message: 'User is banned from the channel.',
         });
+      }  else if (error.response.status === 403 && error.response.data.message === 'CannotKickChannelAdmin') {
+        $q.notify({
+          position: 'top',
+          type: 'negative',
+          message: 'Cannot kick the channel admin.',
+        });
       }
     } else {
       $q.notify({
