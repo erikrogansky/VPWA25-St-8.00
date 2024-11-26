@@ -1,4 +1,4 @@
-import server from '@adonisjs/core/services/server'
+/*import server from '@adonisjs/core/services/server'
 import { Server as SocketIoServer } from 'socket.io'
 
 const io = new SocketIoServer(server)
@@ -14,4 +14,4 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('Client disconnected', socket.id)
   })
-})
+})*/
