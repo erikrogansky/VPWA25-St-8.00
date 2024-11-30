@@ -3,6 +3,7 @@ import Channel from '#models/channel'
 import Membership from '#models/user_channel_membership'
 import User from '#models/user'
 import Ban from '#models/ban'
+import { io } from '#start/ws'
 
 export default class ChannelsController {
   public async getChats({ auth, response, request }: HttpContext) {
@@ -111,6 +112,8 @@ export default class ChannelsController {
         type: 'request',
         unreadMessages: 0,
       })
+
+      io.to(u.nick + '-account').emit('newRequest', { nick: user.nick })
     }
 
     return response.status(201).json({ success: true, channel: newChannel })

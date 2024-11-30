@@ -1,7 +1,9 @@
 import { reactive } from 'vue';
 import { io } from 'socket.io-client';
 import { MessageItem, useMessageStore } from 'src/stores/message_store';
+import { useRequestStore } from 'src/stores/request-store';
 const messageStore = useMessageStore();
+const requestStore = useRequestStore();
 
 export const state = reactive({
   connected: false,
@@ -54,6 +56,17 @@ socket.on('message', (message: {text: string, createdBy: string, isMentioned: bo
 
 socket.on('messages', (messages: MessageItem[]) => {
   messageStore.setMessages(messages);
+});
+
+socket.on('newRequest', (data: { nick: string }) => {
+  if (document.visibilityState === 'hidden' && Notification.permission === 'granted') {
+    new Notification(data.nick, {
+      body: 'You have a new friend request!',
+      icon: '/src/assets/logo.png',
+    });
+  }
+
+  requestStore.fetchChats();
 });
 
 export const subscribeToMessages = (title: string) => {

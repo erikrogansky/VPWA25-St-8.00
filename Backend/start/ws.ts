@@ -63,6 +63,8 @@ app.ready(() => {
         for (const channel of channels) {
           socket.join(channel.name)
         }
+
+        socket.join(user.nick + '-account')
       } catch (error) {
         console.error('Error subscribing to all channels:', error)
       }
