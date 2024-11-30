@@ -140,7 +140,11 @@ export default class ChannelsController {
       return response.status(400).json({ success: false, message: 'Membership not found' })
     }
 
-    if (channel.memberships.length === 2 && !channel.isPublic) {
+    if (
+      channel.memberships.length === 2 &&
+      !channel.isPublic &&
+      (channel.name === user.nick || channel.nameIfChat === user.nick)
+    ) {
       membership.type = 'chat'
     } else {
       membership.type = 'channel'
