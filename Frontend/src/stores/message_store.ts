@@ -15,7 +15,7 @@ export interface MessageItem {
 export const useMessageStore = defineStore('message', {
   state: () => ({
     messages: [] as MessageItem[],
-    sentMessageIds: new Set<string>(), // Track sent message IDs
+    sentMessageIds: new Set<string>(),
   }),
   actions: {
     fetchMessages(title: string) {
@@ -36,7 +36,7 @@ export const useMessageStore = defineStore('message', {
       const messageId = uuidv4();
       message.id = messageId;
       this.messages.push(message);
-      this.sentMessageIds.add(messageId); // Track sent message ID
+      this.sentMessageIds.add(messageId);
       try {
         api.post('/send-messages', { title: title, text: message.text, id: messageId });
       } catch (error) {

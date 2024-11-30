@@ -41,6 +41,7 @@ app.ready(() => {
           .where('name', data.title)
           .orWhere('nameIfChat', data.title)
           .firstOrFail()
+        console.log('Subscribing to messages:', results.name)
         socket.join(results.name)
       } catch (error) {
         if (error.code === 'E_ROW_NOT_FOUND') {

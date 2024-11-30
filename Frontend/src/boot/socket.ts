@@ -40,6 +40,13 @@ socket.on('message', (message: {text: string, createdBy: string, isMentioned: bo
     type: 'incoming'
   };
   messageStore.addMessage(newMessage);
+
+  if (document.visibilityState === 'hidden' && Notification.permission === 'granted') {
+    new Notification(newMessage.createdBy, {
+      body: newMessage.text,
+      icon: '/src/assets/logo.png',
+    });
+  }
 });
 
 socket.on('messages', (messages: MessageItem[]) => {
