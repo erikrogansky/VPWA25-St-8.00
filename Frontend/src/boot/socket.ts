@@ -31,7 +31,7 @@ socket.on('disconnect', () => {
   state.connected = false;
 });
 
-socket.on('message', (message: {text: string, createdBy: string, isMentioned: boolean, messageId: string}) => {
+socket.on('message', (message: {text: string, createdBy: string, isMentioned: boolean, messageId: string, channel: string, channelIfChat: string}) => {
   const newMessage: MessageItem = {
     id: message.messageId,
     createdBy: message.createdBy,
@@ -39,7 +39,10 @@ socket.on('message', (message: {text: string, createdBy: string, isMentioned: bo
     isMentioned: message.isMentioned,
     type: 'incoming'
   };
-  messageStore.addMessage(newMessage);
+
+  if (message.channel === currentRoom || message.channelIfChat === currentRoom) {
+    messageStore.addMessage(newMessage);
+  }
 
   if (document.visibilityState === 'hidden' && Notification.permission === 'granted') {
     new Notification(newMessage.createdBy, {
@@ -54,11 +57,12 @@ socket.on('messages', (messages: MessageItem[]) => {
 });
 
 export const subscribeToMessages = (title: string) => {
-  if (currentRoom) {
-    socket.emit('unsubscribeFromMessages', { title: currentRoom });
-  }
-  socket.emit('subscribeToMessages', { title });
+  //socket.emit('subscribeToMessages', { title });
   currentRoom = title;
 };
 
-export default { state, socket, subscribeToMessages };
+export const subscribeToAllChannels = () => {
+  socket.emit('subscribeToAllChannels');
+}
+
+export default { state, socket, /*subscribeToMessages,*/ subscribeToAllChannels };

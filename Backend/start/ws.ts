@@ -6,6 +6,7 @@ import SocketAuthMiddleware from '#middleware/socket_auth_middleware'
 const messagesController = new MessagesController()
 const socketAuthMiddleware = new SocketAuthMiddleware()
 import Channel from '#models/channel'
+import UserChannelMembership from '#models/user_channel_membership'
 
 let io: Server
 
@@ -41,7 +42,6 @@ app.ready(() => {
           .where('name', data.title)
           .orWhere('nameIfChat', data.title)
           .firstOrFail()
-        console.log('Subscribing to messages:', results.name)
         socket.join(results.name)
       } catch (error) {
         if (error.code === 'E_ROW_NOT_FOUND') {
@@ -49,6 +49,22 @@ app.ready(() => {
         } else {
           console.error('Error subscribing to messages:', error)
         }
+      }
+    })
+
+    socket.on('subscribeToAllChannels', async (data) => {
+      const user = socket.data.user
+      const memberships = await UserChannelMembership.query()
+        .where('userId', user.id)
+        .preload('channel')
+
+      try {
+        const channels = memberships.map((membership) => membership.channel)
+        for (const channel of channels) {
+          socket.join(channel.name)
+        }
+      } catch (error) {
+        console.error('Error subscribing to all channels:', error)
       }
     })
 

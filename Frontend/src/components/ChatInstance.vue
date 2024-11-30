@@ -120,7 +120,7 @@
 import { ref, computed, nextTick, watch, onMounted } from 'vue';
 import { useMessageStore } from 'src/stores/message_store';
 import { useUserStore } from 'src/stores/user_store';
-import { subscribeToMessages } from 'src/boot/socket';
+import { subscribeToMessages, subscribeToAllChannels } from 'src/boot/socket';
 //import { api } from 'src/boot/axios';
 //import axios from 'axios';
 import { useQuasar } from 'quasar';
@@ -140,6 +140,10 @@ const props = defineProps<{
 
 const channelMembers = ref<string[]>([]);
 const isChannelMembersModalOpen = ref(false);
+
+
+subscribeToAllChannels();
+
 
 watch(() => props.title, (newTitle) => {
   subscribeToMessages(newTitle);
