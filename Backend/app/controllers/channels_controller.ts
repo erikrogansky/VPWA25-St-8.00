@@ -479,6 +479,11 @@ export default class ChannelsController {
       return response.status(400).json({ message: 'UserNotInChannel' })
     }
 
+    // Prevent kicking the channel admin
+    if (channel.userId === member.id) {
+      return response.status(403).json({ message: 'CannotKickChannelAdmin' })
+    }
+
     // Check if the user is the channel admin
     if (channel.userId === user.id) {
       // Check if there is an existing ban entry
