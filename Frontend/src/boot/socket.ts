@@ -2,8 +2,10 @@ import { reactive } from 'vue';
 import { io } from 'socket.io-client';
 import { MessageItem, useMessageStore } from 'src/stores/message_store';
 import { useRequestStore } from 'src/stores/request-store';
+import { useIstypingStore } from 'src/stores/istyping_store';
 const messageStore = useMessageStore();
 const requestStore = useRequestStore();
+const istypingStore = useIstypingStore();
 
 export const state = reactive({
   connected: false,
@@ -69,6 +71,14 @@ socket.on('newRequest', (data: { nick: string }) => {
   requestStore.fetchChats();
 });
 
+socket.on('isTypingText', (data: { text: string, nick: string }) => {
+  istypingStore.setIsTypingText( data.nick, data.text );
+})
+
+socket.on('stoppedTyping', () => {
+  istypingStore.setIsTypingText( '', '' );
+})
+
 export const subscribeToMessages = (title: string) => {
   //socket.emit('subscribeToMessages', { title });
   currentRoom = title;
@@ -78,4 +88,4 @@ export const subscribeToAllChannels = () => {
   socket.emit('subscribeToAllChannels');
 }
 
-export default { state, socket, /*subscribeToMessages,*/ subscribeToAllChannels };
+export default { state, socket, subscribeToMessages, subscribeToAllChannels };

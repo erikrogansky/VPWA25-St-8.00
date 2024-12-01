@@ -65,12 +65,12 @@
 
         <transition name="fade" appear>
             <div class="chat-bubble-row incoming">
-              <i v-if="text.length > 0 && !text.startsWith('/')" class="fas fa-circle-user profile-picture" />
-              <div v-if="text.length > 0 && !text.startsWith('/')" style="display: flex; flex-direction: column;">
-                <span v-if="showTypingText" class="sender">Name</span>
-                <q-bubble v-if="text.length > 0" class="bubble text-message typing-indicator" @click="() => {showTypingText = !showTypingText; nextTick(() => {scrollToBottom();});}">
+              <i v-if="typingText.length > 0 && !text.startsWith('/')" class="fas fa-circle-user profile-picture" />
+              <div v-if="typingText.length > 0 && !text.startsWith('/')" style="display: flex; flex-direction: column;">
+                <span v-if="showTypingText" class="sender">{{ typingNick }}</span>
+                <q-bubble v-if="typingText.length > 0" class="bubble text-message typing-indicator" @click="() => {showTypingText = !showTypingText; nextTick(() => {scrollToBottom();});}">
                   <span v-if="!showTypingText"><q-spinner-dots size="20px" /></span>
-                  <span v-else>{{ text }}</span>
+                  <span v-else>{{ typingText }}</span>
                 </q-bubble>
               </div>
             </div>
@@ -85,7 +85,7 @@
             <input type="file" ref="fileInput" @change="handleImageUpload" style="display:none" accept="image/*" />
           </q-item-section>
         </q-item>
-        <q-input rounded standout dense v-model="text" placeholder="Aa" class="text-bar" @keyup.enter="handleMessage" />
+        <q-input @blur="handleBlur" rounded standout dense v-model="text" placeholder="Aa" class="text-bar" @keyup.enter="handleMessage" />
         <transition name="fade" appear>
           <q-btn v-if="text.length > 0" icon="send" @click="handleMessage" flat round dense class="send" />
         </transition>
@@ -158,6 +158,25 @@ watch(messageStore.allMessages, () => {
   });
 });
 
+
+import { useIstypingStore } from 'src/stores/istyping_store';
+const istypingStore = useIstypingStore();
+
+const typingText = ref('');
+const typingNick = ref('');
+
+watch(
+  () => istypingStore.getIsTypingText,
+  (newValue) => {
+    typingText.value = newValue.text;
+    typingNick.value = newValue.nick;
+    nextTick(() => {
+      scrollToBottom();
+    });
+  },
+  { immediate: true }
+);
+
 const scrollToBottom = () => {
   if (chatContent.value) {
     chatContent.value.scrollTop = chatContent.value.scrollHeight;
@@ -197,12 +216,19 @@ const allMessagesLoaded = ref<boolean>(false);
 
 const chatContent = ref<HTMLElement | null>(null);
 
+import { socket } from 'src/boot/socket';
+
+const handleBlur = () => {
+  socket.emit('stoppedTyping', { title: props.title });
+};
+
 watch(text, (newText) => {
-  if (newText.length > 0) {
-    nextTick(() => {
-      scrollToBottom();
-    });
-  }
+    if (!newText.startsWith('/') || newText.length > 0) {
+      socket.emit('isTypingText', { text: newText, title: props.title });
+    } else {
+      socket.emit('stoppedTyping', { title: props.title });
+    }
+
 });
 
 // Load more messages when scrolling up

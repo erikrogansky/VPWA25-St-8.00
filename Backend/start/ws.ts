@@ -70,6 +70,23 @@ app.ready(() => {
       }
     })
 
+    socket.on('isTypingText', async (data) => {
+      const user = socket.data.user
+      const results = await Channel.query()
+        .where('name', data.title)
+        .orWhere('nameIfChat', data.title)
+        .firstOrFail()
+      socket.to(results.name).emit('isTypingText', { text: data.text, nick: user.nick })
+    })
+
+    socket.on('stoppedTyping', async (data) => {
+      const results = await Channel.query()
+        .where('name', data.title)
+        .orWhere('nameIfChat', data.title)
+        .firstOrFail()
+      socket.to(results.name).emit('stoppedTyping')
+    })
+
     socket.on('unsubscribeFromMessages', async (data) => {
       // eslint-disable-next-line prettier/prettier
       const results = await Channel.query().where('name', data.title).orWhere('nameIfChat', data.title).firstOrFail()
