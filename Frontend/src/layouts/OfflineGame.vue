@@ -43,6 +43,9 @@ onMounted(() => {
   const obstaclrImage = new Image();
   obstaclrImage.src = '/src/assets/obstacle.png';
 
+  const flyingObstacleImage = new Image();
+  flyingObstacleImage.src = '/src/assets/flying-obstacle.png';
+
   dinoImage.onload = () => {
     canvas.width = 600;
     canvas.height = 300;
@@ -58,8 +61,10 @@ onMounted(() => {
 
     interface Obstacle {
       x: number;
+      y: number;
       width: number;
       height: number;
+      type: 'ground' | 'flying';
     }
 
     const obstacles: Obstacle[] = [];
@@ -72,11 +77,27 @@ onMounted(() => {
 
     function drawObstacles() {
       obstacles.forEach((obstacle) => {
-        const groundY = canvas!.height - 20;
-        const obstacleY = groundY - obstacle.height;
-        ctx!.drawImage(obstaclrImage, obstacle.x, obstacleY, obstacle.width, obstacle.height);
+        if (obstacle.type === 'flying') {
+          ctx!.drawImage(
+            flyingObstacleImage,
+            obstacle.x,
+            obstacle.y,
+            obstacle.width,
+            obstacle.height
+          );
+          return;
+        } else if (obstacle.type === 'ground') {
+          ctx!.drawImage(
+            obstaclrImage,
+            obstacle.x,
+            canvas!.height - obstacle.height - 20,
+            obstacle.width,
+            obstacle.height
+          );
+        }
       });
     }
+
 
     function drawGround() {
       ctx!.strokeStyle = 'white';
@@ -99,10 +120,15 @@ onMounted(() => {
       const currentTime = performance.now();
 
       if (currentTime - lastObstacleSpawnTime > obstacleSpawnCooldown) {
+        const isFlying = currentScore.value < 5 ? false : Math.random() > 0.70;
         const newObstacle: Obstacle = {
           x: canvas!.width,
-          width: 20,
-          height: 40,
+          width: isFlying ? 40 : 20,
+          height: isFlying ? 30 : Math.floor(Math.random() * 30) + 30,
+          type: isFlying ? 'flying' : 'ground',
+          y: isFlying
+            ? Math.floor(Math.random() * (200 - 160 + 1)) + 160
+            : canvas!.height - 20,
         };
         obstacles.push(newObstacle);
         lastObstacleSpawnTime = currentTime;
@@ -118,21 +144,24 @@ onMounted(() => {
       }
     }
 
+
     function detectCollision() {
       const dinoBottom = dinoY - jumpHeight + 40;
 
       obstacles.forEach((obstacle) => {
-        const obstacleTop = canvas!.height - obstacle.height;
+        const obstacleTop = obstacle.type === 'flying' ? obstacle.y : canvas!.height - obstacle.height;
 
         if (
           dinoX < obstacle.x + obstacle.width &&
           dinoX + 40 > obstacle.x &&
-          dinoBottom > obstacleTop
+          dinoBottom > obstacleTop &&
+          (obstacle.type === 'ground' || dinoY - jumpHeight < obstacle.y + obstacle.height)
         ) {
           isGameOver = true;
         }
       });
     }
+
 
     function updateGame() {
       if (!ctx || isGameOver || isPaused) {
