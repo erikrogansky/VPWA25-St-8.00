@@ -19,7 +19,10 @@
 <script scoped setup lang="ts">
 import HeaderLayout from 'src/components/HeaderLayout.vue';
 import FooterLayout from 'src/components/FooterLayout.vue';
-import { onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
+
+const currentScore = ref(0);
+const bestScore = ref(0);
 
 onMounted(() => {
   const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement | null;
@@ -51,7 +54,7 @@ onMounted(() => {
 
     const gameSpeed = 3;
     let isGameOver = false;
-    let isPaused = false; // Flag to handle pause state
+    let isPaused = false;
 
     interface Obstacle {
       x: number;
@@ -60,17 +63,17 @@ onMounted(() => {
     }
 
     const obstacles: Obstacle[] = [];
-    let obstacleSpawnCooldown = Math.floor(Math.random() * 2000) + 1000; // Random spawn cooldown between 1 and 3 seconds
+    let obstacleSpawnCooldown = Math.floor(Math.random() * 2000) + 1000;
     let lastObstacleSpawnTime = 0;
 
     function drawDino() {
-      ctx!.drawImage(dinoImage, dinoX, dinoY - jumpHeight, 40, 40); // Adjust size as needed
+      ctx!.drawImage(dinoImage, dinoX, dinoY - jumpHeight, 40, 40);
     }
 
     function drawObstacles() {
       obstacles.forEach((obstacle) => {
-        const groundY = canvas!.height - 20; // Ground level
-        const obstacleY = groundY - obstacle.height; // Corrected Y-coordinate for the obstacle
+        const groundY = canvas!.height - 20;
+        const obstacleY = groundY - obstacle.height;
         ctx!.drawImage(obstaclrImage, obstacle.x, obstacleY, obstacle.width, obstacle.height);
       });
     }
@@ -84,26 +87,33 @@ onMounted(() => {
       ctx!.stroke();
     }
 
+    function drawScores() {
+      ctx!.font = '20px Arial';
+      ctx!.fillStyle = 'white';
+      ctx!.textAlign = 'left';
+      ctx!.fillText(`Score: ${currentScore.value}`, 10, 30);
+      ctx!.fillText(`Best Score: ${bestScore.value}`, 200, 30);
+    }
+
     function updateObstacles() {
       const currentTime = performance.now();
 
-      // Spawn new obstacles based on cooldown
       if (currentTime - lastObstacleSpawnTime > obstacleSpawnCooldown) {
         const newObstacle: Obstacle = {
           x: canvas!.width,
-          width: 20, // You can randomize this if needed
-          height: 40, // You can randomize this if needed
+          width: 20,
+          height: 40,
         };
         obstacles.push(newObstacle);
         lastObstacleSpawnTime = currentTime;
-        obstacleSpawnCooldown = Math.floor(Math.random() * 2000) + 1000; // Update spawn cooldown
+        obstacleSpawnCooldown = Math.floor(Math.random() * 2000) + 1000;
       }
 
-      // Update obstacle positions and remove off-screen obstacles
       for (let i = obstacles.length - 1; i >= 0; i--) {
         obstacles[i].x -= gameSpeed;
         if (obstacles[i].x + obstacles[i].width < 0) {
-          obstacles.splice(i, 1); // Remove obstacles that are off-screen
+          obstacles.splice(i, 1);
+          currentScore.value++;
         }
       }
     }
@@ -127,7 +137,7 @@ onMounted(() => {
     function updateGame() {
       if (!ctx || isGameOver || isPaused) {
         if (isPaused) {
-          showPauseMessage(); // Show pause message if paused
+          showPauseMessage();
         }
         return;
       }
@@ -141,15 +151,19 @@ onMounted(() => {
         jumpHeight -= 5;
       }
 
-      updateObstacles(); // Update obstacles
+      updateObstacles();
       drawGround();
       drawDino();
-      drawObstacles(); // Draw all obstacles
+      drawObstacles();
+      drawScores();
       detectCollision();
 
       if (!isGameOver) {
         requestAnimationFrame(updateGame);
       } else {
+        if (currentScore.value > bestScore.value) {
+          bestScore.value = currentScore.value;
+        }
         showGameOver();
       }
     }
@@ -185,7 +199,8 @@ onMounted(() => {
 
     function resetGame() {
       isGameOver = false;
-      obstacles.length = 0; // Clear all obstacles
+      obstacles.length = 0;
+      currentScore.value = 0;
       jumpHeight = 0;
       isPaused = false;
       lastObstacleSpawnTime = 0;
