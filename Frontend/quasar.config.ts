@@ -27,6 +27,7 @@ export default configure(async (ctx) => {
       'i18n',
       'axios',
       'socket',
+      'offline_middleware',
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css

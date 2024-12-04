@@ -9,7 +9,7 @@ import type { Authenticators } from '@adonisjs/auth/types'
 export default class AuthMiddleware {
   private redirectTo = '/login'
 
-  private excludedRoutes = ['/api/register', '/api/login', '/']
+  private excludedRoutes = ['/api/register', '/api/login', '/', '/api/ping']
 
   async handle(
     ctx: HttpContext,

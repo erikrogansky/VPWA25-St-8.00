@@ -15,7 +15,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/app',
     component: () => import('layouts/ChatInterface.vue'),
-    meta: { requiresAuth: true }, 
+    meta: { requiresAuth: true },
   },
 
   {
@@ -44,6 +44,11 @@ const routes: RouteRecordRaw[] = [
   },
 
   {
+    path: '/offline',
+    component: () => import('layouts/OfflineGame.vue'),
+  },
+
+  {
     path: '/about',
     component: () => import('layouts/AboutPage.vue'),
     children: [
@@ -53,8 +58,7 @@ const routes: RouteRecordRaw[] = [
     { path: 'contact-us', component: () => import('layouts/AboutPage.vue') },
     ]
     },
-  // Always leave this as last one,
-  // but you can also remove it
+
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),

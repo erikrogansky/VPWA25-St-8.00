@@ -19,6 +19,10 @@ router.get('/api/data', async () => {
   return { message: 'Hello from AdonisJS' }
 })
 
+router.get('/api/ping', async ({ response }) => {
+  response.status(200)
+})
+
 // Authentication
 router.post('/api/register', [AuthController, 'register'])
 router.post('/api/login', [AuthController, 'login'])
