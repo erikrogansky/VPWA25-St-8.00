@@ -49,23 +49,31 @@ onMounted(() => {
     let isJumping = false;
     let jumpHeight = 0;
 
-    const obstacleWidth = 20;
-    const obstacleHeight = 40;
-    let currentObstacleX = canvas.width;
-    let gameSpeed = 3;
+    const gameSpeed = 3;
     let isGameOver = false;
     let isPaused = false; // Flag to handle pause state
+
+    interface Obstacle {
+      x: number;
+      width: number;
+      height: number;
+    }
+
+    const obstacles: Obstacle[] = [];
+    let obstacleSpawnCooldown = Math.floor(Math.random() * 2000) + 1000; // Random spawn cooldown between 1 and 3 seconds
+    let lastObstacleSpawnTime = 0;
 
     function drawDino() {
       ctx!.drawImage(dinoImage, dinoX, dinoY - jumpHeight, 40, 40); // Adjust size as needed
     }
 
-    function drawObstacle() {
-      const groundY = canvas!.height - 20; // Ground level
-      const obstacleY = groundY - obstacleHeight; // Corrected Y-coordinate for the obstacle
-      ctx!.drawImage(obstaclrImage, currentObstacleX, obstacleY, obstacleWidth, obstacleHeight);
+    function drawObstacles() {
+      obstacles.forEach((obstacle) => {
+        const groundY = canvas!.height - 20; // Ground level
+        const obstacleY = groundY - obstacle.height; // Corrected Y-coordinate for the obstacle
+        ctx!.drawImage(obstaclrImage, obstacle.x, obstacleY, obstacle.width, obstacle.height);
+      });
     }
-
 
     function drawGround() {
       ctx!.strokeStyle = 'white';
@@ -76,17 +84,44 @@ onMounted(() => {
       ctx!.stroke();
     }
 
+    function updateObstacles() {
+      const currentTime = performance.now();
+
+      // Spawn new obstacles based on cooldown
+      if (currentTime - lastObstacleSpawnTime > obstacleSpawnCooldown) {
+        const newObstacle: Obstacle = {
+          x: canvas!.width,
+          width: 20, // You can randomize this if needed
+          height: 40, // You can randomize this if needed
+        };
+        obstacles.push(newObstacle);
+        lastObstacleSpawnTime = currentTime;
+        obstacleSpawnCooldown = Math.floor(Math.random() * 2000) + 1000; // Update spawn cooldown
+      }
+
+      // Update obstacle positions and remove off-screen obstacles
+      for (let i = obstacles.length - 1; i >= 0; i--) {
+        obstacles[i].x -= gameSpeed;
+        if (obstacles[i].x + obstacles[i].width < 0) {
+          obstacles.splice(i, 1); // Remove obstacles that are off-screen
+        }
+      }
+    }
+
     function detectCollision() {
       const dinoBottom = dinoY - jumpHeight + 40;
-      const obstacleTop = canvas!.height - obstacleHeight;
 
-      if (
-        dinoX < currentObstacleX + obstacleWidth &&
-        dinoX + 40 > currentObstacleX &&
-        dinoBottom > obstacleTop
-      ) {
-        isGameOver = true;
-      }
+      obstacles.forEach((obstacle) => {
+        const obstacleTop = canvas!.height - obstacle.height;
+
+        if (
+          dinoX < obstacle.x + obstacle.width &&
+          dinoX + 40 > obstacle.x &&
+          dinoBottom > obstacleTop
+        ) {
+          isGameOver = true;
+        }
+      });
     }
 
     function updateGame() {
@@ -106,14 +141,10 @@ onMounted(() => {
         jumpHeight -= 5;
       }
 
-      currentObstacleX -= gameSpeed;
-      if (currentObstacleX + obstacleWidth < 0) {
-        currentObstacleX = canvas!.width;
-      }
-
+      updateObstacles(); // Update obstacles
       drawGround();
       drawDino();
-      drawObstacle();
+      drawObstacles(); // Draw all obstacles
       detectCollision();
 
       if (!isGameOver) {
@@ -154,9 +185,10 @@ onMounted(() => {
 
     function resetGame() {
       isGameOver = false;
-      currentObstacleX = canvas!.width;
+      obstacles.length = 0; // Clear all obstacles
       jumpHeight = 0;
       isPaused = false;
+      lastObstacleSpawnTime = 0;
       updateGame();
     }
 
@@ -164,7 +196,6 @@ onMounted(() => {
   };
 });
 </script>
-
 
 <style scoped lang="scss">
 .offline-container {
