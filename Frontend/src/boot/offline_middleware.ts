@@ -18,11 +18,10 @@ export default ({router}: {router: Router;}) => {
     if (to.path === '/') {
       return next();
     }
-    
-    const isOnline = navigator.onLine;
+
     const serverOnline = await isServerOnline();
 
-    if (!isOnline || !serverOnline) {
+    if (!serverOnline) {
       if (to.path !== '/offline') {
         return next('/offline');
       }
