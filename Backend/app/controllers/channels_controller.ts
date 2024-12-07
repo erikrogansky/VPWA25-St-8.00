@@ -581,7 +581,10 @@ export default class ChannelsController {
         })
         .firstOrFail()
 
-      const members = channel.memberships.map((membership) => membership.user.nick)
+      const members = channel.memberships.map((membership) => ({
+        nick: membership.user.nick,
+        isAdmin: membership.user.id === channel.userId,
+      }))
 
       return response.status(200).json({ success: true, members })
     } catch (error) {

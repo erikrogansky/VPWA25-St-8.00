@@ -95,21 +95,31 @@
       class="right-panel"
       :content-class="isWideScreen ? '' : 'fit'"
     >
-      <q-card class="dialog">
-        <q-card-section class="header">
-          <q-label class="h">Channel Members</q-label>
-        </q-card-section>
-
-        <q-list>
-          <q-item v-for="member in channelMembers" :key="member">
-            <q-item-section>{{ member }}</q-item-section>
+      <div class="right-panel-content">
+        <q-list class="right-panel-list">
+          <q-item clickable>
+            <q-item-section avatar>
+              <i class="fas fa-users left-panel-icon"></i>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="left-panel-text">Channel Members</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-separator />
+          <q-item v-for="member in channelMembers" :key="member.nick">
+            <q-item-section avatar>
+              <i class="fas fa-circle-user member-icon"></i>
+            </q-item-section>
+            <q-item-section class="member-info">
+              <span>{{ member.nick }}</span>
+              <i v-if="member.isAdmin" class="fas fa-crown admin-icon"></i>
+            </q-item-section>
           </q-item>
         </q-list>
-
         <q-card-actions align="right" style="padding-top: 25px;">
           <q-btn flat label="Close" @click="isChannelMembersDrawerOpen = false" />
         </q-card-actions>
-      </q-card>
+      </div>
     </q-drawer>
 
     <q-page-container>
@@ -147,7 +157,7 @@ const showPanel = ref(false);
 const titleChat = ref('New chat');
 
 const isChannelMembersDrawerOpen = ref(false);
-const channelMembers = ref<string[]>([]);
+const channelMembers = ref<{ nick: string, isAdmin: boolean }[]>([]);
 
 function updateScreenWidth() {
   isWideScreen.value = window.innerWidth > 850;
@@ -189,7 +199,10 @@ async function openChannelMembersDrawer(channelName: string) {
     });
 
     if (response.data.success) {
-      channelMembers.value = response.data.members;
+      channelMembers.value = response.data.members.map((member: { nick: string, isAdmin: boolean }) => ({
+        nick: member.nick,
+        isAdmin: member.isAdmin
+      }));
       isChannelMembersDrawerOpen.value = true;
     } else {
       console.error('Failed to fetch channel members:', response.data.message);
@@ -199,3 +212,52 @@ async function openChannelMembersDrawer(channelName: string) {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.right-panel {
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.right-panel-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--primary-darker-15);
+  padding-top: 6px;
+}
+
+.right-panel-list {
+  flex-grow: 1;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.member-icon {
+  font-size: 24px;
+}
+
+.admin-icon {
+  font-size: 16px;
+  color: gold;
+  margin-left: 5px;
+}
+
+.member-info {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: left;
+}
+
+.q-card-actions {
+  padding: 10px;
+}
+
+</style>
