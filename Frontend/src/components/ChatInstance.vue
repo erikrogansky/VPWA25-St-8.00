@@ -1,7 +1,6 @@
 <template>
   <q-page id="chat-page">
     <div class="chat-container">
-
       <!-- Chat header -->
       <div class="chat-header">
         <q-item class="chat-header-info">
@@ -25,7 +24,7 @@
               </q-btn>
               <q-menu class="user-popup">
                 <q-list>
-                  <q-item clickable v-close-popup @click="openChannelMembersModal">
+                  <q-item clickable v-close-popup @click="OpenChannelMembersDrawer">
                     <q-item-section avatar><i class="fas fa-users"></i></q-item-section>
                     <q-item-section>Channel Members</q-item-section>
                   </q-item>
@@ -64,17 +63,17 @@
         </q-infinite-scroll>
 
         <transition name="fade" appear>
-            <div class="chat-bubble-row incoming">
-              <i v-if="typingText.length > 0 && !text.startsWith('/')" class="fas fa-circle-user profile-picture" />
-              <div v-if="typingText.length > 0 && !text.startsWith('/')" style="display: flex; flex-direction: column;">
-                <span v-if="showTypingText" class="sender">{{ typingNick }}</span>
-                <q-bubble v-if="typingText.length > 0" class="bubble text-message typing-indicator" @click="() => {showTypingText = !showTypingText; nextTick(() => {scrollToBottom();});}">
-                  <span v-if="!showTypingText"><q-spinner-dots size="20px" /></span>
-                  <span v-else>{{ typingText }}</span>
-                </q-bubble>
-              </div>
+          <div class="chat-bubble-row incoming">
+            <i v-if="typingText.length > 0 && !text.startsWith('/')" class="fas fa-circle-user profile-picture" />
+            <div v-if="typingText.length > 0 && !text.startsWith('/')" style="display: flex; flex-direction: column;">
+              <span v-if="showTypingText" class="sender">{{ typingNick }}</span>
+              <q-bubble v-if="typingText.length > 0" class="bubble text-message typing-indicator" @click="() => {showTypingText = !showTypingText; nextTick(() => {scrollToBottom();});}">
+                <span v-if="!showTypingText"><q-spinner-dots size="20px" /></span>
+                <span v-else>{{ typingText }}</span>
+              </q-bubble>
             </div>
-          </transition>
+          </div>
+        </transition>
       </div>
 
       <!-- Chat footer (typing bar) -->
@@ -90,28 +89,6 @@
           <q-btn v-if="text.length > 0" icon="send" @click="handleMessage" flat round dense class="send" />
         </transition>
       </div>
-
-      <!-- Channel Members Modal -->
-      <q-dialog v-model="isChannelMembersModalOpen">
-        <q-card class="dialog">
-          <q-card-section class="header">
-            <q-label class="h">Channel Members</q-label>
-          </q-card-section>
-
-          <q-list>
-            <q-item v-for="member in channelMembers" :key="member">
-              <q-item-section>{{ member }}</q-item-section>
-              <q-item-section side>
-                <q-btn color="negative" label="Kick" @click="kickMember(member)" />
-              </q-item-section>
-            </q-item>
-          </q-list>
-
-          <q-card-actions align="right" style="padding-top: 25px;">
-            <q-btn flat label="Close" v-close-popup />
-          </q-card-actions>
-        </q-card>
-      </q-dialog>
     </div>
   </q-page>
 </template>
@@ -122,28 +99,24 @@ import { useMessageStore } from 'src/stores/message_store';
 import { useUserStore } from 'src/stores/user_store';
 import { subscribeToMessages, subscribeToAllChannels } from 'src/boot/socket';
 //import { api } from 'src/boot/axios';
-//import axios from 'axios';
 import { useQuasar } from 'quasar';
 import { parseCommand } from 'src/utils/commandParser';
+import { useIstypingStore } from 'src/stores/istyping_store';
+import { socket } from 'src/boot/socket';
 
 const $q = useQuasar();
-
 const messageStore = useMessageStore();
 const userStore = useUserStore();
-
-const messages = ref(messageStore.messages);
-const displayedMessages = ref(messageStore.allMessages);
+subscribeToAllChannels();
 
 const props = defineProps<{
   title: string
 }>();
 
-const channelMembers = ref<string[]>([]);
-const isChannelMembersModalOpen = ref(false);
+const emit = defineEmits(['open-channel-members']);
 
-
-subscribeToAllChannels();
-
+const messages = ref(messageStore.messages);
+const displayedMessages = ref(messageStore.allMessages);
 
 watch(() => props.title, (newTitle) => {
   subscribeToMessages(newTitle);
@@ -158,10 +131,7 @@ watch(messageStore.allMessages, () => {
   });
 });
 
-
-import { useIstypingStore } from 'src/stores/istyping_store';
 const istypingStore = useIstypingStore();
-
 const typingText = ref('');
 const typingNick = ref('');
 
@@ -199,7 +169,6 @@ interface MessageGroup {
   messages: Message[];
 }
 
-
 // User data
 const userName = ref('');
 const mentionTag = ref('');
@@ -216,32 +185,27 @@ const allMessagesLoaded = ref<boolean>(false);
 
 const chatContent = ref<HTMLElement | null>(null);
 
-import { socket } from 'src/boot/socket';
-
 const handleBlur = () => {
   socket.emit('stoppedTyping', { title: props.title });
 };
 
 watch(text, (newText) => {
-    if (!newText.startsWith('/') || newText.length > 0) {
-      socket.emit('isTypingText', { text: newText, title: props.title });
-    } else {
-      socket.emit('stoppedTyping', { title: props.title });
-    }
-
+  if (!newText.startsWith('/') || newText.length > 0) {
+    socket.emit('isTypingText', { text: newText, title: props.title });
+  } else {
+    socket.emit('stoppedTyping', { title: props.title });
+  }
 });
 
 // Load more messages when scrolling up
 const loadMoreMessages = (index: number, done: (stop?: boolean) => void) => {
   const currentLength = displayedMessages.value.length;
-  // check if all messages are loaded
   if (currentLength >= messages.value.length) {
     allMessagesLoaded.value = true;
     done(true);
     return;
   }
 
-  // Simulate loading delay (replace in backend phase)
   setTimeout(() => {
     const loadCount = 20;
     const remainingMessages = messages.value.length - currentLength;
@@ -250,15 +214,11 @@ const loadMoreMessages = (index: number, done: (stop?: boolean) => void) => {
     const startIndex = messages.value.length - currentLength - loadAmount;
     const newMessages = messages.value.slice(startIndex, startIndex + loadAmount);
 
-    // Record current scroll position
     const scrollPosition = chatContent.value?.scrollHeight || 0;
-
     displayedMessages.value = newMessages.concat(displayedMessages.value);
 
-    // Wait for DOM update before adjusting scroll
     nextTick(() => {
       if (chatContent.value) {
-        // Calculate the new scroll position to maintain scroll offset
         const newScrollHeight = chatContent.value.scrollHeight;
         chatContent.value.scrollTop = newScrollHeight - scrollPosition;
       }
@@ -331,18 +291,10 @@ const handleMessage = () => {
   }
 };
 
-// Open channel members
-const openChannelMembersModal = () => {
-  channelMembers.value = ['Member 1', 'Member 2', 'Member 3'];
-  isChannelMembersModalOpen.value = true;
+// Emit event to parent component (ChatInterface) -> open channel members drawer
+const OpenChannelMembersDrawer = () => {
+  emit('open-channel-members', props.title);
 };
-
-// Kick member
-const kickMember = (member: string) => {
-  alert(`Kicked ${member}`);
-};
-
-
 
 // Handling image selection
 const fileInput = ref<HTMLInputElement | null>(null);
@@ -375,8 +327,6 @@ const handleImageUpload = (event: Event) => {
     reader.readAsDataURL(file);
   }
 };
-
-// End of script
 </script>
 
 
@@ -455,7 +405,7 @@ const handleImageUpload = (event: Event) => {
   width: 100%;
 }
 
-.dialog {
+/*.dialog {
   background-color: var(--popup);
   color: var(--font);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
@@ -605,5 +555,5 @@ const handleImageUpload = (event: Event) => {
     }
   }
 
-}
+}*/
 </style>

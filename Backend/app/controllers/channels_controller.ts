@@ -568,4 +568,26 @@ export default class ChannelsController {
 
     return response.status(200).json({ success: true, message: 'Kick initiated' })
   }
+
+  public async getChannelMembers({ request, response }: HttpContext) {
+    const { channelName } = request.only(['channelName'])
+
+    try {
+      const channel = await Channel.query()
+        .where('name', channelName)
+        .orWhere('nameIfChat', channelName)
+        .preload('memberships', (query) => {
+          query.preload('user')
+        })
+        .firstOrFail()
+
+      const members = channel.memberships.map((membership) => membership.user.nick)
+
+      return response.status(200).json({ success: true, members })
+    } catch (error) {
+      return response
+        .status(500)
+        .json({ success: false, message: 'Server Error', error: error.message })
+    }
+  }
 }

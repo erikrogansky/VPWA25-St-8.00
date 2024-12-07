@@ -61,3 +61,5 @@ router.post('/api/join-channel', [ChannelsController, 'joinChannel'])
 router.post('/api/send-invite', [ChannelsController, 'sendInvite'])
 router.post('/api/revoke-user', [ChannelsController, 'revokeUser'])
 router.post('/api/kick-user', [ChannelsController, 'kickUser'])
+
+router.get('/api/get-channel-members', [ChannelsController, 'getChannelMembers'])
