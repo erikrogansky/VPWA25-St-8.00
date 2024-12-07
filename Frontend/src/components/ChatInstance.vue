@@ -283,7 +283,11 @@ const sendMessage = () => {
 // Command handling - Parser
 const handleMessage = () => {
   if (text.value.startsWith('/')) {
-    parseCommand(text.value, props, $q);
+    if (text.value === '/list') {
+      OpenChannelMembersDrawer();
+    } else {
+      parseCommand(text.value, props, $q);
+    }
     text.value = '';
   } else {
     sendMessage();
