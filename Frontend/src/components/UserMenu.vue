@@ -133,9 +133,30 @@ watch(() => modeStore.mode, (newMode) => {
   updateDarkMode(newMode);
 });
 
-watch(mode, (newMode) => {
+watch(mode, async (newMode) => {
   modeStore.setMode(newMode);
   Cookies.set('themeMode', newMode, { expires: 7 });
+  let theme;
+  if (newMode === 'sp') {
+    theme = 'system';
+  } else {
+    theme = newMode === 'on' ? 'dark' : 'light';
+  }
+  await api.post('/set-theme', { theme: theme });
+});
+
+watch(activeStatus, async (newStatus) => {
+  if (newStatus === 'dnd' || newStatus === 'on' || newStatus === 'off') {
+    modeStore.setStatus(newStatus);
+  }
+  Cookies.set('activeStatus', newStatus, { expires: 7 });
+  let status;
+  if (newStatus === 'dnd') {
+    status = 'dnd';
+  } else {
+    status = newStatus === 'on' ? 'active' : 'offline';
+  }
+  await api.post('/set-status', { status: status });
 });
 
 function updateDarkMode(newMode: string) {
@@ -166,6 +187,16 @@ if (storedMode && (storedMode === 'on' || storedMode === 'sp' || storedMode === 
   const defaultMode = modeStore.mode;
   mode.value = defaultMode;
   updateDarkMode(defaultMode);
+}
+
+const storedStatus = Cookies.get('activeStatus');
+
+if (storedStatus && (storedStatus === 'on' || storedStatus === 'dnd' || storedStatus === 'off')) {
+  activeStatus.value = storedStatus;
+  modeStore.setStatus(storedStatus);
+} else {
+  const defaultStatus = modeStore.status;
+  activeStatus.value = defaultStatus;
 }
 
 async function logout() {

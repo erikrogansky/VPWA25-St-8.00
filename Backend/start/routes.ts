@@ -63,3 +63,8 @@ router.post('/api/revoke-user', [ChannelsController, 'revokeUser'])
 router.post('/api/kick-user', [ChannelsController, 'kickUser'])
 
 router.get('/api/get-channel-members', [ChannelsController, 'getChannelMembers'])
+
+router.post('/api/set-theme', [UsersController, 'setTheme'])
+router.post('/api/set-status', [UsersController, 'setStatus'])
+
+router.get('/api/get-user-status', [UsersController, 'getStatus'])

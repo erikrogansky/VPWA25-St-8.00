@@ -24,6 +24,7 @@ export const useUserStore = defineStore('user', {
       try {
         const response = await api.get('/get-user');
         this.user = response.data;
+        console.log('User information:', this.user);
       } catch (error) {;
         console.error('Error fetching user information:', error);
       }
@@ -31,5 +32,6 @@ export const useUserStore = defineStore('user', {
   },
   getters: {
     userName: (state) => state.user?.nick || '',
+    userActiveStatus: (state) => state.user?.activeStatus || '',
   },
 });

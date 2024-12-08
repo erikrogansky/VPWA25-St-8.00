@@ -3,7 +3,7 @@
     <q-item-section avatar>
       <i class="fas fa-circle-user"></i>
       <i v-if="chat" class="fas fa-circle active-status-help" />
-      <i v-if="chat" class="fas fa-circle active-status" />
+      <i v-if="chat" class="fas fa-circle active-status" :style="{ color: statusCol }"/>
       <i v-if="channel" class="fas fa-circle public-private-help" />
       <img v-if="channel" :src="imageSrc" class="public-private" />
     </q-item-section>
@@ -82,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 
 const show = ref(false);
 const hovering = ref(false);
@@ -108,6 +108,29 @@ const props = withDefaults(defineProps<{
   isPublic: false
 });
 
+const statusCol = ref('');
+
+onBeforeMount(async () => {
+  if (props.chat) {
+    try {
+      const response = await api.get('/get-user-status', {
+        params: {
+          nick: props.title
+        }
+      });
+
+      if (response.data.status === 'active') {
+        statusCol.value = 'lime';
+      } else if (response.data.status === 'offline') {
+        statusCol.value = 'grey';
+      } else {
+        statusCol.value = 'red';
+      }
+    } catch (error) {
+      console.error('Error fetching user status:', error);
+    }
+  }
+});
 
 const hover = () => {
   hovering.value = true;
@@ -218,7 +241,6 @@ const leaveChannel = async (request: string = '') => {
   font-size: 12px;
   bottom: 6px;
   left: 34px;
-  color: lime;
 }
 
 .unread {
