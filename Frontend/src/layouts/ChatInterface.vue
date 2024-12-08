@@ -129,7 +129,7 @@
 
       <!-- ChatInstance -->
       <ChatInstance
-        v-if="isWideScreen || !showPanel"
+        v-show="isWideScreen || !showPanel"
         :title="titleChat"
         @open-channel-members="openChannelMembersDrawer"
       />
@@ -188,6 +188,7 @@ function toggleExpand() {
 
 async function handleChatItemClick(title: string) {
   titleChat.value = title;
+  showPanel.value = false;
   if (isChannelMembersDrawerOpen.value) {
     await openChannelMembersDrawer(title);
   }
