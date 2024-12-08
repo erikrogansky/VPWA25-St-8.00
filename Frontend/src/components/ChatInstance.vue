@@ -232,15 +232,14 @@ const groupedMessages = computed<MessageGroup[]>(() => {
   let currentGroup: MessageGroup | null = null;
 
   displayedMessages.value.forEach((message) => {
-    if (!currentGroup || currentGroup.type !== message.type) {
+    if (!currentGroup || currentGroup.type !== message.type || currentGroup.messages[0].createdBy !== message.createdBy) {
       currentGroup = {
         type: message.type,
-        messages: [message],
+        messages: []
       };
       groups.push(currentGroup);
-    } else {
-      currentGroup.messages.push(message);
     }
+    currentGroup.messages.push(message);
   });
 
   return groups;
@@ -409,155 +408,4 @@ const handleImageUpload = (event: Event) => {
   width: 100%;
 }
 
-/*.dialog {
-  background-color: var(--popup);
-  color: var(--font);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-  border-radius: 14px;
-  width: 450px;
-  height: auto;
-
-  i {
-    font-size: 18px;
-  }
-
-  .q-separator {
-    background-color:var(--popup-separator);
-    margin: 0 12px;
-  }
-
-  .q-item--active {
-    color: var(--font);
-    opacity: 0.8;
-  }
-
-
-  .header {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    font-size: 15px;
-    font-weight: bold;
-
-    :deep(.q-focus-helper) {
-      display: none;
-    }
-
-    .h {
-      font-size: 20px;
-    }
-
-    .q-btn {
-      position: absolute;
-      right: 10px;
-      top: 15px;
-      min-height: min-content;
-      padding: 0;
-
-
-      :hover {
-        color: var(--font-hover);
-      }
-    }
-  }
-  :deep(.q-toggle__thumb) {
-    height: 15px;
-    width: 15px;
-  }
-
-  :deep(.q-toggle__inner) {
-    height: 18px;
-    width: 28.5px;
-  }
-
-  :deep(.q-toggle__inner--truthy .q-toggle__track) {
-    opacity: 1;
-  }
-
-  :deep(.q-toggle__track) {
-    height: 18px;
-    width: 28px;
-    border-radius: 100px;
-    background: var(--toggle);
-
-    position: absolute;
-    bottom: 1.25px;
-    right: 2px
-  }
-
-  .section {
-    .q-btn {
-      font-weight: 400;
-    }
-  }
-
-  .delete-account {
-    font-size: 14px;
-    color: var(--negative);
-    text-decoration: underline;
-
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: flex-end;
-
-    padding-top: 4px;
-
-    .action-btn {
-      :deep(.q-focus-helper) {
-        display: none;
-      }
-      :hover {
-        opacity: 0.8;
-      }
-      padding: 0;
-    }
-  }
-
-  .section-name {
-    font-size: 14px;
-    opacity: 0.5;
-    font-weight: 400;
-  }
-
-  .section-item-description {
-    font-size: 11px;
-    opacity: 0.5;
-    font-weight: 300;
-    margin-right: 80px;
-    padding-top: 2px;
-  }
-
-  .section-item {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 4px;
-
-    .action-btn {
-      :deep(.q-focus-helper) {
-        display: none;
-      }
-
-      :hover {
-        color: var(--font-hover);
-      }
-
-      padding: 0;
-
-
-      .action {
-        font-size: 12px;
-        padding-right: 8px;
-        padding-top: 3px;
-      }
-
-      i {
-        font-size: 16px;
-      }
-    }
-  }
-
-}*/
 </style>
