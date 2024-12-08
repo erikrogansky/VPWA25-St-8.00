@@ -29,6 +29,10 @@ export const useUserStore = defineStore('user', {
         console.error('Error fetching user information:', error);
       }
     },
+
+    async setStatus(status: string) {
+      this.user!.activeStatus = status;
+    },
   },
   getters: {
     userName: (state) => state.user?.nick || '',

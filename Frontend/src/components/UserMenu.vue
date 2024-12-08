@@ -145,10 +145,10 @@ watch(mode, async (newMode) => {
   await api.post('/set-theme', { theme: theme });
 });
 
+import { useUserStore } from 'src/stores/user_store';
+const userStore = useUserStore();
+
 watch(activeStatus, async (newStatus) => {
-  if (newStatus === 'dnd' || newStatus === 'on' || newStatus === 'off') {
-    modeStore.setStatus(newStatus);
-  }
   Cookies.set('activeStatus', newStatus, { expires: 7 });
   let status;
   if (newStatus === 'dnd') {
@@ -156,6 +156,7 @@ watch(activeStatus, async (newStatus) => {
   } else {
     status = newStatus === 'on' ? 'active' : 'offline';
   }
+  userStore.setStatus(status);
   await api.post('/set-status', { status: status });
 });
 

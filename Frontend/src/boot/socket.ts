@@ -3,9 +3,11 @@ import { io } from 'socket.io-client';
 import { MessageItem, useMessageStore } from 'src/stores/message_store';
 import { useRequestStore } from 'src/stores/request-store';
 import { useIstypingStore } from 'src/stores/istyping_store';
+import { useUserStore } from 'src/stores/user_store';
 const messageStore = useMessageStore();
 const requestStore = useRequestStore();
 const istypingStore = useIstypingStore();
+const userStore = useUserStore();
 
 export const state = reactive({
   connected: false,
@@ -49,10 +51,13 @@ socket.on('message', (message: {text: string, createdBy: string, isMentioned: bo
   }
 
   if (document.visibilityState === 'hidden' && Notification.permission === 'granted') {
-    new Notification(newMessage.createdBy, {
-      body: newMessage.text,
-      icon: '/src/assets/logo.png',
-    });
+    console.log(userStore.userActiveStatus);
+    if (userStore.userActiveStatus === 'active') {
+      new Notification(newMessage.createdBy, {
+        body: newMessage.text,
+        icon: '/src/assets/logo.png',
+      });
+    }
   }
 });
 
@@ -62,10 +67,12 @@ socket.on('messages', (messages: MessageItem[]) => {
 
 socket.on('newRequest', (data: { nick: string }) => {
   if (document.visibilityState === 'hidden' && Notification.permission === 'granted') {
-    new Notification(data.nick, {
-      body: 'You have a new friend request!',
-      icon: '/src/assets/logo.png',
-    });
+    if (userStore.userActiveStatus === 'active') {
+      new Notification(data.nick, {
+        body: 'You have a new friend request!',
+        icon: '/src/assets/logo.png',
+      });
+    }
   }
 
   requestStore.fetchChats();
