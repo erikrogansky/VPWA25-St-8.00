@@ -202,9 +202,8 @@ export default class ChannelsController {
       .orderByRaw(`CASE WHEN name = ? THEN 1 ELSE 2 END`, [channelData.title])
       .first()
 
-    if (channelData.action === 'delete') {
+    if (channelData.action === 'delete' || channel?.owner === user) {
       channel?.delete()
-
       return response.status(200).json({ success: true, message: 'Channel deleted' })
     } else {
       const memberships = channel?.memberships.filter((m) => m.userId === user.id)

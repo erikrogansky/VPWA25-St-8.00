@@ -117,7 +117,7 @@ const emit = defineEmits(['open-channel-members']);
 const messages = ref(messageStore.messages);
 const displayedMessages = ref(messageStore.allMessages);
 
-watch(() => props.title, (newTitle) => {
+watch(() => props.title, async (newTitle) => {
   subscribeToMessages(newTitle);
   messageStore.fetchMessages(newTitle);
   displayedMessages.value = messageStore.allMessages
@@ -243,6 +243,12 @@ const groupedMessages = computed<MessageGroup[]>(() => {
   });
 
   return groups;
+});
+
+watch(groupedMessages, () => {
+  nextTick(() => {
+    scrollToBottom();
+  });
 });
 
 const formatMessageText = (text: string) => {

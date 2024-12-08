@@ -199,7 +199,11 @@ if (storedStatus && (storedStatus === 'on' || storedStatus === 'dnd' || storedSt
   activeStatus.value = defaultStatus;
 }
 
+import { useMessageStore } from 'src/stores/message_store';
+const messageStore = useMessageStore();
+
 async function logout() {
+  messageStore.clearMessages();
   try {
     const token = localStorage.getItem('authToken');
     if (token)
