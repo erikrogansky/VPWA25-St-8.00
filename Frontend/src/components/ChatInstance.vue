@@ -173,11 +173,10 @@ const userName = ref('');
 const mentionTag = ref('');
 
 onMounted(async () => {
-  clearPreviousData();
   await userStore.fetchUser();
   userName.value = userStore.user?.nick || '';
   mentionTag.value = `@${userName.value}`;
-
+  clearPreviousData();
 });
 // Chat data
 const text = ref<string>('');
