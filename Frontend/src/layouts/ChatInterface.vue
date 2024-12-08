@@ -106,7 +106,7 @@
             </q-item-section>
               <q-btn flat label="X" align="right" @click="isChannelMembersDrawerOpen = false"/>
           </q-item>
-          <q-separator />
+
           <q-item v-for="member in channelMembers" :key="member.nick">
             <q-item-section avatar>
               <i class="fas fa-circle-user member-icon"></i>
@@ -186,8 +186,11 @@ function toggleExpand() {
   expanded.value = !expanded.value;
 }
 
-function handleChatItemClick(title: string) {
+async function handleChatItemClick(title: string) {
   titleChat.value = title;
+  if (isChannelMembersDrawerOpen.value) {
+    await openChannelMembersDrawer(title);
+  }
 }
 
 async function openChannelMembersDrawer(channelName: string) {
@@ -244,7 +247,7 @@ async function openChannelMembersDrawer(channelName: string) {
 .admin-icon {
   font-size: 16px;
   color: gold;
-  margin-left: 5px;
+  margin-left: 10px;
 }
 
 .member-info {
