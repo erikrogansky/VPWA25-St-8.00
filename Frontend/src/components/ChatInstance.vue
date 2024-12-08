@@ -98,7 +98,6 @@ import { ref, computed, nextTick, watch, onMounted } from 'vue';
 import { useMessageStore } from 'src/stores/message_store';
 import { useUserStore } from 'src/stores/user_store';
 import { subscribeToMessages, subscribeToAllChannels } from 'src/boot/socket';
-//import { api } from 'src/boot/axios';
 import { useQuasar } from 'quasar';
 import { parseCommand } from 'src/utils/commandParser';
 import { useIstypingStore } from 'src/stores/istyping_store';
@@ -174,9 +173,11 @@ const userName = ref('');
 const mentionTag = ref('');
 
 onMounted(async () => {
+  clearPreviousData();
   await userStore.fetchUser();
   userName.value = userStore.user?.nick || '';
   mentionTag.value = `@${userName.value}`;
+
 });
 // Chat data
 const text = ref<string>('');
@@ -330,6 +331,11 @@ const handleImageUpload = (event: Event) => {
     reader.readAsDataURL(file);
   }
 };
+
+const clearPreviousData = () => {
+  messageStore.clearMessages();
+};
+
 </script>
 
 

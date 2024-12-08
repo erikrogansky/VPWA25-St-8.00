@@ -43,6 +43,10 @@ export const useMessageStore = defineStore('message', {
         console.error('Error sending message:', error);
       }
     },
+    clearMessages() {
+      this.messages = [];
+      this.sentMessageIds.clear();
+    },
   },
   getters: {
     allMessages: (state) => state.messages,
