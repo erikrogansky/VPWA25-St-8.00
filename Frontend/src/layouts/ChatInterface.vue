@@ -97,13 +97,14 @@
     >
       <div class="right-panel-content">
         <q-list class="right-panel-list">
-          <q-item clickable>
+          <q-item>
             <q-item-section avatar>
               <i class="fas fa-users left-panel-icon"></i>
             </q-item-section>
             <q-item-section>
               <q-item-label class="left-panel-text">Channel Members</q-item-label>
             </q-item-section>
+              <q-btn flat label="X" align="right" @click="isChannelMembersDrawerOpen = false"/>
           </q-item>
           <q-separator />
           <q-item v-for="member in channelMembers" :key="member.nick">
@@ -116,9 +117,6 @@
             </q-item-section>
           </q-item>
         </q-list>
-        <q-card-actions align="right" style="padding-top: 25px;">
-          <q-btn flat label="Close" @click="isChannelMembersDrawerOpen = false" />
-        </q-card-actions>
       </div>
     </q-drawer>
 
