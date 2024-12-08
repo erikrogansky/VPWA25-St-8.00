@@ -52,7 +52,6 @@
 <script scoped setup lang="ts">
 import { ref, computed } from 'vue';
 import { useQuasar } from 'quasar';
-import { useRouter } from 'vue-router';
 import FooterLayout from 'src/components/FooterLayout.vue';
 import { api } from 'src/boot/axios';
 import axios from 'axios';
@@ -63,7 +62,6 @@ const emailError = ref('');
 const passwordError = ref('');
 
 const $q = useQuasar();
-const router = useRouter();
 
 const logoSource = computed(() => {
   return $q.dark.isActive
@@ -115,7 +113,7 @@ const validateAndSubmit = async () => {
           });
         }
 
-        router.push('/app');
+        window.location.href = '/#/app';
       } else {
         $q.notify({
           type: 'negative',
